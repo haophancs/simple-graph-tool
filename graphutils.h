@@ -20,7 +20,7 @@ public:
     void displayBFS(Graph &graph, int source = 0);
     void displayDFS(Graph &graph, int source = 0);
 
-    std::list<int> displayShortestPath(Graph &graph, int start, int goal);
+    std::list<int> Dijkstra(Graph &graph, int start, int goal);
     std::list<std::pair<int, int>> Prim(Graph &graph, int source = 0);
 
     std::list<std::list<int>> stronglyConnectedComponents(Graph &graph);

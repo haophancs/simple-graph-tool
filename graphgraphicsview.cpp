@@ -19,7 +19,7 @@ void GraphGraphicsView::wheelEvent(QWheelEvent *event)
         scale(scaleFactor, scaleFactor);
         currentScale *= scaleFactor;
     }
-    else if (currentScale >= scaleMin){
+    else {
         scale(1/scaleFactor, 1/scaleFactor);
         currentScale /= scaleFactor;
     }
@@ -27,6 +27,9 @@ void GraphGraphicsView::wheelEvent(QWheelEvent *event)
 
 void GraphGraphicsView::contextMenuEvent(QContextMenuEvent *event)
 {
+    for (auto gi: scene()->selectedItems())
+        gi->setSelected(false);
+
     QList<QGraphicsItem*> clickedItems = items(event->pos());
     if (clickedItems.size() > 0 ) {
         auto item = clickedItems[0];
@@ -34,14 +37,13 @@ void GraphGraphicsView::contextMenuEvent(QContextMenuEvent *event)
 
         ArcGraphicsItem *arcItem = dynamic_cast<ArcGraphicsItem*>(item);
         NodeGraphicsItem *nodeItem = dynamic_cast<NodeGraphicsItem*>(item);
-        bool isNodeNotArc = nodeItem && !arcItem;
-        if (isNodeNotArc) {
+        if (nodeItem) {
             int id = nodeItem->node()->getId();
             emit selectedNode(id);
             QMenu menu;
             menu.addAction("&Delete");
             menu.addAction("&Isolate");
-            menu.addAction("Chang &name");
+            menu.addAction("Re&name");
             menu.addSeparator();
             menu.addAction("&Set arc to (Select other node by mouse)");
             menu.addSeparator();
@@ -54,7 +56,7 @@ void GraphGraphicsView::contextMenuEvent(QContextMenuEvent *event)
                     emit removeNode(id);
                 if (act->text() == "&Isolate")
                     emit isolateNode(id);
-                if (act->text() == "Change &name")
+                if (act->text() == "Re&name")
                     emit editNode(id);
                 if (act->text().contains("&Set arc to")) {
                     selectTargetNode = true;
@@ -71,7 +73,7 @@ void GraphGraphicsView::contextMenuEvent(QContextMenuEvent *event)
                 item->setSelected(false);
             }
         }
-        else {
+        else if (arcItem) {
             QMenu menu;
             menu.addAction("&Delete");
             menu.addAction("Adjust &weight");
@@ -90,15 +92,15 @@ void GraphGraphicsView::contextMenuEvent(QContextMenuEvent *event)
             scene()->selectedItems()[0]->setSelected(false);
         QMenu menu;
         menu.addAction("New &node");
-        menu.addAction("&Refresh");
+        //menu.addAction("&Refresh");
         QAction *act = menu.exec(event->globalPos());
-        if (act != nullptr) {
+        if (act) {
             if (act->text() == "New &node")
                 emit addNewNode(mapToScene(event->pos()));
-            else if (act->text() == "&Refresh") {
-                dynamic_cast<GraphGraphicsScene*>(scene())->reloadData();
-                redraw();
-            }
+            //else if (act->text() == "&Refresh") {
+            //    dynamic_cast<GraphGraphicsScene*>(scene())->reloadData();
+            //    redraw();
+            //}
         }
    }
 }
@@ -140,7 +142,8 @@ void GraphGraphicsView::mouseReleaseEvent(QMouseEvent *event)
         if (fai) emit selectedArc(fai->arc().first, fai->arc().second);
         else if (fni) emit selectedNode(fni->node()->getId());
     }
-    else
+
+    if (items(event->pos()).empty())
         emit unSelect();
 
     QGraphicsView::mouseReleaseEvent(event);

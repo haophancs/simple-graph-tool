@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1120</width>
+    <width>1024</width>
     <height>768</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1024</width>
-    <height>768</height>
+    <width>720</width>
+    <height>540</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -119,7 +119,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Open Existed Graph</string>
+            <string>Open Existing Graph</string>
            </property>
           </widget>
          </item>
@@ -325,10 +325,16 @@
               </item>
               <item>
                <widget class="QTableWidget" name="propertiesTable">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                 <property name="maximumSize">
                  <size>
                   <width>16777215</width>
-                  <height>100</height>
+                  <height>16777215</height>
                  </size>
                 </property>
                 <attribute name="horizontalHeaderVisible">
@@ -485,7 +491,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1120</width>
+     <width>1024</width>
      <height>22</height>
     </rect>
    </property>

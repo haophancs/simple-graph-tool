@@ -21,9 +21,9 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_openGraphButton_clicked();
     void onGraphChanged();
 
+    void on_openGraphButton_clicked();
     void on_createGraphButton_clicked();
     void on_actionSave_triggered();
     void on_actionSave_As_triggered();
@@ -36,53 +36,29 @@ private slots:
     void on_actionEditArc_triggered();
     void on_actionDelNode_triggered();
     void on_actionDelArc_triggered();
-
     void on_articulationNodeBtn_clicked();
-
     void on_bridgesBtn_clicked();
-
     void on_coloringBtn_clicked();
-
     void on_connectedComponentsBtn_clicked();
-
     void on_shortestPathBtn_clicked();
-
     void on_topoSortBtn_clicked();
-
     void on_BFSbtn_clicked();
-
     void on_DFSbtn_clicked();
-
     void on_EulerBtn_clicked();
-
     void on_HamiltonBtn_clicked();
-
     void on_actionBFS_triggered();
-
     void on_actionDFS_triggered();
-
     void on_actionColoring_triggered();
-
     void on_actionTopo_Sorting_triggered();
-
     void on_actionEuler_Cycle_triggered();
-
     void on_actionHamiltonian_Cycle_triggered();
-
     void on_actionFind_shortest_path_triggered();
-
     void on_actionFind_all_bridges_triggered();
-
     void on_actionFind_all_Articulation_nodes_triggered();
-
     void on_actionFind_connected_components_triggered();
-
     void on_actionFInd_minimum_spanning_tree_triggered();
-
     void on_spanningTreeBtn_clicked();
-
     void on_actionFind_weakly_connected_components_triggered();
-
     void on_weaklyConnectedBtn_clicked();
 
 signals:

@@ -99,6 +99,15 @@ void GraphUtils::DFSUtil(Graph &graph, int v, std::vector<bool> &visited, std::l
     }
 }
 
+void UndirectedDFSUtil(Graph &graph, int v, std::vector<bool> &visited, std::list<int> &steps){
+    visited[v] = true;
+    steps.push_back(v);
+    for (int i = 0; i < graph.getNodeNum(); i++) {
+        if ((graph.hasThisArc(v, i) || graph.hasThisArc(i, v)) && !visited[i])
+            UndirectedDFSUtil(graph, i, visited, steps);
+    }
+}
+
 std::list<int> GraphUtils::DFS(Graph &graph, int source) {
     std::list<int> steps;
     if (!graph.hasThisNode(source)) return steps;
@@ -149,7 +158,7 @@ bool GraphUtils::isAllWeaklyConnected(Graph graph) {
             }
         }
     }
-    for (int i = 0; i < visited.size(); i++)
+    for (int i = 0; i < (int)visited.size(); i++)
         if (visited[i] == false)
             return false;
     return true;
@@ -164,6 +173,39 @@ int minDistance(std::vector<int>& dist, std::vector<bool>& sptSet) {
 
     return min_index;
 }
+
+std::list<int> GraphUtils::Dijkstra(Graph &graph, int start, int goal) {
+    std::vector<int> dist(graph.getNodeNum(), INT_MAX);
+    std::vector<bool> sptSet(graph.getNodeNum(), false);
+    std::vector<int> parent(graph.getNodeNum(), -1);
+    dist[start] = 0;
+    for (int count = 0; count < graph.getNodeNum() - 1; count++) {
+        int u = minDistance(dist, sptSet);
+        sptSet[u] = true;
+        for (int v = 0; v < graph.getNodeNum(); v++) {
+            if (!sptSet[v] && graph.hasThisArc(u, v) && dist[u] != INT_MAX && dist[u] + graph.getArcWeight(u, v) < dist[v]) {
+                dist[v]	= dist[u] + graph.getArcWeight(u, v);
+                parent[v] = u;
+            }
+        }
+    }
+    std::list<int> path;
+    std::cout << "Shortest path from " << graph.getNodeName(start) << " to " << graph.getNodeName(goal) << ": ";
+    if (dist[goal] == INT_MAX) {
+        std::cout << " not found!\n";
+        return path;
+    }
+    int curr = goal;
+    while (curr != -1) {
+        path.push_front(curr);
+        curr = parent[curr];
+    }
+    for (auto itr = path.begin(); std::next(itr) != path.end(); itr++)
+        std::cout << graph.getNodeName(*itr) << " -> ";
+    std::cout << graph.getNodeName(goal) << ", cost = " << dist[goal];
+    return path;
+}
+
 
 int minKey(std::vector<int> &key, std::vector<bool> &mstSet) {
     int min = INT_MAX, min_index;
@@ -181,8 +223,8 @@ std::list<std::pair<int, int>> GraphUtils::Prim(Graph &graph, int source) {
 
     std::list<std::pair<int, int>> res;
     if (!graph.hasThisNode(source)) return res;
-    if (!isAllStronglyConnected(graph)) {
-        std::cout << "Minimum spanning tree: not found because the graph is not strongly connected!";
+    if (!isAllWeaklyConnected(graph)) {
+        std::cout << "Minimum spanning tree: not found because the graph is not weakly connected!";
         return res;
     }
     int n = graph.getNodeNum();
@@ -207,7 +249,7 @@ std::list<std::pair<int, int>> GraphUtils::Prim(Graph &graph, int source) {
     }
     std::vector<Node> node_list = graph.getNodeList();
     int cost = 0;
-    std::cout << "Minimum panning tree found by Prim (source = " << node_list[source].getName() << "): " << std::endl;
+    std::cout << "Minimum panning tree (source = " << node_list[source].getName() << "): " << std::endl;
     std::cout << "vertex\tparent\tcost:" << std::endl;
     for (int i = 0; i < n; i++) {
         if (i != source) {
@@ -274,7 +316,7 @@ std::list<std::list<int>> GraphUtils::weaklyConnectedComponents(Graph &graph) {
     for (int v = 0; v < graph.getNodeNum(); v++) {
         if (!visited[v]) {
             std::list<int> component;
-            DFSUtil(graph, v, visited, component);
+            UndirectedDFSUtil(graph, v, visited, component);
             res.push_back(component);
         }
     }
@@ -450,7 +492,7 @@ bool hamCycleUtil(Graph &graph, std::vector<int> &path, int pos) {
     }
 
     for (int v = 0; v < V; v++) {
-        if (isSafe(graph, v, path, pos)) {
+        if (v != path[0] && isSafe(graph, v, path, pos)) {
             path[pos] = v;
             if (hamCycleUtil(graph, path, pos + 1) == true)
                 return true;
@@ -463,9 +505,17 @@ bool hamCycleUtil(Graph &graph, std::vector<int> &path, int pos) {
 std::list<int> GraphUtils::getHamiltonianCycle(Graph graph, int source) {
 
     std::list<int> res;
-    std::vector<int> path(graph.getNodeNum());
-    for (int i = 0; i < graph.getNodeNum(); i++)
-        path[i] = -1;
+    if (graph.getNodeNum() < 3) {
+        std::cout << "|V| = " << graph.getNodeNum() << " < 3\n";
+        return res;
+    }
+    for (Node &node: graph.getNodeList())
+        if (node.getDeg() < graph.getNodeNum() / 2) {
+            std::cout << "deg(" << node.getName() << ") = " << node.getDeg() << " < " << graph.getNodeNum() << "/2\n";
+            return res;
+        }
+
+    std::vector<int> path(graph.getNodeNum(), -1);
 
     path[0] = source;
     if (hamCycleUtil(graph, path, 1) == false)
@@ -492,8 +542,8 @@ std::list<int> GraphUtils::displayHamiltonianCycle(Graph graph, int source) {
 }
 std::list<int> GraphUtils::getEulerCycle(Graph graph, int source) {
     std::list<int> cycle;
-    if (!isAllWeaklyConnected(graph)) {
-        std::cout << "The graph is not weakly connected\n";
+    if (!isAllStronglyConnected(graph)) {
+        std::cout << "The graph is not strongly connected\n";
         return cycle;
     }
     for (Node node: graph.getNodeList()) {
@@ -528,10 +578,9 @@ std::list<int> GraphUtils::displayEulerCycle(Graph graph, int source) {
     std::list<int> cycle = getEulerCycle(graph, source);
     std::cout << "Euler Cycle (source = " << graph.getNodeName(source) <<"): ";
     if (cycle.empty()) {
-        std::cout << "not found\n";
+        std::cout << "not found!\n";
         return cycle;
     }
-    std::cout << "Euler Cycle (source = " << graph.getNodeName(source) <<"): ";
     for (auto i: cycle)
         std::cout << graph.getNodeName(i) << " ";
     std::cout << "\n";
@@ -569,7 +618,7 @@ std::list<int> GraphUtils::displayTopoSort(Graph graph) {
     std::list<int> topo_sorted = getTopoSortResult(graph);
     std::cout << "Topo sorted: ";
     if (topo_sorted.empty()) {
-        std::cout << "not found\n";
+        std::cout << "not found!\n";
         return topo_sorted;
     }
     for (auto v: topo_sorted)
@@ -577,48 +626,7 @@ std::list<int> GraphUtils::displayTopoSort(Graph graph) {
     std::cout << "\n";
     return topo_sorted;
 }
-std::list<int> GraphUtils::displayShortestPath(Graph &graph, int start, int goal) {
-    std::list<int> path;
-    std::stack<int> stack;
-    std::vector<long long> dist(graph.getNodeNum(), INT_MAX);
-    std::vector<int> parent(graph.getNodeNum(), -1);
-    std::vector<bool> visited(graph.getNodeNum(), false);
-    for (int v = 0; v < graph.getNodeNum(); v++)
-        if (!visited[v])
-            topoSortUtil(graph, v, visited, stack);
 
-    dist[start] = 0;
-    while (!stack.empty()) {
-        int u = stack.top();
-        stack.pop();
-        if (dist[u] != INT_MAX) {
-            for (int v = 0; v < graph.getNodeNum(); v++) {
-                if (dist[v] > dist[u] + graph.getArcWeight(u, v)) {
-                    dist[v] = dist[u] + graph.getArcWeight(u, v);
-                    parent[v] = u;
-                }
-            }
-        }
-    }
-    std::cout << "Shortest path (start = " << graph.getNodeName(start) << ", goal = " << graph.getNodeName(goal) << "): ";
-    if (dist[goal] == INT_MAX) {
-        std::cout << "not found!\n";
-        return std::list<int>();
-    }
-
-    int curr = goal;
-    path.push_front(curr);
-    while (parent[curr] != -1) {
-        path.push_front(parent[curr]);
-        curr = parent[curr];
-    }
-    for (auto itr = path.begin(); std::next(itr) != path.end(); itr++) {
-        std::cout << graph.getNodeName(*itr) << " -> ";
-    }
-    std::cout << graph.getNodeName(goal);
-    std::cout << "; cost = " << dist[goal];
-    return path;
-}
 std::list<int> GraphUtils::getColoringResult(Graph graph, int source) {
     std::vector<bool> available(graph.getNodeNum(), false);
     std::vector<int> res(graph.getNodeNum(), -1);

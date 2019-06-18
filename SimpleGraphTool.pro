@@ -51,3 +51,5 @@ HEADERS += \
 
 FORMS += \
         mainwindow.ui
+
+win32:RC_ICONS += ./icons/foographer.ico

@@ -11,6 +11,8 @@ void GraphMatrixTable::defaultSetting() {
     this->verticalHeader()->setDefaultSectionSize(50);
     this->verticalHeader()->setCascadingSectionResizes(false);
     this->setSelectionMode(QAbstractItemView::SingleSelection);
+
+    this->setSizeAdjustPolicy(QTableWidget::AdjustToContents);
 }
 
 void GraphMatrixTable::setGraph(Graph *graph)
@@ -59,7 +61,6 @@ void GraphMatrixTable::adjustCell(int row, int column) {
                 (myGraph->getArcWeight(row, column) != INT_MAX)?
                     QString::number(myGraph->getArcWeight(row, column))
                   : "inf");
-
     }
     else
     {
@@ -69,29 +70,10 @@ void GraphMatrixTable::adjustCell(int row, int column) {
         }
         myGraph->setArc(row, column, data.toInt());
         emit graphChanged();
+        emit selectedArc(row, column);
     }
-    fittingResize();
 }
 
-void GraphMatrixTable::fittingResize() {
-    this->resizeColumnsToContents();
-    int totalWidth = verticalHeader()->width()*2;
-    int totalHeight = horizontalHeader()->height()*2;
-    for (int i = 0; i < this->columnCount(); i++)
-        totalWidth += this->horizontalHeader()->sectionSize(i);
-    for (int i = 0; i < this->rowCount(); i++)
-        totalHeight += this->verticalHeader()->sectionSize(i);
-
-    this->setMaximumWidth(totalWidth);
-    this->setMinimumHeight(totalHeight);
-    this->setMaximumHeight(totalHeight);
-}
-
-GraphMatrixTable::GraphMatrixTable()
-{
-    defaultSetting();
-    this->myGraph = NULL;
-}
 GraphMatrixTable::GraphMatrixTable(Graph *myGraph)
 {
     defaultSetting();
@@ -101,6 +83,11 @@ GraphMatrixTable::GraphMatrixTable(Graph *myGraph)
     connect(this, &QTableWidget::itemSelectionChanged, this, [this](){
         for (QTableWidgetItem *item : this->selectedItems())
             adjustCell(item->row(), item->column());
+    });
+    connect(this, &GraphMatrixTable::currentCellChanged, this, [this](int u, int v) {
+        try {
+            emit selectedArc(u, v);
+        }catch(...){}
     });
 }
 
@@ -140,6 +127,5 @@ void GraphMatrixTable::reloadData() {
         }
         this->item(i, i)->setFlags(Qt::ItemIsEditable);
     }
-    fittingResize();
     connect(this, SIGNAL(cellChanged(int,int)), this, SLOT(adjustCell(int, int)));
 }

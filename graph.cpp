@@ -92,8 +92,8 @@ void Graph::init(int node_num) {
     for (int i = 0; i < node_num; i++) {
         this->node_list.push_back(Node(std::string(1, 'a' + i), i));
         this->adj_mat[i][i] = 0;
-        QPointF point((1 - std::sin((i * 6.28) / node_num)) * node_num*NodeGraphicsItem::radius/2.,
-                      (1 - std::cos((i * 6.28) / node_num)) * node_num*NodeGraphicsItem::radius/2.);
+        QPointF point((1 - sin((i * 6.28) / node_num)) * node_num*NodeGraphicsItem::radius/2.,
+                      (1 - cos((i * 6.28) / node_num)) * node_num*NodeGraphicsItem::radius/2.);
         this->node_list[i].setEuclidePos(point);
     }
 }
@@ -147,6 +147,10 @@ int Graph::findNodeIdByName(std::string name) const {
 
 bool Graph::setArc(int u, int v, int w) {
     if (u == v) return true;
+    if (hasThisArc(u, v)) {
+        this->adj_mat[u][v] = w;
+        return true;
+    }
     if (hasThisNode(u) && hasThisNode(v)) {
         if (w == INT_MAX || w == 0) {
             removeArc(u, v);
@@ -155,15 +159,16 @@ bool Graph::setArc(int u, int v, int w) {
         this->adj_mat[u][v] = w;
         this->node_list[u].incNegativeDeg();
         this->node_list[v].incPositiveDeg();
+
         return true;
     }
     return false;
 }
 
 bool Graph::removeArc(int u, int v) {
-    if (u == v && adj_mat[u][v] == 0) return true;
+    if (u == v) return true;
 
-    if (hasThisNode(u) && hasThisNode(v)) {
+    if (hasThisNode(u) && hasThisNode(v) && hasThisArc(u, v)) {
         this->adj_mat[u][v] = INT_MAX;
         this->node_list[u].decNegativeDeg();
         this->node_list[v].decPositiveDeg();
@@ -207,6 +212,11 @@ bool Graph::addNode(Node node) {
 }
 
 bool Graph::removeNode(int id) {
+    for (int v = 0; v < getNodeNum(); v++)
+    {
+        removeArc(v, id);
+        removeArc(id, v);
+    }
     if (!hasThisNode(id)) return false;
     this->node_list.erase(this->node_list.begin() + id);
     this->adj_mat.erase(this->adj_mat.begin() + id);
@@ -219,7 +229,11 @@ bool Graph::removeNode(int id) {
 
 bool Graph::isolateNode(int id) {
     if (!hasThisNode(id)) return false;
-    this->node_list[id].isolate();
+    for (int v = 0; v < getNodeNum(); v++)
+    {
+        removeArc(v, id);
+        removeArc(id, v);
+    }
     this->adj_mat[id] = std::vector<int>(getNodeNum(), INT_MAX);
     for (int i = 0; i < getNodeNum(); i++)
         adj_mat[i][id] = INT_MAX;

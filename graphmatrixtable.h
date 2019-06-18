@@ -12,11 +12,9 @@ class GraphMatrixTable : public QTableWidget
 private:
     Graph *myGraph;
 public:
-    GraphMatrixTable();
     GraphMatrixTable(Graph *myGraph);
     void setGraph(Graph *myGraph);
     Graph* graph() const;
-    void fittingResize();
     void defaultSetting();
 
 signals:
@@ -25,6 +23,9 @@ signals:
 public slots:
     void adjustCell(int row, int column);
     void reloadData();
+
+signals:
+    void selectedArc(int u, int v);
 };
 
 #endif // GRAPHMATRIXTABLE_H

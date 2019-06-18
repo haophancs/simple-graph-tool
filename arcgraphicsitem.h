@@ -20,7 +20,7 @@ public:
     static const QColor defaultColor;
     static const QColor defaultOnSelectedColor;
 
-    ArcGraphicsItem(GraphGraphicsScene *scene, NodeGraphicsItem *startItem, NodeGraphicsItem *endItem, QColor color = colorTable[0],
+    ArcGraphicsItem(GraphGraphicsScene *scene, NodeGraphicsItem *startItem, NodeGraphicsItem *endItem, QColor color = defaultColor,
       QGraphicsItem *parent = 0);
 
     int type() const override { return Type; }

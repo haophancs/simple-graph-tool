@@ -17,7 +17,7 @@ private:
     NodeGraphicsItem *itemFrom;
     qreal currentScale;
     const qreal scaleMax = 1.;
-    const qreal scaleMin = 0.3;
+
 public:
     GraphGraphicsView();
     ~GraphGraphicsView();

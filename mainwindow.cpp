@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->console_text->setReadOnly(true);
 
     this->dataNeedSaving = false;
-    this->setWindowTitle("Foo Grapher");
+    this->setWindowTitle("Simple Graph Tool");
     QSignalMapper *m = new QSignalMapper(this);
     QShortcut *s1 = new QShortcut(QKeySequence("Alt+1"), this);
     QShortcut *s2 = new QShortcut(QKeySequence("Alt+2"), this);
@@ -30,6 +30,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QFont btnFont; btnFont.setPixelSize(18);
     ui->createGraphButton->setFont(btnFont);
     ui->openGraphButton->setFont(btnFont);
+
+    ui->propertiesTable->setSizeAdjustPolicy(QTableWidget::AdjustToContents);
+    ui->propertiesTable->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    ui->propertiesTable->verticalHeader()->setDefaultSectionSize(24);
 
     this->graph = new Graph();
     this->scene = new GraphGraphicsScene(graph);
@@ -88,14 +92,16 @@ MainWindow::MainWindow(QWidget *parent) :
             bool ok;
             QString goal = QInputDialog::getText(this, "Find shortest path", "To node: ",QLineEdit::Normal, QString(), &ok);
             if (ok) {
+                if (goal.isNull())
+                    return;
                 int toId = this->graph->findNodeIdByName(goal.toStdString());
                 if (!this->graph->hasThisNode(toId)) {
-                    QMessageBox::critical(this, "Error", tr("No node named ") + goal);
+                    QMessageBox::critical(this, "Error", tr(":waNo node named ") + goal);
                     return;
                 }
                 this->ui->console_text->clear();
                 qDebug() << graph_utils.isConnectedFromUtoV(*graph, id, toId);
-                std::list<int> res = graph_utils.displayShortestPath(*(this->graph), id, toId);
+                std::list<int> res = graph_utils.Dijkstra(*(this->graph), id, toId);
                 emit startAlgorithm(res, GraphDemoFlag::ArcAndNode);
             }
         }
@@ -110,7 +116,7 @@ MainWindow::MainWindow(QWidget *parent) :
                                       + tr("Length of the name mustn't be greater than 3 or smaller than 1"));
                 return;
             }
-            if (!this->graph->hasThisNode(newNodeName.toStdString()))
+            if (this->graph->hasThisNode(newNodeName.toStdString()))
                 QMessageBox::critical(this, "Error", "This name has been used by another node");
             else {
                 this->graph->getNode(id)->setName(newNodeName.toStdString());
@@ -128,21 +134,50 @@ MainWindow::MainWindow(QWidget *parent) :
         mdl->removeRows(0,mdl->rowCount());
         mdl->removeColumns(0,mdl->columnCount());
         QStringList tableHeader;
-        tableHeader << tr("Name") << tr("Positive degree") << tr("Negative degree");
+        tableHeader << tr("ID") << tr("Name") << tr("Positive degree") << tr("Negative degree");
+        this->ui->propertiesTable->setRowCount(4);
+        this->ui->propertiesTable->setColumnCount(1);
+        this->ui->propertiesTable->setVerticalHeaderLabels(tableHeader);
+
+        this->ui->propertiesTable->setItem(0, 0, new QTableWidgetItem());
+        this->ui->propertiesTable->item(0, 0)->setText(QString::number(id));
+        this->ui->propertiesTable->item(0,0)->setFlags(Qt::ItemIsEnabled);
+
+        this->ui->propertiesTable->setItem(1, 0, new QTableWidgetItem());
+        this->ui->propertiesTable->item(1, 0)->setText(QString::fromStdString(this->graph->getNodeName(id)));
+        this->ui->propertiesTable->item(1,0)->setFlags(Qt::ItemIsEnabled);
+
+        this->ui->propertiesTable->setItem(2, 0, new QTableWidgetItem());
+        this->ui->propertiesTable->item(2, 0)->setText(QString::number(this->graph->getNode(id)->getPositiveDeg()));
+        this->ui->propertiesTable->item(2, 0)->setFlags(Qt::ItemIsEnabled);
+
+        this->ui->propertiesTable->setItem(3, 0, new QTableWidgetItem());
+        this->ui->propertiesTable->item(3, 0)->setText(QString::number(this->graph->getNode(id)->getNegativeDeg()));
+        this->ui->propertiesTable->item(3, 0)->setFlags(Qt::ItemIsEnabled);
+    });
+
+    connect(matrix, &GraphMatrixTable::selectedArc, this, [this](int u, int v) {
+        QAbstractItemModel* const mdl = this->ui->propertiesTable->model();
+        mdl->removeRows(0,mdl->rowCount());
+        mdl->removeColumns(0,mdl->columnCount());
+        QStringList tableHeader;
+        tableHeader << tr("From node") << tr("To node") << tr("Weight");
         this->ui->propertiesTable->setRowCount(3);
         this->ui->propertiesTable->setColumnCount(1);
         this->ui->propertiesTable->setVerticalHeaderLabels(tableHeader);
 
         this->ui->propertiesTable->setItem(0, 0, new QTableWidgetItem());
-        this->ui->propertiesTable->item(0, 0)->setText(QString::fromStdString(this->graph->getNodeName(id)));
+        this->ui->propertiesTable->item(0, 0)->setText(QString::fromStdString(this->graph->getNodeName(u)));
         this->ui->propertiesTable->item(0,0)->setFlags(Qt::ItemIsEnabled);
 
         this->ui->propertiesTable->setItem(1, 0, new QTableWidgetItem());
-        this->ui->propertiesTable->item(1, 0)->setText(QString::number(this->graph->getNode(id)->getPositiveDeg()));
+        this->ui->propertiesTable->item(1, 0)->setText(QString::fromStdString(this->graph->getNodeName(v)));
         this->ui->propertiesTable->item(1, 0)->setFlags(Qt::ItemIsEnabled);
 
         this->ui->propertiesTable->setItem(2, 0, new QTableWidgetItem());
-        this->ui->propertiesTable->item(2, 0)->setText(QString::number(this->graph->getNode(id)->getNegativeDeg()));
+        this->ui->propertiesTable->item(2, 0)->setText((this->graph->getArcWeight(u, v) != INT_MAX)?
+                                                               QString::number(this->graph->getArcWeight(u, v))
+                                                             : "inf");
         this->ui->propertiesTable->item(2, 0)->setFlags(Qt::ItemIsEnabled);
     });
 
@@ -165,10 +200,11 @@ MainWindow::MainWindow(QWidget *parent) :
         this->ui->propertiesTable->item(1, 0)->setFlags(Qt::ItemIsEnabled);
 
         this->ui->propertiesTable->setItem(2, 0, new QTableWidgetItem());
-        this->ui->propertiesTable->item(2, 0)->setText(QString::number(this->graph->getArcWeight(u, v)));
+        this->ui->propertiesTable->item(2, 0)->setText((this->graph->getArcWeight(u, v) != INT_MAX)?
+                                                               QString::number(this->graph->getArcWeight(u, v))
+                                                             : "inf");
         this->ui->propertiesTable->item(2, 0)->setFlags(Qt::ItemIsEnabled);
     });
-
 
     connect(this, SIGNAL(startAlgorithm(std::list<std::list<int> >,GraphDemoFlag)), scene, SLOT(doAlgorithm(std::list<std::list<int> >,GraphDemoFlag)));
     connect(this, SIGNAL(startAlgorithm(std::list<int>,GraphDemoFlag)), scene, SLOT(doAlgorithm(std::list<int>,GraphDemoFlag)));
@@ -210,7 +246,7 @@ void MainWindow::initWorkspace(QString filename, bool newfile) {
     this->workingFileName = filename;
     int index = filename.toStdString().find_last_of("/\\");
     std::string input_trace_filename = filename.toStdString().substr(index+1);
-    setWindowTitle(QString::fromStdString(input_trace_filename) + " - Foo Grapher");
+    setWindowTitle(QString::fromStdString(input_trace_filename) + " - Simple Graph Tool");
     setWorkspaceEnabled(true);
 }
 
@@ -501,7 +537,7 @@ void MainWindow::on_shortestPathBtn_clicked()
             QMessageBox::critical(this,"Error", tr("No node named ") + reply[1]);
             return;
         }
-        std::list<int> res = graph_utils.displayShortestPath(*graph, fromId, toId);
+        std::list<int> res = graph_utils.Dijkstra(*graph, fromId, toId);
         emit startAlgorithm(res, GraphDemoFlag::ArcAndNode);
     }
 }
@@ -523,6 +559,8 @@ void MainWindow::on_BFSbtn_clicked()
     QString source_str = QInputDialog::getText(this, "Source node", "Name: ", QLineEdit::Normal, QString(), &ok);
     int id = graph->findNodeIdByName(source_str.toStdString());
     if (ok) {
+        if (source_str.isNull())
+            return;
         if (graph->hasThisNode(id))
         {
             GraphUtils graph_utils;
@@ -530,8 +568,9 @@ void MainWindow::on_BFSbtn_clicked()
             std::list<std::pair<int, int>> res = graph_utils.BfsToDemo(*graph, id);
             emit startAlgorithm(res, GraphDemoFlag::ArcAndNode);
         }
-        else
+        else {
             QMessageBox::critical(this, "Error", tr("No node named ") + source_str);
+        }
     }
 }
 
@@ -542,6 +581,8 @@ void MainWindow::on_DFSbtn_clicked()
     QString source_str = QInputDialog::getText(this, "Source node", "Name: ", QLineEdit::Normal, QString(), &ok);
     int id = graph->findNodeIdByName(source_str.toStdString());
     if (ok) {
+        if (source_str.isNull())
+            return;
         if (graph->hasThisNode(id))
         {
             GraphUtils graph_utils;
