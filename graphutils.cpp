@@ -540,7 +540,7 @@ std::list<int> GraphUtils::displayHamiltonianCycle(Graph graph, int source) {
     std::cout << "\n";
     return cycle;
 }
-std::list<int> GraphUtils::getEulerCycle(Graph graph, int source) {
+std::list<int> GraphUtils::getEulerCircuit(Graph graph, int source) {
     std::list<int> cycle;
     if (!isAllStronglyConnected(graph)) {
         std::cout << "The graph is not strongly connected\n";
@@ -574,9 +574,9 @@ std::list<int> GraphUtils::getEulerCycle(Graph graph, int source) {
     return cycle;
 }
 
-std::list<int> GraphUtils::displayEulerCycle(Graph graph, int source) {
-    std::list<int> cycle = getEulerCycle(graph, source);
-    std::cout << "Euler Cycle (source = " << graph.getNodeName(source) <<"): ";
+std::list<int> GraphUtils::displayEulerCircuit(Graph graph, int source) {
+    std::list<int> cycle = getEulerCircuit(graph, source);
+    std::cout << "Euler Circuit (source = " << graph.getNodeName(source) <<"): ";
     if (cycle.empty()) {
         std::cout << "not found!\n";
         return cycle;

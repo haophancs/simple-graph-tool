@@ -601,7 +601,7 @@ void MainWindow::on_EulerBtn_clicked()
     ui->console_text->clear();
     GraphUtils graph_utils;
     QDebugStream qout(std::cout, ui->console_text);
-    std::list<int> res = graph_utils.displayEulerCycle(*graph);
+    std::list<int> res = graph_utils.displayEulerCircuit(*graph);
     emit startAlgorithm(res, GraphDemoFlag::ArcAndNode);
 }
 
