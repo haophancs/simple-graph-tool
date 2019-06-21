@@ -36,9 +36,9 @@ public:
     std::list<int> displayArticulationNodes(Graph graph);
 
     std::list<int> getHamiltonianCycle(Graph graph, int source = 0);
-    std::list<int> getEulerCircuit(Graph graph, int source = 0);
-    std::list<int> displayHamiltonianCycle(Graph graph, int source = 0);
-    std::list<int> displayEulerCircuit(Graph graph, int source = 0);
+    std::list<int> getEulerianCircuit(Graph graph, int source = 0);
+    std::list<std::list<int>> displayHamiltonianCycle(Graph graph);
+    std::list<std::list<int>> displayEulerianCircuit(Graph graph);
 
     std::list<int> getTopoSortResult(Graph graph);
     std::list<int> displayTopoSort(Graph graph);

@@ -18,11 +18,13 @@ public:
     Graph* graph() const;
     void setGraph(Graph *graph);
 
+    friend class GraphGraphicsView;
+
 public slots:
     void reloadData();
-    void doAlgorithm(std::list<std::pair<int, int>> listOfPair, GraphDemoFlag flag);
-    void doAlgorithm(std::list<int> listOfNum, GraphDemoFlag flag);
-    void doAlgorithm(std::list<std::list<int>> listOfList, GraphDemoFlag flag);
+    void demoAlgorithm(std::list<std::pair<int, int>> listOfPair, GraphDemoFlag flag);
+    void demoAlgorithm(std::list<int> listOfNum, GraphDemoFlag flag);
+    void demoAlgorithm(std::list<std::list<int>> listOfList, GraphDemoFlag flag);
 
 signals:
     void graphChanged();
@@ -38,7 +40,7 @@ private:
     std::list<int> listOfNum;
     std::list<std::list<int>> listOfList;
     std::list<std::pair<int, int>> listOfPair;
-    void resetAfterDoAlgo();
+    void resetAfterDemoAlgo();
 };
 
 #endif // GRAPHGRAPHICSSCENE_H

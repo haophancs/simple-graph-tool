@@ -63,9 +63,9 @@ private slots:
 
 signals:
     void graphChanged();
-    void startAlgorithm(std::list<std::pair<int, int>> listOfPair, GraphDemoFlag flag);
-    void startAlgorithm(std::list<int> listOfNum, GraphDemoFlag flag);
-    void startAlgorithm(std::list<std::list<int>> listOfList, GraphDemoFlag flag);
+    void startDemoAlgorithm(std::list<std::pair<int, int>> listOfPair, GraphDemoFlag flag);
+    void startDemoAlgorithm(std::list<int> listOfNum, GraphDemoFlag flag);
+    void startDemoAlgorithm(std::list<std::list<int>> listOfList, GraphDemoFlag flag);
 
 protected:
     void closeEvent(QCloseEvent *event);

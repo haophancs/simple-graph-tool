@@ -504,19 +504,8 @@ bool hamCycleUtil(Graph &graph, std::vector<int> &path, int pos) {
 
 std::list<int> GraphUtils::getHamiltonianCycle(Graph graph, int source) {
 
-    std::list<int> res;
-    if (graph.getNodeNum() < 3) {
-        std::cout << "|V| = " << graph.getNodeNum() << " < 3\n";
-        return res;
-    }
-    for (Node &node: graph.getNodeList())
-        if (node.getDeg() < graph.getNodeNum() / 2) {
-            std::cout << "deg(" << node.getName() << ") = " << node.getDeg() << " < " << graph.getNodeNum() << "/2\n";
-            return res;
-        }
-
     std::vector<int> path(graph.getNodeNum(), -1);
-
+    std::list<int> res;
     path[0] = source;
     if (hamCycleUtil(graph, path, 1) == false)
         return res;
@@ -527,31 +516,37 @@ std::list<int> GraphUtils::getHamiltonianCycle(Graph graph, int source) {
     return res;
 }
 
-std::list<int> GraphUtils::displayHamiltonianCycle(Graph graph, int source) {
-    std::cout << "Hamiltonian Cycle (source = "<< graph.getNodeName(source) <<"): ";
-    std::list<int> cycle = getHamiltonianCycle(graph, source);
-    if (cycle.empty()) {
-        std::cout << "not found!\n";
-        return cycle;
-    }
+std::list<std::list<int>> GraphUtils::displayHamiltonianCycle(Graph graph) {
 
-    for (auto i: cycle)
-        std::cout << graph.getNodeName(i) << " ";
-    std::cout << "\n";
-    return cycle;
-}
-std::list<int> GraphUtils::getEulerCircuit(Graph graph, int source) {
-    std::list<int> cycle;
-    if (!isAllStronglyConnected(graph)) {
-        std::cout << "The graph is not strongly connected\n";
-        return cycle;
+    std::list<std::list<int>> res;
+    if (graph.getNodeNum() < 3) {
+        std::cout << "Hamiltonian Cycle not found: ";
+        std::cout << "|V| = " << graph.getNodeNum() << " < 3\n";
+        return res;
     }
-    for (Node node: graph.getNodeList()) {
-        if (node.getNegativeDeg() != node.getPositiveDeg()) {
-            std::cout << "Node " << node.getName() << " has deg+ != deg-\n";
-            return cycle;
+    for (Node &node: graph.getNodeList())
+        if (node.getDeg() < graph.getNodeNum() / 2) {
+            std::cout << "Hamiltonian Cycle not found: ";
+            std::cout << "deg(" << node.getName() << ") = " << node.getDeg() << " < " << graph.getNodeNum() << "/2\n";
+            return res;
         }
+
+    for (int source = 0; source < graph.getNodeNum(); source++) {
+        std::cout << "Hamiltonian Cycle (source = "<< graph.getNodeName(source) <<"): ";
+        std::list<int> cycle = getHamiltonianCycle(graph, source);
+        if (cycle.empty())
+            std::cout << "not found!";
+        else
+            res.push_back(cycle);
+
+        for (auto i: cycle)
+            std::cout << graph.getNodeName(i) << " ";
+        std::cout << "\n";
     }
+    return res;
+}
+std::list<int> GraphUtils::getEulerianCircuit(Graph graph, int source) {
+    std::list<int> cycle;
     std::stack<int> s;
     s.push(source);
     while (!s.empty()) {
@@ -574,17 +569,31 @@ std::list<int> GraphUtils::getEulerCircuit(Graph graph, int source) {
     return cycle;
 }
 
-std::list<int> GraphUtils::displayEulerCircuit(Graph graph, int source) {
-    std::list<int> cycle = getEulerCircuit(graph, source);
-    std::cout << "Euler Circuit (source = " << graph.getNodeName(source) <<"): ";
-    if (cycle.empty()) {
-        std::cout << "not found!\n";
-        return cycle;
+std::list<std::list<int>> GraphUtils::displayEulerianCircuit(Graph graph) {
+    std::list<std::list<int>> res;
+    if (!isAllStronglyConnected(graph)) {
+        std::cout << "Eulerian Circuit not found because the graph is not strongly connected\n";
+        return res;
     }
-    for (auto i: cycle)
-        std::cout << graph.getNodeName(i) << " ";
-    std::cout << "\n";
-    return cycle;
+    for (Node node: graph.getNodeList()) {
+        if (node.getNegativeDeg() != node.getPositiveDeg()) {
+            std::cout << "Eulerian Circuit not found because Node " << node.getName() << " has deg+ != deg-\n";
+            return res;
+        }
+    }
+
+    for (int source = 0; source < graph.getNodeNum(); source++) {
+        std::list<int> cycle = getEulerianCircuit(graph, source);
+        std::cout << "Euler Circuit (source = " << graph.getNodeName(source) <<"): ";
+        if (cycle.empty())
+            std::cout << "not found!\n";
+        else
+            res.push_back(cycle);
+        for (auto i: cycle)
+            std::cout << graph.getNodeName(i) << " ";
+        std::cout << "\n";
+    }
+    return res;
 }
 
 void topoSortUtil(Graph &graph, int v, std::vector<bool> &visited, std::stack<int> &stack) {

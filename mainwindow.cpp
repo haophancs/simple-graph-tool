@@ -81,12 +81,12 @@ MainWindow::MainWindow(QWidget *parent) :
         if (algo == "BFS") {
             this->ui->console_text->clear();
             std::list<std::pair<int, int>> res = graph_utils.BfsToDemo(*(this->graph), id);
-            emit startAlgorithm(res, GraphDemoFlag::ArcAndNode);
+            emit startDemoAlgorithm(res, GraphDemoFlag::ArcAndNode);
         }
         else if (algo == "DFS") {
             this->ui->console_text->clear();
             std::list<std::pair<int, int>> res = graph_utils.DfsToDemo(*(this->graph), id);
-            emit startAlgorithm(res, GraphDemoFlag::ArcAndNode);
+            emit startDemoAlgorithm(res, GraphDemoFlag::ArcAndNode);
         }
         else if (algo == "Find path") {
             bool ok;
@@ -102,7 +102,7 @@ MainWindow::MainWindow(QWidget *parent) :
                 this->ui->console_text->clear();
                 qDebug() << graph_utils.isConnectedFromUtoV(*graph, id, toId);
                 std::list<int> res = graph_utils.Dijkstra(*(this->graph), id, toId);
-                emit startAlgorithm(res, GraphDemoFlag::ArcAndNode);
+                emit startDemoAlgorithm(res, GraphDemoFlag::ArcAndNode);
             }
         }
     });
@@ -206,9 +206,9 @@ MainWindow::MainWindow(QWidget *parent) :
         this->ui->propertiesTable->item(2, 0)->setFlags(Qt::ItemIsEnabled);
     });
 
-    connect(this, SIGNAL(startAlgorithm(std::list<std::list<int> >,GraphDemoFlag)), scene, SLOT(doAlgorithm(std::list<std::list<int> >,GraphDemoFlag)));
-    connect(this, SIGNAL(startAlgorithm(std::list<int>,GraphDemoFlag)), scene, SLOT(doAlgorithm(std::list<int>,GraphDemoFlag)));
-    connect(this, SIGNAL(startAlgorithm(std::list<std::pair<int,int> >,GraphDemoFlag)), scene, SLOT(doAlgorithm(std::list<std::pair<int,int> >,GraphDemoFlag)));
+    connect(this, SIGNAL(startDemoAlgorithm(std::list<std::list<int> >,GraphDemoFlag)), scene, SLOT(demoAlgorithm(std::list<std::list<int> >,GraphDemoFlag)));
+    connect(this, SIGNAL(startDemoAlgorithm(std::list<int>,GraphDemoFlag)), scene, SLOT(demoAlgorithm(std::list<int>,GraphDemoFlag)));
+    connect(this, SIGNAL(startDemoAlgorithm(std::list<std::pair<int,int> >,GraphDemoFlag)), scene, SLOT(demoAlgorithm(std::list<std::pair<int,int> >,GraphDemoFlag)));
 
     ui->table_layout->addWidget(matrix, 1, Qt::AlignTop);
     view->setScene(scene);
@@ -478,7 +478,7 @@ void MainWindow::on_articulationNodeBtn_clicked()
     GraphUtils graph_utils;
     QDebugStream qout(std::cout, ui->console_text);
     std::list<int> res = graph_utils.displayArticulationNodes(*graph);
-    emit startAlgorithm(res, GraphDemoFlag::OnlyNode);
+    emit startDemoAlgorithm(res, GraphDemoFlag::OnlyNode);
 }
 
 void MainWindow::on_bridgesBtn_clicked()
@@ -487,7 +487,7 @@ void MainWindow::on_bridgesBtn_clicked()
     GraphUtils graph_utils;
     QDebugStream qout(std::cout, ui->console_text);
     std::list<std::pair<int, int>> res = graph_utils.displayBridges(*graph);
-    emit startAlgorithm(res, GraphDemoFlag::OnlyArc);
+    emit startDemoAlgorithm(res, GraphDemoFlag::OnlyArc);
 }
 
 void MainWindow::on_coloringBtn_clicked()
@@ -496,7 +496,7 @@ void MainWindow::on_coloringBtn_clicked()
     GraphUtils graph_utils;
     QDebugStream qout(std::cout, ui->console_text);
     std::list<int> res = graph_utils.displayColoring(*graph);
-    emit startAlgorithm(res, GraphDemoFlag::Coloring);
+    emit startDemoAlgorithm(res, GraphDemoFlag::Coloring);
 }
 void MainWindow::on_weaklyConnectedBtn_clicked()
 {
@@ -504,7 +504,7 @@ void MainWindow::on_weaklyConnectedBtn_clicked()
     GraphUtils graph_utils;
     QDebugStream qout(std::cout, ui->console_text);
     std::list<std::list<int>> res = graph_utils.displayConnectedComponents(*graph, false);
-    emit startAlgorithm(res, GraphDemoFlag::Component);
+    emit startDemoAlgorithm(res, GraphDemoFlag::Component);
 
 }
 void MainWindow::on_connectedComponentsBtn_clicked()
@@ -513,7 +513,7 @@ void MainWindow::on_connectedComponentsBtn_clicked()
     GraphUtils graph_utils;
     QDebugStream qout(std::cout, ui->console_text);
     std::list<std::list<int>> res = graph_utils.displayConnectedComponents(*graph);
-    emit startAlgorithm(res, GraphDemoFlag::Component);
+    emit startDemoAlgorithm(res, GraphDemoFlag::Component);
 }
 
 void MainWindow::on_shortestPathBtn_clicked()
@@ -538,7 +538,7 @@ void MainWindow::on_shortestPathBtn_clicked()
             return;
         }
         std::list<int> res = graph_utils.Dijkstra(*graph, fromId, toId);
-        emit startAlgorithm(res, GraphDemoFlag::ArcAndNode);
+        emit startDemoAlgorithm(res, GraphDemoFlag::ArcAndNode);
     }
 }
 
@@ -549,7 +549,7 @@ void MainWindow::on_topoSortBtn_clicked()
     GraphUtils graph_utils;
     QDebugStream qout(std::cout, ui->console_text);
     std::list<int> res = graph_utils.displayTopoSort(*graph);
-    emit startAlgorithm(res, GraphDemoFlag::OnlyNode);
+    emit startDemoAlgorithm(res, GraphDemoFlag::OnlyNode);
 }
 
 void MainWindow::on_BFSbtn_clicked()
@@ -566,7 +566,7 @@ void MainWindow::on_BFSbtn_clicked()
             GraphUtils graph_utils;
             QDebugStream qout(std::cout, ui->console_text);
             std::list<std::pair<int, int>> res = graph_utils.BfsToDemo(*graph, id);
-            emit startAlgorithm(res, GraphDemoFlag::ArcAndNode);
+            emit startDemoAlgorithm(res, GraphDemoFlag::ArcAndNode);
         }
         else {
             QMessageBox::critical(this, "Error", tr("No node named ") + source_str);
@@ -588,7 +588,7 @@ void MainWindow::on_DFSbtn_clicked()
             GraphUtils graph_utils;
             QDebugStream qout(std::cout, ui->console_text);
             std::list<std::pair<int, int>> res = graph_utils.DfsToDemo(*graph, id);
-            emit startAlgorithm(res, GraphDemoFlag::ArcAndNode);
+            emit startDemoAlgorithm(res, GraphDemoFlag::ArcAndNode);
         }
         else
             QMessageBox::critical(this, "Error", tr("No node named ") + source_str);
@@ -601,8 +601,8 @@ void MainWindow::on_EulerBtn_clicked()
     ui->console_text->clear();
     GraphUtils graph_utils;
     QDebugStream qout(std::cout, ui->console_text);
-    std::list<int> res = graph_utils.displayEulerCircuit(*graph);
-    emit startAlgorithm(res, GraphDemoFlag::ArcAndNode);
+    std::list<std::list<int>> res = graph_utils.displayEulerianCircuit(*graph);
+    emit startDemoAlgorithm(res, GraphDemoFlag::ArcAndNode);
 }
 
 void MainWindow::on_HamiltonBtn_clicked()
@@ -610,8 +610,8 @@ void MainWindow::on_HamiltonBtn_clicked()
     ui->console_text->clear();
     GraphUtils graph_utils;
     QDebugStream qout(std::cout, ui->console_text);
-    std::list<int> res = graph_utils.displayHamiltonianCycle(*graph);
-    emit startAlgorithm(res, GraphDemoFlag::ArcAndNode);
+    std::list<std::list<int>> res = graph_utils.displayHamiltonianCycle(*graph);
+    emit startDemoAlgorithm(res, GraphDemoFlag::ArcAndNode);
 }
 
 void MainWindow::on_spanningTreeBtn_clicked()
@@ -620,7 +620,7 @@ void MainWindow::on_spanningTreeBtn_clicked()
     GraphUtils graph_utils;
     QDebugStream qout(std::cout, ui->console_text);
     std::list<std::pair<int, int>> res = graph_utils.Prim(*graph);
-    emit startAlgorithm(res, GraphDemoFlag::ArcAndNode);
+    emit startDemoAlgorithm(res, GraphDemoFlag::ArcAndNode);
 }
 
 void MainWindow::on_actionBFS_triggered()

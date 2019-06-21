@@ -45,9 +45,9 @@ void GraphGraphicsScene::reloadData() {
     this->update();
 }
 
-void GraphGraphicsScene::doAlgorithm(std::list<std::pair<int, int> > listOfPair, GraphDemoFlag flag)
+void GraphGraphicsScene::demoAlgorithm(std::list<std::pair<int, int> > listOfPair, GraphDemoFlag flag)
 {
-    resetAfterDoAlgo();
+    resetAfterDemoAlgo();
     this->listOfPair = listOfPair;
     unique_timer = std::unique_ptr<QTimer>(new QTimer());
     connect(unique_timer.get(), &QTimer::timeout, this, [this, flag]() {
@@ -80,14 +80,15 @@ void GraphGraphicsScene::doAlgorithm(std::list<std::pair<int, int> > listOfPair,
             unique_timer->stop();
         }
     });
-    unique_timer->start(700);
+    unique_timer->start(500);
 }
 
-void GraphGraphicsScene::doAlgorithm(std::list<int> listOfNum, GraphDemoFlag flag)
+void GraphGraphicsScene::demoAlgorithm(std::list<int> listOfNum, GraphDemoFlag flag)
 {
-    resetAfterDoAlgo();
+    resetAfterDemoAlgo();
     this->listOfNum = listOfNum;
     unique_timer = std::unique_ptr<QTimer>(new QTimer());
+
     if (flag != GraphDemoFlag::Coloring) {
         connect(unique_timer.get(), &QTimer::timeout, this, [this, flag]() {
             if (!this->listOfNum.empty()) {
@@ -136,24 +137,25 @@ void GraphGraphicsScene::doAlgorithm(std::list<int> listOfNum, GraphDemoFlag fla
             }
         });
     }
-    unique_timer->start(700);
+    unique_timer->start(500);
 }
 
-void GraphGraphicsScene::doAlgorithm(std::list<std::list<int> > listOfList, GraphDemoFlag flag)
+void GraphGraphicsScene::demoAlgorithm(std::list<std::list<int> > listOfList, GraphDemoFlag flag)
 {
-    resetAfterDoAlgo();
+    resetAfterDemoAlgo();
     this->listOfList = listOfList;
     unique_timer = std::unique_ptr<QTimer>(new QTimer());
-    std::vector<QColor> colorTable;
-    for (int i = 0; i < listOfList.size(); i++) {
-        if (i < 14)
-            colorTable.push_back(NodeGraphicsItem::colorTable[i+2]);
-        else
-            colorTable.push_back(QColor(rand() % 256, rand() % 256, rand() % 256));
-    }
-    int org_size = listOfList.size();
-    connect(unique_timer.get(), &QTimer::timeout, this, [this, flag, colorTable, org_size]() {
-        if (flag == GraphDemoFlag::Component) {
+
+    if (flag == GraphDemoFlag::Component) {
+        std::vector<QColor> colorTable;
+        for (int i = 0; i < listOfList.size(); i++) {
+            if (i < 14)
+                colorTable.push_back(NodeGraphicsItem::colorTable[i+2]);
+            else
+                colorTable.push_back(QColor(rand() % 256, rand() % 256, rand() % 256));
+        }
+        int org_size = listOfList.size();
+        connect(unique_timer.get(), &QTimer::timeout, this, [this, colorTable, org_size]() {
             if (!this->listOfList.empty()) {
                 QColor currColor = colorTable[org_size - this->listOfList.size()];
                 std::list<int> currList = this->listOfList.front();
@@ -175,23 +177,61 @@ void GraphGraphicsScene::doAlgorithm(std::list<std::list<int> > listOfList, Grap
             }
             else {
                 unique_timer->stop();
-                this->listOfList.clear();
             }
-        }
-    });
-    unique_timer->start(700);
+        });
+        unique_timer->start(500);
+    }
+    else if (flag == GraphDemoFlag::ArcAndNode) {
+        connect(unique_timer.get(), &QTimer::timeout, this, [this]() {
+            if (!this->listOfList.empty() || !this->listOfNum.empty()) {
+                bool theLast = false;
+                if (this->listOfNum.empty()) {
+                    this->listOfNum = this->listOfList.front();
+                    unique_timer->setInterval(300);
+                    this->listOfList.pop_front();
+                }
+                theLast = this->listOfList.empty();
+
+                int fromId = this->listOfNum.front();
+                this->listOfNum.pop_front();
+                int toId = !this->listOfNum.empty()? this->listOfNum.front() : -1;
+                int arcId = this->getArcId(fromId, toId);
+                if (fromId > -1 && fromId < this->nodeItems.size())
+                    this->nodeItems[fromId]->setSelected(true);
+                if (arcId > -1 && arcId < this->arcItems.size())
+                    this->arcItems[arcId]->setSelected(true);
+                if (toId > -1 && toId < this->nodeItems.size())
+                    this->nodeItems[toId]->setSelected(true);
+
+                this->update();
+                if (this->listOfNum.empty() && !theLast) {
+                    for (auto gi: this->selectedItems())
+                        if (gi)
+                            gi->setSelected(false);
+                    unique_timer->setInterval(1500);
+                }
+            }
+            else {
+                unique_timer->stop();
+            }
+        });
+        unique_timer->start(300);
+    }
 }
 
-void GraphGraphicsScene::resetAfterDoAlgo() {
+void GraphGraphicsScene::resetAfterDemoAlgo() {
     for (auto gi: selectedItems()) {
         if (gi) {
             auto ngi = dynamic_cast<NodeGraphicsItem*>(gi);
             auto agi = dynamic_cast<NodeGraphicsItem*>(gi);
             if (ngi) ngi->setOnSelectedColor(NodeGraphicsItem::defaultOnSelectedColor);
             if (agi) agi->setOnSelectedColor(NodeGraphicsItem::defaultOnSelectedColor);
+            gi->setSelected(false);
         }
-        gi->setSelected(false);
     }
+    this->listOfList.clear();
+    this->listOfNum.clear();
+    this->listOfPair.clear();
 }
 
 int GraphGraphicsScene::getArcId(int u, int v)
