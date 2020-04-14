@@ -1,7 +1,7 @@
 # simple-graph-tool
 
 ### Made with:
-Qt 5.9.5 [C++]
+Qt 4 [C++]
 
 ### Demo Video:
 https://www.youtube.com/watch?v=CyHDV6y_n6s
