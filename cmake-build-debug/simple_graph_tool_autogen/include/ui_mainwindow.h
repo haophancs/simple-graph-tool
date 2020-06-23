@@ -22,9 +22,9 @@
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
+#include <QtWidgets/QSplitter>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabWidget>
-#include <QtWidgets/QTableWidget>
 #include <QtWidgets/QTextEdit>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
@@ -59,10 +59,10 @@ public:
     QAction *actionFind_weakly_connected_components;
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
-    QWidget *entry_widget;
+    QWidget *entryWidget;
     QHBoxLayout *horizontalLayout_12;
     QSpacerItem *horizontalSpacer;
-    QVBoxLayout *verticalLayout_9;
+    QVBoxLayout *verticalLayout_2;
     QSpacerItem *verticalSpacer_2;
     QSpacerItem *verticalSpacer_5;
     QSpacerItem *verticalSpacer_6;
@@ -74,30 +74,30 @@ public:
     QSpacerItem *verticalSpacer_4;
     QSpacerItem *verticalSpacer_3;
     QSpacerItem *horizontalSpacer_2;
-    QWidget *working_widget;
-    QHBoxLayout *horizontalLayout_9;
-    QVBoxLayout *main_layout;
+    QWidget *workingWidget;
+    QHBoxLayout *horizontalLayout_3;
+    QSplitter *splitter;
+    QWidget *layoutWidget;
+    QVBoxLayout *mainLayout;
     QTabWidget *tabWidget;
-    QWidget *tab_drawing;
+    QWidget *tabVisualization;
     QHBoxLayout *horizontalLayout_2;
-    QVBoxLayout *draw_layout;
-    QWidget *tab_table;
+    QVBoxLayout *visualLayout;
+    QWidget *tabMatrix;
     QVBoxLayout *verticalLayout_3;
-    QVBoxLayout *table_layout;
+    QVBoxLayout *matrixLayout;
     QFrame *line;
-    QTextEdit *console_text;
+    QTextEdit *consoleText;
     QWidget *utils;
     QVBoxLayout *verticalLayout;
-    QVBoxLayout *button_layout;
-    QVBoxLayout *verticalLayout_7;
-    QLabel *properties_label;
-    QTableWidget *propertiesTable;
+    QVBoxLayout *propertiesLayout;
+    QLabel *propertiesLabel;
     QFrame *line_4;
-    QLabel *algorithms_label;
-    QHBoxLayout *horizontalLayout_6;
+    QLabel *algorithmsLabel;
+    QHBoxLayout *horizontalLayout_4;
     QPushButton *BFSbtn;
     QPushButton *DFSbtn;
-    QHBoxLayout *horizontalLayout_8;
+    QHBoxLayout *horizontalLayout_5;
     QPushButton *EulerBtn;
     QPushButton *HamiltonBtn;
     QPushButton *coloringBtn;
@@ -123,7 +123,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(1024, 768);
+        MainWindow->resize(1538, 971);
         MainWindow->setMinimumSize(QSize(720, 540));
         MainWindow->setMaximumSize(QSize(16777215, 16777215));
         actionNew_Graph = new QAction(MainWindow);
@@ -178,9 +178,9 @@ public:
         horizontalLayout->setSpacing(6);
         horizontalLayout->setContentsMargins(11, 11, 11, 11);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        entry_widget = new QWidget(centralWidget);
-        entry_widget->setObjectName(QStringLiteral("entry_widget"));
-        horizontalLayout_12 = new QHBoxLayout(entry_widget);
+        entryWidget = new QWidget(centralWidget);
+        entryWidget->setObjectName(QStringLiteral("entryWidget"));
+        horizontalLayout_12 = new QHBoxLayout(entryWidget);
         horizontalLayout_12->setSpacing(6);
         horizontalLayout_12->setContentsMargins(11, 11, 11, 11);
         horizontalLayout_12->setObjectName(QStringLiteral("horizontalLayout_12"));
@@ -188,26 +188,26 @@ public:
 
         horizontalLayout_12->addItem(horizontalSpacer);
 
-        verticalLayout_9 = new QVBoxLayout();
-        verticalLayout_9->setSpacing(6);
-        verticalLayout_9->setObjectName(QStringLiteral("verticalLayout_9"));
+        verticalLayout_2 = new QVBoxLayout();
+        verticalLayout_2->setSpacing(6);
+        verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        verticalLayout_9->addItem(verticalSpacer_2);
+        verticalLayout_2->addItem(verticalSpacer_2);
 
         verticalSpacer_5 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        verticalLayout_9->addItem(verticalSpacer_5);
+        verticalLayout_2->addItem(verticalSpacer_5);
 
         verticalSpacer_6 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        verticalLayout_9->addItem(verticalSpacer_6);
+        verticalLayout_2->addItem(verticalSpacer_6);
 
         verticalSpacer_8 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        verticalLayout_9->addItem(verticalSpacer_8);
+        verticalLayout_2->addItem(verticalSpacer_8);
 
-        createGraphButton = new QPushButton(entry_widget);
+        createGraphButton = new QPushButton(entryWidget);
         createGraphButton->setObjectName(QStringLiteral("createGraphButton"));
         QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         sizePolicy.setHorizontalStretch(0);
@@ -215,266 +215,267 @@ public:
         sizePolicy.setHeightForWidth(createGraphButton->sizePolicy().hasHeightForWidth());
         createGraphButton->setSizePolicy(sizePolicy);
 
-        verticalLayout_9->addWidget(createGraphButton);
+        verticalLayout_2->addWidget(createGraphButton);
 
-        openGraphButton = new QPushButton(entry_widget);
+        openGraphButton = new QPushButton(entryWidget);
         openGraphButton->setObjectName(QStringLiteral("openGraphButton"));
         sizePolicy.setHeightForWidth(openGraphButton->sizePolicy().hasHeightForWidth());
         openGraphButton->setSizePolicy(sizePolicy);
 
-        verticalLayout_9->addWidget(openGraphButton);
+        verticalLayout_2->addWidget(openGraphButton);
 
         verticalSpacer_9 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        verticalLayout_9->addItem(verticalSpacer_9);
+        verticalLayout_2->addItem(verticalSpacer_9);
 
         verticalSpacer_7 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        verticalLayout_9->addItem(verticalSpacer_7);
+        verticalLayout_2->addItem(verticalSpacer_7);
 
         verticalSpacer_4 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        verticalLayout_9->addItem(verticalSpacer_4);
+        verticalLayout_2->addItem(verticalSpacer_4);
 
         verticalSpacer_3 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        verticalLayout_9->addItem(verticalSpacer_3);
+        verticalLayout_2->addItem(verticalSpacer_3);
 
 
-        horizontalLayout_12->addLayout(verticalLayout_9);
+        horizontalLayout_12->addLayout(verticalLayout_2);
 
         horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         horizontalLayout_12->addItem(horizontalSpacer_2);
 
 
-        horizontalLayout->addWidget(entry_widget);
+        horizontalLayout->addWidget(entryWidget);
 
-        working_widget = new QWidget(centralWidget);
-        working_widget->setObjectName(QStringLiteral("working_widget"));
-        horizontalLayout_9 = new QHBoxLayout(working_widget);
-        horizontalLayout_9->setSpacing(6);
-        horizontalLayout_9->setContentsMargins(11, 11, 11, 11);
-        horizontalLayout_9->setObjectName(QStringLiteral("horizontalLayout_9"));
-        horizontalLayout_9->setContentsMargins(0, 0, 0, 0);
-        main_layout = new QVBoxLayout();
-        main_layout->setSpacing(6);
-        main_layout->setObjectName(QStringLiteral("main_layout"));
-        main_layout->setContentsMargins(6, -1, -1, -1);
-        tabWidget = new QTabWidget(working_widget);
+        workingWidget = new QWidget(centralWidget);
+        workingWidget->setObjectName(QStringLiteral("workingWidget"));
+        horizontalLayout_3 = new QHBoxLayout(workingWidget);
+        horizontalLayout_3->setSpacing(6);
+        horizontalLayout_3->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
+        splitter = new QSplitter(workingWidget);
+        splitter->setObjectName(QStringLiteral("splitter"));
+        splitter->setOrientation(Qt::Horizontal);
+        layoutWidget = new QWidget(splitter);
+        layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
+        mainLayout = new QVBoxLayout(layoutWidget);
+        mainLayout->setSpacing(6);
+        mainLayout->setContentsMargins(11, 11, 11, 11);
+        mainLayout->setObjectName(QStringLiteral("mainLayout"));
+        mainLayout->setContentsMargins(6, 0, 0, 0);
+        tabWidget = new QTabWidget(layoutWidget);
         tabWidget->setObjectName(QStringLiteral("tabWidget"));
-        QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Preferred);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(tabWidget->sizePolicy().hasHeightForWidth());
-        tabWidget->setSizePolicy(sizePolicy1);
-        tab_drawing = new QWidget();
-        tab_drawing->setObjectName(QStringLiteral("tab_drawing"));
-        horizontalLayout_2 = new QHBoxLayout(tab_drawing);
+        tabVisualization = new QWidget();
+        tabVisualization->setObjectName(QStringLiteral("tabVisualization"));
+        horizontalLayout_2 = new QHBoxLayout(tabVisualization);
         horizontalLayout_2->setSpacing(6);
         horizontalLayout_2->setContentsMargins(11, 11, 11, 11);
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
-        draw_layout = new QVBoxLayout();
-        draw_layout->setSpacing(6);
-        draw_layout->setObjectName(QStringLiteral("draw_layout"));
+        visualLayout = new QVBoxLayout();
+        visualLayout->setSpacing(6);
+        visualLayout->setObjectName(QStringLiteral("visualLayout"));
 
-        horizontalLayout_2->addLayout(draw_layout);
+        horizontalLayout_2->addLayout(visualLayout);
 
-        tabWidget->addTab(tab_drawing, QString());
-        tab_table = new QWidget();
-        tab_table->setObjectName(QStringLiteral("tab_table"));
-        verticalLayout_3 = new QVBoxLayout(tab_table);
+        tabWidget->addTab(tabVisualization, QString());
+        tabMatrix = new QWidget();
+        tabMatrix->setObjectName(QStringLiteral("tabMatrix"));
+        verticalLayout_3 = new QVBoxLayout(tabMatrix);
         verticalLayout_3->setSpacing(6);
         verticalLayout_3->setContentsMargins(11, 11, 11, 11);
         verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
-        table_layout = new QVBoxLayout();
-        table_layout->setSpacing(0);
-        table_layout->setObjectName(QStringLiteral("table_layout"));
+        matrixLayout = new QVBoxLayout();
+        matrixLayout->setSpacing(0);
+        matrixLayout->setObjectName(QStringLiteral("matrixLayout"));
 
-        verticalLayout_3->addLayout(table_layout);
+        verticalLayout_3->addLayout(matrixLayout);
 
-        tabWidget->addTab(tab_table, QString());
+        tabWidget->addTab(tabMatrix, QString());
 
-        main_layout->addWidget(tabWidget);
+        mainLayout->addWidget(tabWidget);
 
-        line = new QFrame(working_widget);
+        line = new QFrame(layoutWidget);
         line->setObjectName(QStringLiteral("line"));
         line->setFrameShape(QFrame::HLine);
         line->setFrameShadow(QFrame::Sunken);
 
-        main_layout->addWidget(line);
+        mainLayout->addWidget(line);
 
-        console_text = new QTextEdit(working_widget);
-        console_text->setObjectName(QStringLiteral("console_text"));
-        QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Expanding);
+        consoleText = new QTextEdit(layoutWidget);
+        consoleText->setObjectName(QStringLiteral("consoleText"));
+        QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Maximum);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(consoleText->sizePolicy().hasHeightForWidth());
+        consoleText->setSizePolicy(sizePolicy1);
+        consoleText->setMaximumSize(QSize(16777215, 250));
+
+        mainLayout->addWidget(consoleText);
+
+        splitter->addWidget(layoutWidget);
+        utils = new QWidget(splitter);
+        utils->setObjectName(QStringLiteral("utils"));
+        QSizePolicy sizePolicy2(QSizePolicy::Expanding, QSizePolicy::Preferred);
         sizePolicy2.setHorizontalStretch(0);
         sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(console_text->sizePolicy().hasHeightForWidth());
-        console_text->setSizePolicy(sizePolicy2);
-        console_text->setMaximumSize(QSize(16777215, 130));
-
-        main_layout->addWidget(console_text);
-
-
-        horizontalLayout_9->addLayout(main_layout);
-
-        utils = new QWidget(working_widget);
-        utils->setObjectName(QStringLiteral("utils"));
-        sizePolicy1.setHeightForWidth(utils->sizePolicy().hasHeightForWidth());
-        utils->setSizePolicy(sizePolicy1);
-        utils->setMaximumSize(QSize(270, 16777215));
+        sizePolicy2.setHeightForWidth(utils->sizePolicy().hasHeightForWidth());
+        utils->setSizePolicy(sizePolicy2);
+        utils->setMaximumSize(QSize(540, 16777215));
         verticalLayout = new QVBoxLayout(utils);
-        verticalLayout->setSpacing(0);
+        verticalLayout->setSpacing(6);
         verticalLayout->setContentsMargins(11, 11, 11, 11);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
-        verticalLayout->setContentsMargins(0, 0, 0, 0);
-        button_layout = new QVBoxLayout();
-        button_layout->setSpacing(6);
-        button_layout->setObjectName(QStringLiteral("button_layout"));
-        verticalLayout_7 = new QVBoxLayout();
-        verticalLayout_7->setSpacing(6);
-        verticalLayout_7->setObjectName(QStringLiteral("verticalLayout_7"));
-        verticalLayout_7->setContentsMargins(-1, -1, -1, 6);
-        properties_label = new QLabel(utils);
-        properties_label->setObjectName(QStringLiteral("properties_label"));
-        QSizePolicy sizePolicy3(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        propertiesLayout = new QVBoxLayout();
+        propertiesLayout->setSpacing(6);
+        propertiesLayout->setObjectName(QStringLiteral("propertiesLayout"));
+        propertiesLayout->setContentsMargins(-1, -1, -1, 6);
+        propertiesLabel = new QLabel(utils);
+        propertiesLabel->setObjectName(QStringLiteral("propertiesLabel"));
+        QSizePolicy sizePolicy3(QSizePolicy::Preferred, QSizePolicy::Preferred);
         sizePolicy3.setHorizontalStretch(0);
         sizePolicy3.setVerticalStretch(0);
-        sizePolicy3.setHeightForWidth(properties_label->sizePolicy().hasHeightForWidth());
-        properties_label->setSizePolicy(sizePolicy3);
+        sizePolicy3.setHeightForWidth(propertiesLabel->sizePolicy().hasHeightForWidth());
+        propertiesLabel->setSizePolicy(sizePolicy3);
 
-        verticalLayout_7->addWidget(properties_label);
-
-        propertiesTable = new QTableWidget(utils);
-        propertiesTable->setObjectName(QStringLiteral("propertiesTable"));
-        sizePolicy1.setHeightForWidth(propertiesTable->sizePolicy().hasHeightForWidth());
-        propertiesTable->setSizePolicy(sizePolicy1);
-        propertiesTable->setMaximumSize(QSize(16777215, 16777215));
-        propertiesTable->horizontalHeader()->setVisible(false);
-
-        verticalLayout_7->addWidget(propertiesTable);
+        propertiesLayout->addWidget(propertiesLabel);
 
 
-        button_layout->addLayout(verticalLayout_7);
+        verticalLayout->addLayout(propertiesLayout);
 
         line_4 = new QFrame(utils);
         line_4->setObjectName(QStringLiteral("line_4"));
+        sizePolicy3.setHeightForWidth(line_4->sizePolicy().hasHeightForWidth());
+        line_4->setSizePolicy(sizePolicy3);
         line_4->setFrameShape(QFrame::HLine);
         line_4->setFrameShadow(QFrame::Sunken);
 
-        button_layout->addWidget(line_4);
+        verticalLayout->addWidget(line_4);
 
-        algorithms_label = new QLabel(utils);
-        algorithms_label->setObjectName(QStringLiteral("algorithms_label"));
+        algorithmsLabel = new QLabel(utils);
+        algorithmsLabel->setObjectName(QStringLiteral("algorithmsLabel"));
+        sizePolicy3.setHeightForWidth(algorithmsLabel->sizePolicy().hasHeightForWidth());
+        algorithmsLabel->setSizePolicy(sizePolicy3);
 
-        button_layout->addWidget(algorithms_label);
+        verticalLayout->addWidget(algorithmsLabel);
 
-        horizontalLayout_6 = new QHBoxLayout();
-        horizontalLayout_6->setSpacing(6);
-        horizontalLayout_6->setObjectName(QStringLiteral("horizontalLayout_6"));
+        horizontalLayout_4 = new QHBoxLayout();
+        horizontalLayout_4->setSpacing(6);
+        horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
         BFSbtn = new QPushButton(utils);
         BFSbtn->setObjectName(QStringLiteral("BFSbtn"));
+        sizePolicy3.setHeightForWidth(BFSbtn->sizePolicy().hasHeightForWidth());
+        BFSbtn->setSizePolicy(sizePolicy3);
 
-        horizontalLayout_6->addWidget(BFSbtn);
+        horizontalLayout_4->addWidget(BFSbtn);
 
         DFSbtn = new QPushButton(utils);
         DFSbtn->setObjectName(QStringLiteral("DFSbtn"));
+        sizePolicy3.setHeightForWidth(DFSbtn->sizePolicy().hasHeightForWidth());
+        DFSbtn->setSizePolicy(sizePolicy3);
 
-        horizontalLayout_6->addWidget(DFSbtn);
+        horizontalLayout_4->addWidget(DFSbtn);
 
 
-        button_layout->addLayout(horizontalLayout_6);
+        verticalLayout->addLayout(horizontalLayout_4);
 
-        horizontalLayout_8 = new QHBoxLayout();
-        horizontalLayout_8->setSpacing(6);
-        horizontalLayout_8->setObjectName(QStringLiteral("horizontalLayout_8"));
+        horizontalLayout_5 = new QHBoxLayout();
+        horizontalLayout_5->setSpacing(6);
+        horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
         EulerBtn = new QPushButton(utils);
         EulerBtn->setObjectName(QStringLiteral("EulerBtn"));
+        sizePolicy3.setHeightForWidth(EulerBtn->sizePolicy().hasHeightForWidth());
+        EulerBtn->setSizePolicy(sizePolicy3);
 
-        horizontalLayout_8->addWidget(EulerBtn);
+        horizontalLayout_5->addWidget(EulerBtn);
 
         HamiltonBtn = new QPushButton(utils);
         HamiltonBtn->setObjectName(QStringLiteral("HamiltonBtn"));
+        sizePolicy3.setHeightForWidth(HamiltonBtn->sizePolicy().hasHeightForWidth());
+        HamiltonBtn->setSizePolicy(sizePolicy3);
 
-        horizontalLayout_8->addWidget(HamiltonBtn);
+        horizontalLayout_5->addWidget(HamiltonBtn);
 
 
-        button_layout->addLayout(horizontalLayout_8);
+        verticalLayout->addLayout(horizontalLayout_5);
 
         coloringBtn = new QPushButton(utils);
         coloringBtn->setObjectName(QStringLiteral("coloringBtn"));
-        QSizePolicy sizePolicy4(QSizePolicy::Expanding, QSizePolicy::Fixed);
-        sizePolicy4.setHorizontalStretch(0);
-        sizePolicy4.setVerticalStretch(0);
-        sizePolicy4.setHeightForWidth(coloringBtn->sizePolicy().hasHeightForWidth());
-        coloringBtn->setSizePolicy(sizePolicy4);
+        sizePolicy3.setHeightForWidth(coloringBtn->sizePolicy().hasHeightForWidth());
+        coloringBtn->setSizePolicy(sizePolicy3);
 
-        button_layout->addWidget(coloringBtn);
+        verticalLayout->addWidget(coloringBtn);
 
         topoSortBtn = new QPushButton(utils);
         topoSortBtn->setObjectName(QStringLiteral("topoSortBtn"));
+        sizePolicy3.setHeightForWidth(topoSortBtn->sizePolicy().hasHeightForWidth());
+        topoSortBtn->setSizePolicy(sizePolicy3);
 
-        button_layout->addWidget(topoSortBtn);
+        verticalLayout->addWidget(topoSortBtn);
 
         bridgesBtn = new QPushButton(utils);
         bridgesBtn->setObjectName(QStringLiteral("bridgesBtn"));
+        sizePolicy3.setHeightForWidth(bridgesBtn->sizePolicy().hasHeightForWidth());
+        bridgesBtn->setSizePolicy(sizePolicy3);
 
-        button_layout->addWidget(bridgesBtn);
+        verticalLayout->addWidget(bridgesBtn);
 
         shortestPathBtn = new QPushButton(utils);
         shortestPathBtn->setObjectName(QStringLiteral("shortestPathBtn"));
+        sizePolicy3.setHeightForWidth(shortestPathBtn->sizePolicy().hasHeightForWidth());
+        shortestPathBtn->setSizePolicy(sizePolicy3);
 
-        button_layout->addWidget(shortestPathBtn);
+        verticalLayout->addWidget(shortestPathBtn);
 
         articulationNodeBtn = new QPushButton(utils);
         articulationNodeBtn->setObjectName(QStringLiteral("articulationNodeBtn"));
         sizePolicy3.setHeightForWidth(articulationNodeBtn->sizePolicy().hasHeightForWidth());
         articulationNodeBtn->setSizePolicy(sizePolicy3);
 
-        button_layout->addWidget(articulationNodeBtn);
+        verticalLayout->addWidget(articulationNodeBtn);
 
         spanningTreeBtn = new QPushButton(utils);
         spanningTreeBtn->setObjectName(QStringLiteral("spanningTreeBtn"));
         sizePolicy3.setHeightForWidth(spanningTreeBtn->sizePolicy().hasHeightForWidth());
         spanningTreeBtn->setSizePolicy(sizePolicy3);
 
-        button_layout->addWidget(spanningTreeBtn);
+        verticalLayout->addWidget(spanningTreeBtn);
 
         weaklyConnectedBtn = new QPushButton(utils);
         weaklyConnectedBtn->setObjectName(QStringLiteral("weaklyConnectedBtn"));
         sizePolicy3.setHeightForWidth(weaklyConnectedBtn->sizePolicy().hasHeightForWidth());
         weaklyConnectedBtn->setSizePolicy(sizePolicy3);
 
-        button_layout->addWidget(weaklyConnectedBtn);
+        verticalLayout->addWidget(weaklyConnectedBtn);
 
         connectedComponentsBtn = new QPushButton(utils);
         connectedComponentsBtn->setObjectName(QStringLiteral("connectedComponentsBtn"));
         sizePolicy3.setHeightForWidth(connectedComponentsBtn->sizePolicy().hasHeightForWidth());
         connectedComponentsBtn->setSizePolicy(sizePolicy3);
 
-        button_layout->addWidget(connectedComponentsBtn);
+        verticalLayout->addWidget(connectedComponentsBtn);
 
-        verticalSpacer_10 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        verticalSpacer_10 = new QSpacerItem(20, 85, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        button_layout->addItem(verticalSpacer_10);
+        verticalLayout->addItem(verticalSpacer_10);
 
-        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        verticalSpacer = new QSpacerItem(20, 85, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
-        button_layout->addItem(verticalSpacer);
+        verticalLayout->addItem(verticalSpacer);
 
+        splitter->addWidget(utils);
 
-        verticalLayout->addLayout(button_layout);
-
-
-        horizontalLayout_9->addWidget(utils);
+        horizontalLayout_3->addWidget(splitter);
 
 
-        horizontalLayout->addWidget(working_widget);
+        horizontalLayout->addWidget(workingWidget);
 
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1024, 37));
+        menuBar->setGeometry(QRect(0, 0, 1538, 37));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
         menuGraph = new QMenu(menuBar);
@@ -573,10 +574,10 @@ public:
         actionFind_weakly_connected_components->setText(QApplication::translate("MainWindow", "Find weakly connected components", Q_NULLPTR));
         createGraphButton->setText(QApplication::translate("MainWindow", "Create New Graph", Q_NULLPTR));
         openGraphButton->setText(QApplication::translate("MainWindow", "Open Existing Graph", Q_NULLPTR));
-        tabWidget->setTabText(tabWidget->indexOf(tab_drawing), QApplication::translate("MainWindow", "Drawing View", Q_NULLPTR));
-        tabWidget->setTabText(tabWidget->indexOf(tab_table), QApplication::translate("MainWindow", "Matrix View", Q_NULLPTR));
-        properties_label->setText(QApplication::translate("MainWindow", "Properties", Q_NULLPTR));
-        algorithms_label->setText(QApplication::translate("MainWindow", "Algorithms", Q_NULLPTR));
+        tabWidget->setTabText(tabWidget->indexOf(tabVisualization), QApplication::translate("MainWindow", "Visual View", Q_NULLPTR));
+        tabWidget->setTabText(tabWidget->indexOf(tabMatrix), QApplication::translate("MainWindow", "Matrix View", Q_NULLPTR));
+        propertiesLabel->setText(QApplication::translate("MainWindow", "Properties", Q_NULLPTR));
+        algorithmsLabel->setText(QApplication::translate("MainWindow", "Algorithms", Q_NULLPTR));
         BFSbtn->setText(QApplication::translate("MainWindow", "BFS", Q_NULLPTR));
         DFSbtn->setText(QApplication::translate("MainWindow", "DFS", Q_NULLPTR));
         EulerBtn->setText(QApplication::translate("MainWindow", "Euler", Q_NULLPTR));

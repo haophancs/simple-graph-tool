@@ -220,18 +220,18 @@ CMakeFiles/simple_graph_tool.dir/sources/NodeGraphicsItem.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/simple_graph_tool.dir/sources/NodeGraphicsItem.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/haophancs/Projects/Qt/simple-graph-tool/sources/NodeGraphicsItem.cpp -o CMakeFiles/simple_graph_tool.dir/sources/NodeGraphicsItem.cpp.s
 
-CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.o: CMakeFiles/simple_graph_tool.dir/flags.make
-CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.o: ../sources/ElementTableWidget.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.o -c /home/haophancs/Projects/Qt/simple-graph-tool/sources/ElementTableWidget.cpp
+CMakeFiles/simple_graph_tool.dir/sources/ElementPropertiesTable.cpp.o: CMakeFiles/simple_graph_tool.dir/flags.make
+CMakeFiles/simple_graph_tool.dir/sources/ElementPropertiesTable.cpp.o: ../sources/ElementPropertiesTable.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/simple_graph_tool.dir/sources/ElementPropertiesTable.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/simple_graph_tool.dir/sources/ElementPropertiesTable.cpp.o -c /home/haophancs/Projects/Qt/simple-graph-tool/sources/ElementPropertiesTable.cpp
 
-CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/haophancs/Projects/Qt/simple-graph-tool/sources/ElementTableWidget.cpp > CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.i
+CMakeFiles/simple_graph_tool.dir/sources/ElementPropertiesTable.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/simple_graph_tool.dir/sources/ElementPropertiesTable.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/haophancs/Projects/Qt/simple-graph-tool/sources/ElementPropertiesTable.cpp > CMakeFiles/simple_graph_tool.dir/sources/ElementPropertiesTable.cpp.i
 
-CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/haophancs/Projects/Qt/simple-graph-tool/sources/ElementTableWidget.cpp -o CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.s
+CMakeFiles/simple_graph_tool.dir/sources/ElementPropertiesTable.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/simple_graph_tool.dir/sources/ElementPropertiesTable.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/haophancs/Projects/Qt/simple-graph-tool/sources/ElementPropertiesTable.cpp -o CMakeFiles/simple_graph_tool.dir/sources/ElementPropertiesTable.cpp.s
 
 CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.o: CMakeFiles/simple_graph_tool.dir/flags.make
 CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.o: simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp
@@ -260,7 +260,7 @@ simple_graph_tool_OBJECTS = \
 "CMakeFiles/simple_graph_tool.dir/mainwindow.cpp.o" \
 "CMakeFiles/simple_graph_tool.dir/sources/Node.cpp.o" \
 "CMakeFiles/simple_graph_tool.dir/sources/NodeGraphicsItem.cpp.o" \
-"CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.o" \
+"CMakeFiles/simple_graph_tool.dir/sources/ElementPropertiesTable.cpp.o" \
 "CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.o"
 
 # External object files for target simple_graph_tool
@@ -278,7 +278,7 @@ simple_graph_tool: CMakeFiles/simple_graph_tool.dir/main.cpp.o
 simple_graph_tool: CMakeFiles/simple_graph_tool.dir/mainwindow.cpp.o
 simple_graph_tool: CMakeFiles/simple_graph_tool.dir/sources/Node.cpp.o
 simple_graph_tool: CMakeFiles/simple_graph_tool.dir/sources/NodeGraphicsItem.cpp.o
-simple_graph_tool: CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.o
+simple_graph_tool: CMakeFiles/simple_graph_tool.dir/sources/ElementPropertiesTable.cpp.o
 simple_graph_tool: CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.o
 simple_graph_tool: CMakeFiles/simple_graph_tool.dir/build.make
 simple_graph_tool: /usr/lib/x86_64-linux-gnu/libQt5Widgets.so.5.9.5

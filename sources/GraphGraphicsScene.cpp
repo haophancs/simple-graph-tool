@@ -6,18 +6,15 @@
 
 GraphGraphicsScene::GraphGraphicsScene() = default;
 
-GraphGraphicsScene::GraphGraphicsScene(Graph *graph)
-{
+GraphGraphicsScene::GraphGraphicsScene(Graph *graph) {
     setGraph(graph);
 }
 
-Graph* GraphGraphicsScene::graph() const
-{
+Graph *GraphGraphicsScene::graph() const {
     return this->myGraph;
 }
 
-void GraphGraphicsScene::setGraph(Graph *graph)
-{
+void GraphGraphicsScene::setGraph(Graph *graph) {
     this->myGraph = graph;
     reloadData();
 }
@@ -27,14 +24,14 @@ void GraphGraphicsScene::reloadData() {
     NodeGraphicsItem::radius = 50;
     this->clear();
 
-    this->nodeItems = std::vector<NodeGraphicsItem*>(myGraph->getNodeNum());    
+    this->nodeItems = std::vector<NodeGraphicsItem *>(myGraph->getNodeNum());
     std::vector<std::pair<int, int>> arcList = myGraph->getArcList();
-    this->arcItems = std::vector<ArcGraphicsItem*>(arcList.size());
+    this->arcItems = std::vector<ArcGraphicsItem *>(arcList.size());
 
     for (int i = 0; i < myGraph->getNodeNum(); i++) {
         nodeItems[i] = new NodeGraphicsItem(this, myGraph->getNode(i));
     }
-    for (int i = 0; i < (int)arcList.size(); i++) {
+    for (int i = 0; i < (int) arcList.size(); i++) {
         arcItems[i] = new ArcGraphicsItem(this,
                                           nodeItems[arcList[i].first],
                                           nodeItems[arcList[i].second]);
@@ -45,8 +42,7 @@ void GraphGraphicsScene::reloadData() {
     this->update();
 }
 
-void GraphGraphicsScene::demoAlgorithm(std::list<std::pair<int, int> > listOfPairToDemo, GraphDemoFlag flag)
-{
+void GraphGraphicsScene::demoAlgorithm(std::list<std::pair<int, int> > listOfPairToDemo, GraphDemoFlag flag) {
     resetAfterDemoAlgo();
     this->listOfPair = std::move(listOfPairToDemo);
     unique_timer = std::make_unique<QTimer>();
@@ -62,12 +58,10 @@ void GraphGraphicsScene::demoAlgorithm(std::list<std::pair<int, int> > listOfPai
                     this->arcItems[arcId]->setSelected(true);
                 if (pii.second > -1)
                     this->nodeItems[pii.second]->setSelected(true);
-            }
-            else if (flag == GraphDemoFlag::OnlyArc) {
+            } else if (flag == GraphDemoFlag::OnlyArc) {
                 if (arcId > -1)
                     this->arcItems[arcId]->setSelected(true);
-            }
-            else if (flag == GraphDemoFlag::OnlyNode) {
+            } else if (flag == GraphDemoFlag::OnlyNode) {
                 if (pii.first > -1)
                     this->nodeItems[pii.first]->setSelected(true);
                 if (pii.second > -1)
@@ -75,16 +69,14 @@ void GraphGraphicsScene::demoAlgorithm(std::list<std::pair<int, int> > listOfPai
             }
             this->update();
             this->listOfPair.pop_front();
-        }
-        else {
+        } else {
             unique_timer->stop();
         }
     });
-    unique_timer->start(500);
+    unique_timer->start(700);
 }
 
-void GraphGraphicsScene::demoAlgorithm(const std::list<int>& listOfNumToDemo, GraphDemoFlag flag)
-{
+void GraphGraphicsScene::demoAlgorithm(const std::list<int> &listOfNumToDemo, GraphDemoFlag flag) {
     resetAfterDemoAlgo();
     this->listOfNum = listOfNumToDemo;
     unique_timer = std::make_unique<QTimer>();
@@ -94,7 +86,7 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<int>& listOfNumToDemo, Gr
             if (!this->listOfNum.empty()) {
                 int fromId = this->listOfNum.front();
                 this->listOfNum.pop_front();
-                int toId = !this->listOfNum.empty()? this->listOfNum.front() : -1;
+                int toId = !this->listOfNum.empty() ? this->listOfNum.front() : -1;
                 int arcId = this->getArcId(fromId, toId);
                 if (flag == GraphDemoFlag::ArcAndNode) {
                     if (fromId > -1)
@@ -103,19 +95,16 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<int>& listOfNumToDemo, Gr
                         this->arcItems[arcId]->setSelected(true);
                     if (toId > -1)
                         this->nodeItems[toId]->setSelected(true);
-                }
-                else if (flag == GraphDemoFlag::OnlyNode) {
+                } else if (flag == GraphDemoFlag::OnlyNode) {
                     if (fromId > -1)
                         this->nodeItems[fromId]->setSelected(true);
                 }
                 this->update();
-            }
-            else {
+            } else {
                 unique_timer->stop();
             }
         });
-    }
-    else {
+    } else {
         std::map<int, QColor> colorMap;
         auto random = Random();
         for (int color_i: listOfNumToDemo)
@@ -132,17 +121,15 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<int>& listOfNumToDemo, Gr
                     this->nodeItems[id]->setSelected(true);
                 }
                 this->update();
-            }
-            else {
+            } else {
                 unique_timer->stop();
             }
         });
     }
-    unique_timer->start(500);
+    unique_timer->start(700);
 }
 
-void GraphGraphicsScene::demoAlgorithm(const std::list<std::list<int> >& listOfListToDemo, GraphDemoFlag flag)
-{
+void GraphGraphicsScene::demoAlgorithm(const std::list<std::list<int> > &listOfListToDemo, GraphDemoFlag flag) {
     resetAfterDemoAlgo();
     this->listOfList = listOfListToDemo;
     unique_timer = std::make_unique<QTimer>();
@@ -178,27 +165,25 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<std::list<int> >& listOfL
                     }
                 }
                 this->update();
-            }
-            else {
+            } else {
                 unique_timer->stop();
             }
         });
-        unique_timer->start(500);
-    }
-    else if (flag == GraphDemoFlag::ArcAndNode) {
+        unique_timer->start(700);
+    } else if (flag == GraphDemoFlag::ArcAndNode) {
         connect(unique_timer.get(), &QTimer::timeout, this, [this]() {
             if (!this->listOfList.empty() || !this->listOfNum.empty()) {
                 bool theLast;
                 if (this->listOfNum.empty()) {
                     this->listOfNum = this->listOfList.front();
-                    unique_timer->setInterval(300);
+                    unique_timer->setInterval(700);
                     this->listOfList.pop_front();
                 }
                 theLast = this->listOfList.empty();
 
                 int fromId = this->listOfNum.front();
                 this->listOfNum.pop_front();
-                int toId = !this->listOfNum.empty()? this->listOfNum.front() : -1;
+                int toId = !this->listOfNum.empty() ? this->listOfNum.front() : -1;
                 int arcId = this->getArcId(fromId, toId);
                 if (fromId > -1 && fromId < this->nodeItems.size())
                     this->nodeItems[fromId]->setSelected(true);
@@ -214,20 +199,19 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<std::list<int> >& listOfL
                             gi->setSelected(false);
                     unique_timer->setInterval(1500);
                 }
-            }
-            else {
+            } else {
                 unique_timer->stop();
             }
         });
-        unique_timer->start(300);
+        unique_timer->start(700);
     }
 }
 
 void GraphGraphicsScene::resetAfterDemoAlgo() {
     for (auto gi: selectedItems()) {
         if (gi) {
-            auto ngi = dynamic_cast<NodeGraphicsItem*>(gi);
-            auto agi = dynamic_cast<ArcGraphicsItem*>(gi);
+            auto ngi = dynamic_cast<NodeGraphicsItem *>(gi);
+            auto agi = dynamic_cast<ArcGraphicsItem *>(gi);
             if (ngi) ngi->setOnSelectedColor(NodeGraphicsItem::defaultOnSelectedColor());
             if (agi) agi->setOnSelectedColor(ArcGraphicsItem::defaultOnSelectedColor());
             gi->setSelected(false);
@@ -238,8 +222,7 @@ void GraphGraphicsScene::resetAfterDemoAlgo() {
     this->listOfPair.clear();
 }
 
-int GraphGraphicsScene::getArcId(int u, int v)
-{
+int GraphGraphicsScene::getArcId(int u, int v) {
     if (u < 0 || v < 0 || u > arcItems.size() - 1 || v > arcItems.size() - 1)
         return -1;
     for (int i = 0; i < arcItems.size(); i++)

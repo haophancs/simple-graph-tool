@@ -5,8 +5,7 @@
 
 int NodeGraphicsItem::radius = 80;
 
-NodeGraphicsItem::NodeGraphicsItem(GraphGraphicsScene *scene, Node *node, QColor color)
-{
+NodeGraphicsItem::NodeGraphicsItem(GraphGraphicsScene *scene, Node *node, QColor color) {
     this->myScene = scene;
     this->myColor = color;
     setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -15,28 +14,26 @@ NodeGraphicsItem::NodeGraphicsItem(GraphGraphicsScene *scene, Node *node, QColor
     isMoving = false;
     selectedColor = defaultOnSelectedColor();
 }
-void NodeGraphicsItem::setNode(Node* node)
-{
+
+void NodeGraphicsItem::setNode(Node *node) {
     this->myNode = node;
     this->setPos(myNode->getEuclidePos());
-    radius = std::max(radius, 20 + (int)node->getName().length() * 10);
+    radius = std::max(radius, 20 + (int) node->getName().length() * 10);
 }
 
-Node* NodeGraphicsItem::node() const
-{
+Node *NodeGraphicsItem::node() const {
     return this->myNode;
 }
 
-QRectF NodeGraphicsItem::boundingRect() const
-{
-    return {-radius/2. + .5,
-            -radius/2. + .5,
+QRectF NodeGraphicsItem::boundingRect() const {
+    return {-radius / 2. + .5,
+            -radius / 2. + .5,
             static_cast<qreal>(radius + 4),
             static_cast<qreal>(radius + 4)
     };
 }
 
-const QList<QColor>& NodeGraphicsItem::colorTable() {
+const QList<QColor> &NodeGraphicsItem::colorTable() {
     static QList<QColor> colorTable = {
             QColor(244, 164, 96),
             QColor(50, 205, 50),
@@ -59,10 +56,10 @@ const QList<QColor>& NodeGraphicsItem::colorTable() {
 };
 
 QColor NodeGraphicsItem::defaultColor() { return colorTable()[0]; }
+
 QColor NodeGraphicsItem::defaultOnSelectedColor() { return colorTable()[1]; }
 
-void NodeGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
+void NodeGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
     Q_UNUSED(option);
     Q_UNUSED(widget);
     if (isSelected())
@@ -71,18 +68,18 @@ void NodeGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
         myColor = defaultColor();
     painter->setPen(QPen(Qt::black, 2, Qt::SolidLine));
     painter->setBrush(QBrush(myColor));
-    painter->drawEllipse(- radius/2, - radius/2, radius, radius);
+    painter->drawEllipse(-radius / 2, -radius / 2, radius, radius);
 
-    QFont font; font.setPixelSize(20);
+    QFont font;
+    font.setPixelSize(20);
     painter->setFont(font);
     QString txt = QString::fromStdString(this->node()->getName());
-    painter->drawText(-4*txt.length(), 5, txt);
+    painter->drawText(-4 * txt.length(), 5, txt);
 }
 
-void NodeGraphicsItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
-{
+void NodeGraphicsItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     if (QLineF(event->screenPos(), event->buttonDownScreenPos(Qt::LeftButton))
-        .length() < QApplication::startDragDistance()) {
+                .length() < QApplication::startDragDistance()) {
         return;
     }
     isMoving = true;
@@ -93,8 +90,7 @@ void NodeGraphicsItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     QGraphicsItem::mouseMoveEvent(event);
 }
 
-void NodeGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
-{
+void NodeGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
     QGraphicsItem::mouseReleaseEvent(event);
     if (isMoving) {
         setSelected(false);
@@ -104,8 +100,7 @@ void NodeGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     setCursor(Qt::OpenHandCursor);
 }
 
-void NodeGraphicsItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
-{
+void NodeGraphicsItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {
     QGraphicsItem::hoverEnterEvent(event);
     setCursor(Qt::PointingHandCursor);
 }
@@ -115,8 +110,7 @@ QColor NodeGraphicsItem::color() const {
     return this->myColor;
 }
 
-QColor NodeGraphicsItem::onSelectedColor() const
-{
+QColor NodeGraphicsItem::onSelectedColor() const {
     return this->selectedColor;
 }
 

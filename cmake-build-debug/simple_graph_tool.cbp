@@ -130,7 +130,7 @@
 		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/headers/ArcGraphicsItem.h">
 			<Option target="simple_graph_tool"/>
 		</Unit>
-		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/headers/ElementTableWidget.h">
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/headers/ElementPropertiesTable.h">
 			<Option target="simple_graph_tool"/>
 		</Unit>
 		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/headers/Graph.h">
@@ -172,13 +172,16 @@
 		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/mainwindow.h">
 			<Option target="simple_graph_tool"/>
 		</Unit>
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/mainwindow.ui">
+			<Option target="simple_graph_tool"/>
+		</Unit>
 		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/resource.qrc">
 			<Option target="simple_graph_tool"/>
 		</Unit>
 		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/sources/ArcGraphicsItem.cpp">
 			<Option target="simple_graph_tool"/>
 		</Unit>
-		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/sources/ElementTableWidget.cpp">
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/sources/ElementPropertiesTable.cpp">
 			<Option target="simple_graph_tool"/>
 		</Unit>
 		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/sources/Graph.cpp">

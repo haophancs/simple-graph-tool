@@ -6,25 +6,31 @@
 #include <QHeaderView>
 #include <QKeyEvent>
 
-class GraphMatrixTable : public QTableWidget
-{
-   Q_OBJECT
+class GraphMatrixTable : public QTableWidget {
+Q_OBJECT
 private:
     Graph *myGraph{};
+    int sectionSize;
 
 public:
-    explicit GraphMatrixTable(Graph *myGraph);
+    explicit GraphMatrixTable(Graph *myGraph, int sectionSize = 80);
+
     void defaultSetting();
 
     void setGraph(Graph *myGraph);
-    Graph* graph() const;
+
+    Graph *graph() const;
 
 signals:
+
     void graphChanged();
+
     void selectedArc(int u, int v);
 
 public slots:
+
     void adjustCell(int row, int column);
+
     void reloadData();
 };
 

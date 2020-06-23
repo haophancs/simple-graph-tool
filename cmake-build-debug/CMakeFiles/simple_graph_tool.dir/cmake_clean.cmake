@@ -7,7 +7,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.o"
   "CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/mocs_compilation.cpp.o"
   "CMakeFiles/simple_graph_tool.dir/sources/ArcGraphicsItem.cpp.o"
-  "CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.o"
+  "CMakeFiles/simple_graph_tool.dir/sources/ElementPropertiesTable.cpp.o"
   "CMakeFiles/simple_graph_tool.dir/sources/Graph.cpp.o"
   "CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsScene.cpp.o"
   "CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsView.cpp.o"

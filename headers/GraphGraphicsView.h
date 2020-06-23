@@ -5,9 +5,9 @@
 #include <QGraphicsView>
 #include <QContextMenuEvent>
 #include <QMenu>
-class GraphGraphicsView : public QGraphicsView
-{
-    Q_OBJECT
+
+class GraphGraphicsView : public QGraphicsView {
+Q_OBJECT
 private:
     GraphGraphicsScene *myScene{};
     QMenu *contextMenu{};
@@ -20,29 +20,46 @@ private:
 
 public:
     GraphGraphicsView();
+
     void setScene(GraphGraphicsScene *scene);
 
 public slots:
+
     void redraw();
 
 protected:
     void wheelEvent(QWheelEvent *event) override;
+
     void contextMenuEvent(QContextMenuEvent *event) override;
+
     void mousePressEvent(QMouseEvent *event) override;
+
     void mouseReleaseEvent(QMouseEvent *event) override;
 
 signals:
+
     void unSelect();
+
     void selectedNode(int id);
+
     void selectedArc(int u, int v);
+
     void addNewNode(QPointF newNodePos);
+
     void removeNode(int id);
+
     void editNode(int id);
+
     void isolateNode(int id);
+
     void addArcFrom(int id);
+
     void startAlgorithm(QString algo, int id);
+
     void removeArc(int u, int v);
+
     void addNewArc();
+
     void setArc(int u, int v);
 
     void needRefresh();

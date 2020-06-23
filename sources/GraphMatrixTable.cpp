@@ -4,26 +4,24 @@
 
 void GraphMatrixTable::defaultSetting() {
 
-    this->horizontalHeader()->setMinimumSectionSize(55);
-    this->horizontalHeader()->setDefaultSectionSize(55);
+    this->horizontalHeader()->setMinimumSectionSize(this->sectionSize);
+    this->horizontalHeader()->setDefaultSectionSize(this->sectionSize);
     this->horizontalHeader()->setCascadingSectionResizes(false);
-    this->verticalHeader()->setMinimumSectionSize(50);
-    this->verticalHeader()->setDefaultSectionSize(50);
+    this->verticalHeader()->setMinimumSectionSize(this->sectionSize);
+    this->verticalHeader()->setDefaultSectionSize(this->sectionSize);
     this->verticalHeader()->setCascadingSectionResizes(false);
     this->setSelectionMode(QAbstractItemView::SingleSelection);
-
     this->setSizeAdjustPolicy(QTableWidget::AdjustToContents);
 }
 
-void GraphMatrixTable::setGraph(Graph *graph)
-{
+void GraphMatrixTable::setGraph(Graph *graph) {
 
     this->myGraph = graph;
     if (myGraph == nullptr) return;
     reloadData();
 }
 
-Graph* GraphMatrixTable::graph() const {
+Graph *GraphMatrixTable::graph() const {
 
     return this->myGraph;
 }
@@ -44,8 +42,7 @@ void GraphMatrixTable::adjustCell(int row, int column) {
         else if (data.toLongLong() >= INT_MAX) {
             data = "inf";
         }
-    }
-    else if (data != "inf")
+    } else if (data != "inf")
         invalid = true;
 
     if (invalid) {
@@ -58,12 +55,10 @@ void GraphMatrixTable::adjustCell(int row, int column) {
         msgWarning.setWindowTitle("Error");
         msgWarning.exec();
         this->item(row, column)->setText(
-                (myGraph->getArcWeight(row, column) != INT_MAX)?
-                    QString::number(myGraph->getArcWeight(row, column))
-                  : "inf");
-    }
-    else
-    {
+                (myGraph->getArcWeight(row, column) != INT_MAX) ?
+                QString::number(myGraph->getArcWeight(row, column))
+                                                                : "inf");
+    } else {
         if (data == "inf") {
             myGraph->removeArc(row, column);
             this->item(row, column)->setText(data);
@@ -74,31 +69,31 @@ void GraphMatrixTable::adjustCell(int row, int column) {
     }
 }
 
-GraphMatrixTable::GraphMatrixTable(Graph *myGraph) {
+GraphMatrixTable::GraphMatrixTable(Graph *myGraph, int sectionSize) : sectionSize(sectionSize) {
     defaultSetting();
     setGraph(myGraph);
 
-    connect(this, SIGNAL(cellChanged(int,int)), this, SLOT(adjustCell(int, int)));
-    connect(this, &QTableWidget::itemSelectionChanged, this, [this](){
+    connect(this, SIGNAL(cellChanged(int, int)), this, SLOT(adjustCell(int, int)));
+    connect(this, &QTableWidget::itemSelectionChanged, this, [this]() {
         for (QTableWidgetItem *item : this->selectedItems())
             adjustCell(item->row(), item->column());
     });
     connect(this, &GraphMatrixTable::currentCellChanged, this, [this](int u, int v) {
         try {
             emit selectedArc(u, v);
-        }catch(...){}
+        } catch (...) {}
     });
 }
 
 void GraphMatrixTable::reloadData() {
 
-    disconnect(this, SIGNAL(cellChanged(int,int)), this, SLOT(adjustCell(int, int)));
+    disconnect(this, SIGNAL(cellChanged(int, int)), this, SLOT(adjustCell(int, int)));
 
     this->clear();
     this->setRowCount(myGraph->getNodeNum());
     this->setColumnCount(myGraph->getNodeNum());
     QStringList table_header;
-    for (const Node& node: myGraph->getNodeList()) {
+    for (const Node &node: myGraph->getNodeList()) {
         table_header << QString::fromStdString(node.getName());
     }
     this->setHorizontalHeaderLabels(table_header);
@@ -111,20 +106,20 @@ void GraphMatrixTable::reloadData() {
             this->setItem(i, j, new QTableWidgetItem);
             if (adj_mat[i][j] != INT_MAX) {
 
-               this->item(i, j)->setText(QString::fromStdString(std::to_string(adj_mat[i][j])));
-               if (i != j) this->item(i, j)->setToolTip("Weight of the arc from node " +
-                                            QString::fromStdString(myGraph->getNode(i)->getName()) + " to node " +
-                                            QString::fromStdString(myGraph->getNode(j)->getName()));
-            }
-            else {
-               this->item(i, j)->setText("inf");
-               this->item(i, j)->setToolTip("No arc from node " +
-                                            QString::fromStdString(myGraph->getNode(i)->getName()) + " to node " +
-                                            QString::fromStdString(myGraph->getNode(j)->getName()));
+                this->item(i, j)->setText(QString::fromStdString(std::to_string(adj_mat[i][j])));
+                if (i != j)
+                    this->item(i, j)->setToolTip("Weight of the arc from node " +
+                                                 QString::fromStdString(myGraph->getNode(i)->getName()) + " to node " +
+                                                 QString::fromStdString(myGraph->getNode(j)->getName()));
+            } else {
+                this->item(i, j)->setText("inf");
+                this->item(i, j)->setToolTip("No arc from node " +
+                                             QString::fromStdString(myGraph->getNode(i)->getName()) + " to node " +
+                                             QString::fromStdString(myGraph->getNode(j)->getName()));
             }
             this->item(i, j)->setTextAlignment(Qt::AlignCenter);
         }
         this->item(i, i)->setFlags(Qt::ItemIsEditable);
     }
-    connect(this, SIGNAL(cellChanged(int,int)), this, SLOT(adjustCell(int, int)));
+    connect(this, SIGNAL(cellChanged(int, int)), this, SLOT(adjustCell(int, int)));
 }

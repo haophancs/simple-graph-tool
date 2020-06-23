@@ -13,9 +13,9 @@
 			"K6S233IZAZ/moc_ArcGraphicsItem.cpp"
 		],
 		[
-			"/home/haophancs/Projects/Qt/simple-graph-tool/headers/ElementTableWidget.h",
+			"/home/haophancs/Projects/Qt/simple-graph-tool/headers/ElementPropertiesTable.h",
 			"MU",
-			"K6S233IZAZ/moc_ElementTableWidget.cpp"
+			"K6S233IZAZ/moc_ElementPropertiesTable.cpp"
 		],
 		[
 			"/home/haophancs/Projects/Qt/simple-graph-tool/headers/Graph.h",
@@ -133,7 +133,7 @@
 			"MU"
 		],
 		[
-			"/home/haophancs/Projects/Qt/simple-graph-tool/sources/ElementTableWidget.cpp",
+			"/home/haophancs/Projects/Qt/simple-graph-tool/sources/ElementPropertiesTable.cpp",
 			"MU"
 		],
 		[

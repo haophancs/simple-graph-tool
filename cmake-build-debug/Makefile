@@ -271,32 +271,32 @@ sources/ArcGraphicsItem.cpp.s:
 	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/ArcGraphicsItem.cpp.s
 .PHONY : sources/ArcGraphicsItem.cpp.s
 
-sources/ElementTableWidget.o: sources/ElementTableWidget.cpp.o
+sources/ElementPropertiesTable.o: sources/ElementPropertiesTable.cpp.o
 
-.PHONY : sources/ElementTableWidget.o
+.PHONY : sources/ElementPropertiesTable.o
 
 # target to build an object file
-sources/ElementTableWidget.cpp.o:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.o
-.PHONY : sources/ElementTableWidget.cpp.o
+sources/ElementPropertiesTable.cpp.o:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/ElementPropertiesTable.cpp.o
+.PHONY : sources/ElementPropertiesTable.cpp.o
 
-sources/ElementTableWidget.i: sources/ElementTableWidget.cpp.i
+sources/ElementPropertiesTable.i: sources/ElementPropertiesTable.cpp.i
 
-.PHONY : sources/ElementTableWidget.i
+.PHONY : sources/ElementPropertiesTable.i
 
 # target to preprocess a source file
-sources/ElementTableWidget.cpp.i:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.i
-.PHONY : sources/ElementTableWidget.cpp.i
+sources/ElementPropertiesTable.cpp.i:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/ElementPropertiesTable.cpp.i
+.PHONY : sources/ElementPropertiesTable.cpp.i
 
-sources/ElementTableWidget.s: sources/ElementTableWidget.cpp.s
+sources/ElementPropertiesTable.s: sources/ElementPropertiesTable.cpp.s
 
-.PHONY : sources/ElementTableWidget.s
+.PHONY : sources/ElementPropertiesTable.s
 
 # target to generate assembly for a file
-sources/ElementTableWidget.cpp.s:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.s
-.PHONY : sources/ElementTableWidget.cpp.s
+sources/ElementPropertiesTable.cpp.s:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/ElementPropertiesTable.cpp.s
+.PHONY : sources/ElementPropertiesTable.cpp.s
 
 sources/Graph.o: sources/Graph.cpp.o
 
@@ -539,9 +539,9 @@ help:
 	@echo "... sources/ArcGraphicsItem.o"
 	@echo "... sources/ArcGraphicsItem.i"
 	@echo "... sources/ArcGraphicsItem.s"
-	@echo "... sources/ElementTableWidget.o"
-	@echo "... sources/ElementTableWidget.i"
-	@echo "... sources/ElementTableWidget.s"
+	@echo "... sources/ElementPropertiesTable.o"
+	@echo "... sources/ElementPropertiesTable.i"
+	@echo "... sources/ElementPropertiesTable.s"
 	@echo "... sources/Graph.o"
 	@echo "... sources/Graph.i"
 	@echo "... sources/Graph.s"

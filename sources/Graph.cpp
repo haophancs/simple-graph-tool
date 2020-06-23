@@ -16,12 +16,13 @@ void Graph::clear() {
     this->adjMatrix.clear();
 }
 
-void Graph::readFromFile(const std::string& file) {
+void Graph::readFromFile(const std::string &file) {
     clear();
     std::ifstream in(file);
     if (!in) throw "file not existed";
 
-    int n; in >> n;
+    int n;
+    in >> n;
     if (n <= 0) throw "n <= 0";
     std::string w, name;
 
@@ -41,15 +42,17 @@ void Graph::readFromFile(const std::string& file) {
     for (int i = 0; i < n; i++) {
 
         if (in.eof()) throw "eof";
-        qreal x; in >> x;
+        qreal x;
+        in >> x;
         if (in.eof()) throw "eof";
-        qreal y; in >> y;
+        qreal y;
+        in >> y;
         nodeList[i].setEuclidePos(QPointF(x, y));
     }
     in.close();
 }
 
-void Graph::writeToFile(const std::string& file) {
+void Graph::writeToFile(const std::string &file) {
 
     std::ofstream out(file);
     out << getNodeNum() << "\n";
@@ -60,7 +63,7 @@ void Graph::writeToFile(const std::string& file) {
     for (int i = 0; i < getNodeNum(); i++) {
         for (int j = 0; j < getNodeNum(); j++) {
             if (adjMatrix[i][j] != INT_MAX)
-                max_length = std::max(max_length, (int)std::to_string(adjMatrix[i][j]).length());
+                max_length = std::max(max_length, (int) std::to_string(adjMatrix[i][j]).length());
             else
                 max_length = std::max(max_length, 3);
         }
@@ -91,8 +94,8 @@ void Graph::init(int node_num) {
     for (int i = 0; i < node_num; i++) {
         this->nodeList.emplace_back(std::string(1, 'a' + i), i);
         this->adjMatrix[i][i] = 0;
-        QPointF point((1 - sin((i * 6.28) / node_num)) * node_num*NodeGraphicsItem::radius/2.,
-                      (1 - cos((i * 6.28) / node_num)) * node_num*NodeGraphicsItem::radius/2.);
+        QPointF point((1 - sin((i * 6.28) / node_num)) * node_num * NodeGraphicsItem::radius / 2.,
+                      (1 - cos((i * 6.28) / node_num)) * node_num * NodeGraphicsItem::radius / 2.);
         this->nodeList[i].setEuclidePos(point);
     }
 }
@@ -113,13 +116,13 @@ void Graph::printAdjMatrix() const {
     for (int i = 0; i < getNodeNum(); i++) {
         for (int j = 0; j < getNodeNum(); j++) {
             if (adjMatrix[i][j] != INT_MAX)
-                max_length = std::max(max_length, (int)std::to_string(adjMatrix[i][j]).length());
+                max_length = std::max(max_length, (int) std::to_string(adjMatrix[i][j]).length());
             else
                 max_length = std::max(max_length, 3);
         }
     }
     for (int i = 0; i < getNodeNum(); i++)
-        max_length = std::max(max_length, (int)nodeList[i].getName().length());
+        max_length = std::max(max_length, (int) nodeList[i].getName().length());
 
     std::cout << std::left << std::setw(max_length) << " " << " ";
     for (int i = 0; i < getNodeNum(); i++)
@@ -138,7 +141,7 @@ void Graph::printAdjMatrix() const {
     }
 }
 
-int Graph::findNodeIdByName(const std::string& name) const {
+int Graph::findNodeIdByName(const std::string &name) const {
     for (int i = 0; i < getNodeNum(); i++)
         if (nodeList[i].getName() == name)
             return i;
@@ -155,7 +158,7 @@ bool Graph::setArc(int u, int v, int w) {
         if (w == INT_MAX || w == 0) {
             removeArc(u, v);
             return true;
-         }
+        }
         this->adjMatrix[u][v] = w;
         this->nodeList[u].incNegativeDeg();
         this->nodeList[v].incPositiveDeg();
@@ -212,8 +215,7 @@ bool Graph::addNode(Node node) {
 }
 
 bool Graph::removeNode(int id) {
-    for (int v = 0; v < getNodeNum(); v++)
-    {
+    for (int v = 0; v < getNodeNum(); v++) {
         removeArc(v, id);
         removeArc(id, v);
     }
@@ -229,8 +231,7 @@ bool Graph::removeNode(int id) {
 
 bool Graph::isolateNode(int id) {
     if (!hasThisNode(id)) return false;
-    for (int v = 0; v < getNodeNum(); v++)
-    {
+    for (int v = 0; v < getNodeNum(); v++) {
         removeArc(v, id);
         removeArc(id, v);
     }
@@ -241,8 +242,7 @@ bool Graph::isolateNode(int id) {
     return true;
 }
 
-std::vector<std::pair<int, int>> Graph::getArcList() const
-{
+std::vector<std::pair<int, int>> Graph::getArcList() const {
     std::vector<std::pair<int, int>> res;
     for (int u = 0; u < getNodeNum(); u++)
         for (int v = 0; v < getNodeNum(); v++)

@@ -7,39 +7,52 @@
 #include <QGraphicsScene>
 #include <QtWidgets>
 
-enum GraphDemoFlag { OnlyNode, OnlyArc, ArcAndNode, Component, Coloring };
+enum GraphDemoFlag {
+    OnlyNode, OnlyArc, ArcAndNode, Component, Coloring
+};
 
-class GraphGraphicsScene : public QGraphicsScene
-{
-    Q_OBJECT
+class GraphGraphicsScene : public QGraphicsScene {
+Q_OBJECT
 public:
     GraphGraphicsScene();
+
     explicit GraphGraphicsScene(Graph *graph);
-    Graph* graph() const;
+
+    Graph *graph() const;
+
     void setGraph(Graph *graph);
 
     friend class GraphGraphicsView;
 
 public slots:
+
     void reloadData();
+
     void demoAlgorithm(std::list<std::pair<int, int>> listOfPairToDemo, GraphDemoFlag flag);
-    void demoAlgorithm(const std::list<int>& listOfNumToDemo, GraphDemoFlag flag);
-    void demoAlgorithm(const std::list<std::list<int>>& listOfListToDemo, GraphDemoFlag flag);
+
+    void demoAlgorithm(const std::list<int> &listOfNumToDemo, GraphDemoFlag flag);
+
+    void demoAlgorithm(const std::list<std::list<int>> &listOfListToDemo, GraphDemoFlag flag);
 
 signals:
+
     void graphChanged();
+
     void needRedraw();
 
 private:
     Graph *myGraph{};
-    std::vector<NodeGraphicsItem*> nodeItems;
-    std::vector<ArcGraphicsItem*> arcItems;
+    std::vector<NodeGraphicsItem *> nodeItems;
+    std::vector<ArcGraphicsItem *> arcItems;
+
     int getArcId(int u, int v);
+
     std::unique_ptr<QTimer> unique_timer;
 
     std::list<int> listOfNum;
     std::list<std::list<int>> listOfList;
     std::list<std::pair<int, int>> listOfPair;
+
     void resetAfterDemoAlgo();
 };
 

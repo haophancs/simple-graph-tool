@@ -39,7 +39,11 @@ add_executable(simple_graph_tool
         sources/NodeGraphicsItem.cpp
         headers/NodeGraphicsItem.h
         headers/qdebugstream.h
-        resource.qrc headers/random.h sources/ElementTableWidget.cpp headers/ElementTableWidget.h)
+        headers/random.h
+        sources/ElementPropertiesTable.cpp
+        headers/ElementPropertiesTable.h
+        resource.qrc
+        mainwindow.ui)
 
 target_link_libraries(simple_graph_tool Qt5::Core)
 target_link_libraries(simple_graph_tool Qt5::Widgets)
