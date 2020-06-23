@@ -17,28 +17,29 @@ find_package(Qt5Widgets REQUIRED)
 include_directories(.)
 
 add_executable(simple_graph_tool
-        arcgraphicsitem.cpp
-        arcgraphicsitem.h
-        graph.cpp
-        graph.h
-        graphgraphicsscene.cpp
-        graphgraphicsscene.h
-        graphgraphicsview.cpp
-        graphgraphicsview.h
-        graphmatrixtable.cpp
-        graphmatrixtable.h
-        graphutils.cpp
-        graphutils.h
-        inputdialog.cpp
-        inputdialog.h
+        sources/ArcGraphicsItem.cpp
+        headers/ArcGraphicsItem.h
+        sources/Graph.cpp
+        headers/Graph.h
+        sources/GraphGraphicsScene.cpp
+        headers/GraphGraphicsScene.h
+        sources/GraphGraphicsView.cpp
+        headers/GraphGraphicsView.h
+        sources/GraphMatrixTable.cpp
+        headers/GraphMatrixTable.h
+        sources/GraphUtils.cpp
+        headers/GraphUtils.h
+        sources/InputDialog.cpp
+        headers/InputDialog.h
         main.cpp
         mainwindow.cpp
         mainwindow.h
-        node.cpp
-        node.h
-        nodegraphicsitem.cpp
-        nodegraphicsitem.h
-        qdebugstream.h)
+        sources/Node.cpp
+        headers/Node.h
+        sources/NodeGraphicsItem.cpp
+        headers/NodeGraphicsItem.h
+        headers/qdebugstream.h
+        resource.qrc headers/random.h sources/ElementTableWidget.cpp headers/ElementTableWidget.h)
 
 target_link_libraries(simple_graph_tool Qt5::Core)
 target_link_libraries(simple_graph_tool Qt5::Widgets)

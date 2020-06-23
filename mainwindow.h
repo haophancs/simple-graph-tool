@@ -3,10 +3,10 @@
 
 #include <QMainWindow>
 
-#include "graph.h"
-#include "graphgraphicsscene.h"
-#include "graphmatrixtable.h"
-#include "graphgraphicsview.h"
+#include "headers/Graph.h"
+#include "headers/GraphGraphicsScene.h"
+#include "headers/GraphMatrixTable.h"
+#include "headers/GraphGraphicsView.h"
 
 namespace Ui {
 class MainWindow;
@@ -18,7 +18,7 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    ~MainWindow() override;
 
 private slots:
     void onGraphChanged();

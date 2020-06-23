@@ -136,195 +136,6 @@ simple_graph_tool_autogen/fast:
 	$(MAKE) -f CMakeFiles/simple_graph_tool_autogen.dir/build.make CMakeFiles/simple_graph_tool_autogen.dir/build
 .PHONY : simple_graph_tool_autogen/fast
 
-arcgraphicsitem.o: arcgraphicsitem.cpp.o
-
-.PHONY : arcgraphicsitem.o
-
-# target to build an object file
-arcgraphicsitem.cpp.o:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/arcgraphicsitem.cpp.o
-.PHONY : arcgraphicsitem.cpp.o
-
-arcgraphicsitem.i: arcgraphicsitem.cpp.i
-
-.PHONY : arcgraphicsitem.i
-
-# target to preprocess a source file
-arcgraphicsitem.cpp.i:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/arcgraphicsitem.cpp.i
-.PHONY : arcgraphicsitem.cpp.i
-
-arcgraphicsitem.s: arcgraphicsitem.cpp.s
-
-.PHONY : arcgraphicsitem.s
-
-# target to generate assembly for a file
-arcgraphicsitem.cpp.s:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/arcgraphicsitem.cpp.s
-.PHONY : arcgraphicsitem.cpp.s
-
-graph.o: graph.cpp.o
-
-.PHONY : graph.o
-
-# target to build an object file
-graph.cpp.o:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/graph.cpp.o
-.PHONY : graph.cpp.o
-
-graph.i: graph.cpp.i
-
-.PHONY : graph.i
-
-# target to preprocess a source file
-graph.cpp.i:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/graph.cpp.i
-.PHONY : graph.cpp.i
-
-graph.s: graph.cpp.s
-
-.PHONY : graph.s
-
-# target to generate assembly for a file
-graph.cpp.s:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/graph.cpp.s
-.PHONY : graph.cpp.s
-
-graphgraphicsscene.o: graphgraphicsscene.cpp.o
-
-.PHONY : graphgraphicsscene.o
-
-# target to build an object file
-graphgraphicsscene.cpp.o:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/graphgraphicsscene.cpp.o
-.PHONY : graphgraphicsscene.cpp.o
-
-graphgraphicsscene.i: graphgraphicsscene.cpp.i
-
-.PHONY : graphgraphicsscene.i
-
-# target to preprocess a source file
-graphgraphicsscene.cpp.i:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/graphgraphicsscene.cpp.i
-.PHONY : graphgraphicsscene.cpp.i
-
-graphgraphicsscene.s: graphgraphicsscene.cpp.s
-
-.PHONY : graphgraphicsscene.s
-
-# target to generate assembly for a file
-graphgraphicsscene.cpp.s:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/graphgraphicsscene.cpp.s
-.PHONY : graphgraphicsscene.cpp.s
-
-graphgraphicsview.o: graphgraphicsview.cpp.o
-
-.PHONY : graphgraphicsview.o
-
-# target to build an object file
-graphgraphicsview.cpp.o:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/graphgraphicsview.cpp.o
-.PHONY : graphgraphicsview.cpp.o
-
-graphgraphicsview.i: graphgraphicsview.cpp.i
-
-.PHONY : graphgraphicsview.i
-
-# target to preprocess a source file
-graphgraphicsview.cpp.i:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/graphgraphicsview.cpp.i
-.PHONY : graphgraphicsview.cpp.i
-
-graphgraphicsview.s: graphgraphicsview.cpp.s
-
-.PHONY : graphgraphicsview.s
-
-# target to generate assembly for a file
-graphgraphicsview.cpp.s:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/graphgraphicsview.cpp.s
-.PHONY : graphgraphicsview.cpp.s
-
-graphmatrixtable.o: graphmatrixtable.cpp.o
-
-.PHONY : graphmatrixtable.o
-
-# target to build an object file
-graphmatrixtable.cpp.o:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/graphmatrixtable.cpp.o
-.PHONY : graphmatrixtable.cpp.o
-
-graphmatrixtable.i: graphmatrixtable.cpp.i
-
-.PHONY : graphmatrixtable.i
-
-# target to preprocess a source file
-graphmatrixtable.cpp.i:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/graphmatrixtable.cpp.i
-.PHONY : graphmatrixtable.cpp.i
-
-graphmatrixtable.s: graphmatrixtable.cpp.s
-
-.PHONY : graphmatrixtable.s
-
-# target to generate assembly for a file
-graphmatrixtable.cpp.s:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/graphmatrixtable.cpp.s
-.PHONY : graphmatrixtable.cpp.s
-
-graphutils.o: graphutils.cpp.o
-
-.PHONY : graphutils.o
-
-# target to build an object file
-graphutils.cpp.o:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/graphutils.cpp.o
-.PHONY : graphutils.cpp.o
-
-graphutils.i: graphutils.cpp.i
-
-.PHONY : graphutils.i
-
-# target to preprocess a source file
-graphutils.cpp.i:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/graphutils.cpp.i
-.PHONY : graphutils.cpp.i
-
-graphutils.s: graphutils.cpp.s
-
-.PHONY : graphutils.s
-
-# target to generate assembly for a file
-graphutils.cpp.s:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/graphutils.cpp.s
-.PHONY : graphutils.cpp.s
-
-inputdialog.o: inputdialog.cpp.o
-
-.PHONY : inputdialog.o
-
-# target to build an object file
-inputdialog.cpp.o:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/inputdialog.cpp.o
-.PHONY : inputdialog.cpp.o
-
-inputdialog.i: inputdialog.cpp.i
-
-.PHONY : inputdialog.i
-
-# target to preprocess a source file
-inputdialog.cpp.i:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/inputdialog.cpp.i
-.PHONY : inputdialog.cpp.i
-
-inputdialog.s: inputdialog.cpp.s
-
-.PHONY : inputdialog.s
-
-# target to generate assembly for a file
-inputdialog.cpp.s:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/inputdialog.cpp.s
-.PHONY : inputdialog.cpp.s
-
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -379,59 +190,32 @@ mainwindow.cpp.s:
 	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/mainwindow.cpp.s
 .PHONY : mainwindow.cpp.s
 
-node.o: node.cpp.o
+simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.o: simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.o
 
-.PHONY : node.o
-
-# target to build an object file
-node.cpp.o:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/node.cpp.o
-.PHONY : node.cpp.o
-
-node.i: node.cpp.i
-
-.PHONY : node.i
-
-# target to preprocess a source file
-node.cpp.i:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/node.cpp.i
-.PHONY : node.cpp.i
-
-node.s: node.cpp.s
-
-.PHONY : node.s
-
-# target to generate assembly for a file
-node.cpp.s:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/node.cpp.s
-.PHONY : node.cpp.s
-
-nodegraphicsitem.o: nodegraphicsitem.cpp.o
-
-.PHONY : nodegraphicsitem.o
+.PHONY : simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.o
 
 # target to build an object file
-nodegraphicsitem.cpp.o:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/nodegraphicsitem.cpp.o
-.PHONY : nodegraphicsitem.cpp.o
+simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.o:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.o
+.PHONY : simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.o
 
-nodegraphicsitem.i: nodegraphicsitem.cpp.i
+simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.i: simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.i
 
-.PHONY : nodegraphicsitem.i
+.PHONY : simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.i
 
 # target to preprocess a source file
-nodegraphicsitem.cpp.i:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/nodegraphicsitem.cpp.i
-.PHONY : nodegraphicsitem.cpp.i
+simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.i:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.i
+.PHONY : simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.i
 
-nodegraphicsitem.s: nodegraphicsitem.cpp.s
+simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.s: simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.s
 
-.PHONY : nodegraphicsitem.s
+.PHONY : simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.s
 
 # target to generate assembly for a file
-nodegraphicsitem.cpp.s:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/nodegraphicsitem.cpp.s
-.PHONY : nodegraphicsitem.cpp.s
+simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.s:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.s
+.PHONY : simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.s
 
 simple_graph_tool_autogen/mocs_compilation.o: simple_graph_tool_autogen/mocs_compilation.cpp.o
 
@@ -460,6 +244,276 @@ simple_graph_tool_autogen/mocs_compilation.cpp.s:
 	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/mocs_compilation.cpp.s
 .PHONY : simple_graph_tool_autogen/mocs_compilation.cpp.s
 
+sources/ArcGraphicsItem.o: sources/ArcGraphicsItem.cpp.o
+
+.PHONY : sources/ArcGraphicsItem.o
+
+# target to build an object file
+sources/ArcGraphicsItem.cpp.o:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/ArcGraphicsItem.cpp.o
+.PHONY : sources/ArcGraphicsItem.cpp.o
+
+sources/ArcGraphicsItem.i: sources/ArcGraphicsItem.cpp.i
+
+.PHONY : sources/ArcGraphicsItem.i
+
+# target to preprocess a source file
+sources/ArcGraphicsItem.cpp.i:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/ArcGraphicsItem.cpp.i
+.PHONY : sources/ArcGraphicsItem.cpp.i
+
+sources/ArcGraphicsItem.s: sources/ArcGraphicsItem.cpp.s
+
+.PHONY : sources/ArcGraphicsItem.s
+
+# target to generate assembly for a file
+sources/ArcGraphicsItem.cpp.s:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/ArcGraphicsItem.cpp.s
+.PHONY : sources/ArcGraphicsItem.cpp.s
+
+sources/ElementTableWidget.o: sources/ElementTableWidget.cpp.o
+
+.PHONY : sources/ElementTableWidget.o
+
+# target to build an object file
+sources/ElementTableWidget.cpp.o:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.o
+.PHONY : sources/ElementTableWidget.cpp.o
+
+sources/ElementTableWidget.i: sources/ElementTableWidget.cpp.i
+
+.PHONY : sources/ElementTableWidget.i
+
+# target to preprocess a source file
+sources/ElementTableWidget.cpp.i:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.i
+.PHONY : sources/ElementTableWidget.cpp.i
+
+sources/ElementTableWidget.s: sources/ElementTableWidget.cpp.s
+
+.PHONY : sources/ElementTableWidget.s
+
+# target to generate assembly for a file
+sources/ElementTableWidget.cpp.s:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.s
+.PHONY : sources/ElementTableWidget.cpp.s
+
+sources/Graph.o: sources/Graph.cpp.o
+
+.PHONY : sources/Graph.o
+
+# target to build an object file
+sources/Graph.cpp.o:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/Graph.cpp.o
+.PHONY : sources/Graph.cpp.o
+
+sources/Graph.i: sources/Graph.cpp.i
+
+.PHONY : sources/Graph.i
+
+# target to preprocess a source file
+sources/Graph.cpp.i:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/Graph.cpp.i
+.PHONY : sources/Graph.cpp.i
+
+sources/Graph.s: sources/Graph.cpp.s
+
+.PHONY : sources/Graph.s
+
+# target to generate assembly for a file
+sources/Graph.cpp.s:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/Graph.cpp.s
+.PHONY : sources/Graph.cpp.s
+
+sources/GraphGraphicsScene.o: sources/GraphGraphicsScene.cpp.o
+
+.PHONY : sources/GraphGraphicsScene.o
+
+# target to build an object file
+sources/GraphGraphicsScene.cpp.o:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsScene.cpp.o
+.PHONY : sources/GraphGraphicsScene.cpp.o
+
+sources/GraphGraphicsScene.i: sources/GraphGraphicsScene.cpp.i
+
+.PHONY : sources/GraphGraphicsScene.i
+
+# target to preprocess a source file
+sources/GraphGraphicsScene.cpp.i:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsScene.cpp.i
+.PHONY : sources/GraphGraphicsScene.cpp.i
+
+sources/GraphGraphicsScene.s: sources/GraphGraphicsScene.cpp.s
+
+.PHONY : sources/GraphGraphicsScene.s
+
+# target to generate assembly for a file
+sources/GraphGraphicsScene.cpp.s:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsScene.cpp.s
+.PHONY : sources/GraphGraphicsScene.cpp.s
+
+sources/GraphGraphicsView.o: sources/GraphGraphicsView.cpp.o
+
+.PHONY : sources/GraphGraphicsView.o
+
+# target to build an object file
+sources/GraphGraphicsView.cpp.o:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsView.cpp.o
+.PHONY : sources/GraphGraphicsView.cpp.o
+
+sources/GraphGraphicsView.i: sources/GraphGraphicsView.cpp.i
+
+.PHONY : sources/GraphGraphicsView.i
+
+# target to preprocess a source file
+sources/GraphGraphicsView.cpp.i:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsView.cpp.i
+.PHONY : sources/GraphGraphicsView.cpp.i
+
+sources/GraphGraphicsView.s: sources/GraphGraphicsView.cpp.s
+
+.PHONY : sources/GraphGraphicsView.s
+
+# target to generate assembly for a file
+sources/GraphGraphicsView.cpp.s:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsView.cpp.s
+.PHONY : sources/GraphGraphicsView.cpp.s
+
+sources/GraphMatrixTable.o: sources/GraphMatrixTable.cpp.o
+
+.PHONY : sources/GraphMatrixTable.o
+
+# target to build an object file
+sources/GraphMatrixTable.cpp.o:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/GraphMatrixTable.cpp.o
+.PHONY : sources/GraphMatrixTable.cpp.o
+
+sources/GraphMatrixTable.i: sources/GraphMatrixTable.cpp.i
+
+.PHONY : sources/GraphMatrixTable.i
+
+# target to preprocess a source file
+sources/GraphMatrixTable.cpp.i:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/GraphMatrixTable.cpp.i
+.PHONY : sources/GraphMatrixTable.cpp.i
+
+sources/GraphMatrixTable.s: sources/GraphMatrixTable.cpp.s
+
+.PHONY : sources/GraphMatrixTable.s
+
+# target to generate assembly for a file
+sources/GraphMatrixTable.cpp.s:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/GraphMatrixTable.cpp.s
+.PHONY : sources/GraphMatrixTable.cpp.s
+
+sources/GraphUtils.o: sources/GraphUtils.cpp.o
+
+.PHONY : sources/GraphUtils.o
+
+# target to build an object file
+sources/GraphUtils.cpp.o:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/GraphUtils.cpp.o
+.PHONY : sources/GraphUtils.cpp.o
+
+sources/GraphUtils.i: sources/GraphUtils.cpp.i
+
+.PHONY : sources/GraphUtils.i
+
+# target to preprocess a source file
+sources/GraphUtils.cpp.i:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/GraphUtils.cpp.i
+.PHONY : sources/GraphUtils.cpp.i
+
+sources/GraphUtils.s: sources/GraphUtils.cpp.s
+
+.PHONY : sources/GraphUtils.s
+
+# target to generate assembly for a file
+sources/GraphUtils.cpp.s:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/GraphUtils.cpp.s
+.PHONY : sources/GraphUtils.cpp.s
+
+sources/InputDialog.o: sources/InputDialog.cpp.o
+
+.PHONY : sources/InputDialog.o
+
+# target to build an object file
+sources/InputDialog.cpp.o:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/InputDialog.cpp.o
+.PHONY : sources/InputDialog.cpp.o
+
+sources/InputDialog.i: sources/InputDialog.cpp.i
+
+.PHONY : sources/InputDialog.i
+
+# target to preprocess a source file
+sources/InputDialog.cpp.i:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/InputDialog.cpp.i
+.PHONY : sources/InputDialog.cpp.i
+
+sources/InputDialog.s: sources/InputDialog.cpp.s
+
+.PHONY : sources/InputDialog.s
+
+# target to generate assembly for a file
+sources/InputDialog.cpp.s:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/InputDialog.cpp.s
+.PHONY : sources/InputDialog.cpp.s
+
+sources/Node.o: sources/Node.cpp.o
+
+.PHONY : sources/Node.o
+
+# target to build an object file
+sources/Node.cpp.o:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/Node.cpp.o
+.PHONY : sources/Node.cpp.o
+
+sources/Node.i: sources/Node.cpp.i
+
+.PHONY : sources/Node.i
+
+# target to preprocess a source file
+sources/Node.cpp.i:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/Node.cpp.i
+.PHONY : sources/Node.cpp.i
+
+sources/Node.s: sources/Node.cpp.s
+
+.PHONY : sources/Node.s
+
+# target to generate assembly for a file
+sources/Node.cpp.s:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/Node.cpp.s
+.PHONY : sources/Node.cpp.s
+
+sources/NodeGraphicsItem.o: sources/NodeGraphicsItem.cpp.o
+
+.PHONY : sources/NodeGraphicsItem.o
+
+# target to build an object file
+sources/NodeGraphicsItem.cpp.o:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/NodeGraphicsItem.cpp.o
+.PHONY : sources/NodeGraphicsItem.cpp.o
+
+sources/NodeGraphicsItem.i: sources/NodeGraphicsItem.cpp.i
+
+.PHONY : sources/NodeGraphicsItem.i
+
+# target to preprocess a source file
+sources/NodeGraphicsItem.cpp.i:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/NodeGraphicsItem.cpp.i
+.PHONY : sources/NodeGraphicsItem.cpp.i
+
+sources/NodeGraphicsItem.s: sources/NodeGraphicsItem.cpp.s
+
+.PHONY : sources/NodeGraphicsItem.s
+
+# target to generate assembly for a file
+sources/NodeGraphicsItem.cpp.s:
+	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/sources/NodeGraphicsItem.cpp.s
+.PHONY : sources/NodeGraphicsItem.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -470,42 +524,48 @@ help:
 	@echo "... edit_cache"
 	@echo "... simple_graph_tool"
 	@echo "... simple_graph_tool_autogen"
-	@echo "... arcgraphicsitem.o"
-	@echo "... arcgraphicsitem.i"
-	@echo "... arcgraphicsitem.s"
-	@echo "... graph.o"
-	@echo "... graph.i"
-	@echo "... graph.s"
-	@echo "... graphgraphicsscene.o"
-	@echo "... graphgraphicsscene.i"
-	@echo "... graphgraphicsscene.s"
-	@echo "... graphgraphicsview.o"
-	@echo "... graphgraphicsview.i"
-	@echo "... graphgraphicsview.s"
-	@echo "... graphmatrixtable.o"
-	@echo "... graphmatrixtable.i"
-	@echo "... graphmatrixtable.s"
-	@echo "... graphutils.o"
-	@echo "... graphutils.i"
-	@echo "... graphutils.s"
-	@echo "... inputdialog.o"
-	@echo "... inputdialog.i"
-	@echo "... inputdialog.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
 	@echo "... mainwindow.o"
 	@echo "... mainwindow.i"
 	@echo "... mainwindow.s"
-	@echo "... node.o"
-	@echo "... node.i"
-	@echo "... node.s"
-	@echo "... nodegraphicsitem.o"
-	@echo "... nodegraphicsitem.i"
-	@echo "... nodegraphicsitem.s"
+	@echo "... simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.o"
+	@echo "... simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.i"
+	@echo "... simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.s"
 	@echo "... simple_graph_tool_autogen/mocs_compilation.o"
 	@echo "... simple_graph_tool_autogen/mocs_compilation.i"
 	@echo "... simple_graph_tool_autogen/mocs_compilation.s"
+	@echo "... sources/ArcGraphicsItem.o"
+	@echo "... sources/ArcGraphicsItem.i"
+	@echo "... sources/ArcGraphicsItem.s"
+	@echo "... sources/ElementTableWidget.o"
+	@echo "... sources/ElementTableWidget.i"
+	@echo "... sources/ElementTableWidget.s"
+	@echo "... sources/Graph.o"
+	@echo "... sources/Graph.i"
+	@echo "... sources/Graph.s"
+	@echo "... sources/GraphGraphicsScene.o"
+	@echo "... sources/GraphGraphicsScene.i"
+	@echo "... sources/GraphGraphicsScene.s"
+	@echo "... sources/GraphGraphicsView.o"
+	@echo "... sources/GraphGraphicsView.i"
+	@echo "... sources/GraphGraphicsView.s"
+	@echo "... sources/GraphMatrixTable.o"
+	@echo "... sources/GraphMatrixTable.i"
+	@echo "... sources/GraphMatrixTable.s"
+	@echo "... sources/GraphUtils.o"
+	@echo "... sources/GraphUtils.i"
+	@echo "... sources/GraphUtils.s"
+	@echo "... sources/InputDialog.o"
+	@echo "... sources/InputDialog.i"
+	@echo "... sources/InputDialog.s"
+	@echo "... sources/Node.o"
+	@echo "... sources/Node.i"
+	@echo "... sources/Node.s"
+	@echo "... sources/NodeGraphicsItem.o"
+	@echo "... sources/NodeGraphicsItem.i"
+	@echo "... sources/NodeGraphicsItem.s"
 .PHONY : help
 
 

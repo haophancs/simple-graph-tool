@@ -1,0 +1,19 @@
+{
+	"BUILD_DIR" : "/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/simple_graph_tool_autogen",
+	"CMAKE_BINARY_DIR" : "/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug",
+	"CMAKE_CURRENT_BINARY_DIR" : "/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/home/haophancs/Projects/Qt/simple-graph-tool",
+	"CMAKE_SOURCE_DIR" : "/home/haophancs/Projects/Qt/simple-graph-tool",
+	"INCLUDE_DIR" : "/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/simple_graph_tool_autogen/include",
+	"INPUTS" : [ "/home/haophancs/Projects/Qt/simple-graph-tool/icon.ico" ],
+	"LOCK_FILE" : "/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles/simple_graph_tool_autogen.dir/AutoRcc_resource_EWIEGA46WW_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "-name", "resource" ],
+	"OUTPUT_CHECKSUM" : "EWIEGA46WW",
+	"OUTPUT_NAME" : "qrc_resource.cpp",
+	"RCC_EXECUTABLE" : "/usr/lib/qt5/bin/rcc",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles/simple_graph_tool_autogen.dir/AutoRcc_resource_EWIEGA46WW_Used.txt",
+	"SOURCE" : "/home/haophancs/Projects/Qt/simple-graph-tool/resource.qrc",
+	"VERBOSITY" : 0
+}

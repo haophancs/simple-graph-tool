@@ -1,12 +1,12 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "graphgraphicsview.h"
-#include "graphutils.h"
-#include "inputdialog.h"
+#include "headers/GraphGraphicsView.h"
+#include "headers/GraphUtils.h"
+#include "headers/InputDialog.h"
 #include <QtGui>
 #include <QMessageBox>
 #include <QTimer>
-#include "qdebugstream.h"
+#include "headers/qdebugstream.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -123,6 +123,11 @@ MainWindow::MainWindow(QWidget *parent) :
         }
     });
     connect(view, &GraphGraphicsView::unSelect, this, [this]() {
+        QAbstractItemModel* const mdl = this->ui->propertiesTable->model();
+        mdl->removeRows(0,mdl->rowCount());
+        mdl->removeColumns(0,mdl->columnCount());
+    });
+    connect(this, &MainWindow::graphChanged, this, [this]() {
         QAbstractItemModel* const mdl = this->ui->propertiesTable->model();
         mdl->removeRows(0,mdl->rowCount());
         mdl->removeColumns(0,mdl->columnCount());

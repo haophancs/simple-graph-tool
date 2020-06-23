@@ -88,7 +88,6 @@ public:
     QTextEdit *console_text;
     QWidget *utils;
     QVBoxLayout *verticalLayout;
-    QFrame *line_2;
     QVBoxLayout *button_layout;
     QVBoxLayout *verticalLayout_7;
     QLabel *properties_label;
@@ -264,6 +263,11 @@ public:
         main_layout->setContentsMargins(6, -1, -1, -1);
         tabWidget = new QTabWidget(working_widget);
         tabWidget->setObjectName(QStringLiteral("tabWidget"));
+        QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Preferred);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(tabWidget->sizePolicy().hasHeightForWidth());
+        tabWidget->setSizePolicy(sizePolicy1);
         tab_drawing = new QWidget();
         tab_drawing->setObjectName(QStringLiteral("tab_drawing"));
         horizontalLayout_2 = new QHBoxLayout(tab_drawing);
@@ -302,11 +306,11 @@ public:
 
         console_text = new QTextEdit(working_widget);
         console_text->setObjectName(QStringLiteral("console_text"));
-        QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Maximum);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(console_text->sizePolicy().hasHeightForWidth());
-        console_text->setSizePolicy(sizePolicy1);
+        QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Expanding);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(console_text->sizePolicy().hasHeightForWidth());
+        console_text->setSizePolicy(sizePolicy2);
         console_text->setMaximumSize(QSize(16777215, 130));
 
         main_layout->addWidget(console_text);
@@ -316,19 +320,14 @@ public:
 
         utils = new QWidget(working_widget);
         utils->setObjectName(QStringLiteral("utils"));
+        sizePolicy1.setHeightForWidth(utils->sizePolicy().hasHeightForWidth());
+        utils->setSizePolicy(sizePolicy1);
         utils->setMaximumSize(QSize(270, 16777215));
         verticalLayout = new QVBoxLayout(utils);
         verticalLayout->setSpacing(0);
         verticalLayout->setContentsMargins(11, 11, 11, 11);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         verticalLayout->setContentsMargins(0, 0, 0, 0);
-        line_2 = new QFrame(utils);
-        line_2->setObjectName(QStringLiteral("line_2"));
-        line_2->setFrameShape(QFrame::VLine);
-        line_2->setFrameShadow(QFrame::Sunken);
-
-        verticalLayout->addWidget(line_2);
-
         button_layout = new QVBoxLayout();
         button_layout->setSpacing(6);
         button_layout->setObjectName(QStringLiteral("button_layout"));
@@ -338,21 +337,18 @@ public:
         verticalLayout_7->setContentsMargins(-1, -1, -1, 6);
         properties_label = new QLabel(utils);
         properties_label->setObjectName(QStringLiteral("properties_label"));
-        QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Fixed);
-        sizePolicy2.setHorizontalStretch(0);
-        sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(properties_label->sizePolicy().hasHeightForWidth());
-        properties_label->setSizePolicy(sizePolicy2);
+        QSizePolicy sizePolicy3(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(properties_label->sizePolicy().hasHeightForWidth());
+        properties_label->setSizePolicy(sizePolicy3);
 
         verticalLayout_7->addWidget(properties_label);
 
         propertiesTable = new QTableWidget(utils);
         propertiesTable->setObjectName(QStringLiteral("propertiesTable"));
-        QSizePolicy sizePolicy3(QSizePolicy::Expanding, QSizePolicy::Preferred);
-        sizePolicy3.setHorizontalStretch(0);
-        sizePolicy3.setVerticalStretch(0);
-        sizePolicy3.setHeightForWidth(propertiesTable->sizePolicy().hasHeightForWidth());
-        propertiesTable->setSizePolicy(sizePolicy3);
+        sizePolicy1.setHeightForWidth(propertiesTable->sizePolicy().hasHeightForWidth());
+        propertiesTable->setSizePolicy(sizePolicy1);
         propertiesTable->setMaximumSize(QSize(16777215, 16777215));
         propertiesTable->horizontalHeader()->setVisible(false);
 
@@ -407,6 +403,11 @@ public:
 
         coloringBtn = new QPushButton(utils);
         coloringBtn->setObjectName(QStringLiteral("coloringBtn"));
+        QSizePolicy sizePolicy4(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        sizePolicy4.setHorizontalStretch(0);
+        sizePolicy4.setVerticalStretch(0);
+        sizePolicy4.setHeightForWidth(coloringBtn->sizePolicy().hasHeightForWidth());
+        coloringBtn->setSizePolicy(sizePolicy4);
 
         button_layout->addWidget(coloringBtn);
 
@@ -427,21 +428,29 @@ public:
 
         articulationNodeBtn = new QPushButton(utils);
         articulationNodeBtn->setObjectName(QStringLiteral("articulationNodeBtn"));
+        sizePolicy3.setHeightForWidth(articulationNodeBtn->sizePolicy().hasHeightForWidth());
+        articulationNodeBtn->setSizePolicy(sizePolicy3);
 
         button_layout->addWidget(articulationNodeBtn);
 
         spanningTreeBtn = new QPushButton(utils);
         spanningTreeBtn->setObjectName(QStringLiteral("spanningTreeBtn"));
+        sizePolicy3.setHeightForWidth(spanningTreeBtn->sizePolicy().hasHeightForWidth());
+        spanningTreeBtn->setSizePolicy(sizePolicy3);
 
         button_layout->addWidget(spanningTreeBtn);
 
         weaklyConnectedBtn = new QPushButton(utils);
         weaklyConnectedBtn->setObjectName(QStringLiteral("weaklyConnectedBtn"));
+        sizePolicy3.setHeightForWidth(weaklyConnectedBtn->sizePolicy().hasHeightForWidth());
+        weaklyConnectedBtn->setSizePolicy(sizePolicy3);
 
         button_layout->addWidget(weaklyConnectedBtn);
 
         connectedComponentsBtn = new QPushButton(utils);
         connectedComponentsBtn->setObjectName(QStringLiteral("connectedComponentsBtn"));
+        sizePolicy3.setHeightForWidth(connectedComponentsBtn->sizePolicy().hasHeightForWidth());
+        connectedComponentsBtn->setSizePolicy(sizePolicy3);
 
         button_layout->addWidget(connectedComponentsBtn);
 
@@ -465,7 +474,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1024, 22));
+        menuBar->setGeometry(QRect(0, 0, 1024, 37));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
         menuGraph = new QMenu(menuBar);

@@ -57,9 +57,16 @@ include CMakeFiles/simple_graph_tool.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/simple_graph_tool.dir/flags.make
 
+simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp: ../resource.qrc
+simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp: CMakeFiles/simple_graph_tool_autogen.dir/AutoRcc_resource_EWIEGA46WW_Info.json
+simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp: ../icon.ico
+simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp: /usr/lib/qt5/bin/rcc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic RCC for resource.qrc"
+	/snap/clion/114/bin/cmake/linux/bin/cmake -E cmake_autorcc /home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles/simple_graph_tool_autogen.dir/AutoRcc_resource_EWIEGA46WW_Info.json Debug
+
 CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/mocs_compilation.cpp.o: CMakeFiles/simple_graph_tool.dir/flags.make
 CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/mocs_compilation.cpp.o: simple_graph_tool_autogen/mocs_compilation.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/mocs_compilation.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/mocs_compilation.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/mocs_compilation.cpp.o -c /home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/simple_graph_tool_autogen/mocs_compilation.cpp
 
 CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/mocs_compilation.cpp.i: cmake_force
@@ -70,100 +77,100 @@ CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/mocs_compilation.cpp.
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/mocs_compilation.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/simple_graph_tool_autogen/mocs_compilation.cpp -o CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/mocs_compilation.cpp.s
 
-CMakeFiles/simple_graph_tool.dir/arcgraphicsitem.cpp.o: CMakeFiles/simple_graph_tool.dir/flags.make
-CMakeFiles/simple_graph_tool.dir/arcgraphicsitem.cpp.o: ../arcgraphicsitem.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/simple_graph_tool.dir/arcgraphicsitem.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/simple_graph_tool.dir/arcgraphicsitem.cpp.o -c /home/haophancs/Projects/Qt/simple-graph-tool/arcgraphicsitem.cpp
+CMakeFiles/simple_graph_tool.dir/sources/ArcGraphicsItem.cpp.o: CMakeFiles/simple_graph_tool.dir/flags.make
+CMakeFiles/simple_graph_tool.dir/sources/ArcGraphicsItem.cpp.o: ../sources/ArcGraphicsItem.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/simple_graph_tool.dir/sources/ArcGraphicsItem.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/simple_graph_tool.dir/sources/ArcGraphicsItem.cpp.o -c /home/haophancs/Projects/Qt/simple-graph-tool/sources/ArcGraphicsItem.cpp
 
-CMakeFiles/simple_graph_tool.dir/arcgraphicsitem.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/simple_graph_tool.dir/arcgraphicsitem.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/haophancs/Projects/Qt/simple-graph-tool/arcgraphicsitem.cpp > CMakeFiles/simple_graph_tool.dir/arcgraphicsitem.cpp.i
+CMakeFiles/simple_graph_tool.dir/sources/ArcGraphicsItem.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/simple_graph_tool.dir/sources/ArcGraphicsItem.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/haophancs/Projects/Qt/simple-graph-tool/sources/ArcGraphicsItem.cpp > CMakeFiles/simple_graph_tool.dir/sources/ArcGraphicsItem.cpp.i
 
-CMakeFiles/simple_graph_tool.dir/arcgraphicsitem.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/simple_graph_tool.dir/arcgraphicsitem.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/haophancs/Projects/Qt/simple-graph-tool/arcgraphicsitem.cpp -o CMakeFiles/simple_graph_tool.dir/arcgraphicsitem.cpp.s
+CMakeFiles/simple_graph_tool.dir/sources/ArcGraphicsItem.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/simple_graph_tool.dir/sources/ArcGraphicsItem.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/haophancs/Projects/Qt/simple-graph-tool/sources/ArcGraphicsItem.cpp -o CMakeFiles/simple_graph_tool.dir/sources/ArcGraphicsItem.cpp.s
 
-CMakeFiles/simple_graph_tool.dir/graph.cpp.o: CMakeFiles/simple_graph_tool.dir/flags.make
-CMakeFiles/simple_graph_tool.dir/graph.cpp.o: ../graph.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/simple_graph_tool.dir/graph.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/simple_graph_tool.dir/graph.cpp.o -c /home/haophancs/Projects/Qt/simple-graph-tool/graph.cpp
+CMakeFiles/simple_graph_tool.dir/sources/Graph.cpp.o: CMakeFiles/simple_graph_tool.dir/flags.make
+CMakeFiles/simple_graph_tool.dir/sources/Graph.cpp.o: ../sources/Graph.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/simple_graph_tool.dir/sources/Graph.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/simple_graph_tool.dir/sources/Graph.cpp.o -c /home/haophancs/Projects/Qt/simple-graph-tool/sources/Graph.cpp
 
-CMakeFiles/simple_graph_tool.dir/graph.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/simple_graph_tool.dir/graph.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/haophancs/Projects/Qt/simple-graph-tool/graph.cpp > CMakeFiles/simple_graph_tool.dir/graph.cpp.i
+CMakeFiles/simple_graph_tool.dir/sources/Graph.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/simple_graph_tool.dir/sources/Graph.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/haophancs/Projects/Qt/simple-graph-tool/sources/Graph.cpp > CMakeFiles/simple_graph_tool.dir/sources/Graph.cpp.i
 
-CMakeFiles/simple_graph_tool.dir/graph.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/simple_graph_tool.dir/graph.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/haophancs/Projects/Qt/simple-graph-tool/graph.cpp -o CMakeFiles/simple_graph_tool.dir/graph.cpp.s
+CMakeFiles/simple_graph_tool.dir/sources/Graph.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/simple_graph_tool.dir/sources/Graph.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/haophancs/Projects/Qt/simple-graph-tool/sources/Graph.cpp -o CMakeFiles/simple_graph_tool.dir/sources/Graph.cpp.s
 
-CMakeFiles/simple_graph_tool.dir/graphgraphicsscene.cpp.o: CMakeFiles/simple_graph_tool.dir/flags.make
-CMakeFiles/simple_graph_tool.dir/graphgraphicsscene.cpp.o: ../graphgraphicsscene.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/simple_graph_tool.dir/graphgraphicsscene.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/simple_graph_tool.dir/graphgraphicsscene.cpp.o -c /home/haophancs/Projects/Qt/simple-graph-tool/graphgraphicsscene.cpp
+CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsScene.cpp.o: CMakeFiles/simple_graph_tool.dir/flags.make
+CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsScene.cpp.o: ../sources/GraphGraphicsScene.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsScene.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsScene.cpp.o -c /home/haophancs/Projects/Qt/simple-graph-tool/sources/GraphGraphicsScene.cpp
 
-CMakeFiles/simple_graph_tool.dir/graphgraphicsscene.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/simple_graph_tool.dir/graphgraphicsscene.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/haophancs/Projects/Qt/simple-graph-tool/graphgraphicsscene.cpp > CMakeFiles/simple_graph_tool.dir/graphgraphicsscene.cpp.i
+CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsScene.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsScene.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/haophancs/Projects/Qt/simple-graph-tool/sources/GraphGraphicsScene.cpp > CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsScene.cpp.i
 
-CMakeFiles/simple_graph_tool.dir/graphgraphicsscene.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/simple_graph_tool.dir/graphgraphicsscene.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/haophancs/Projects/Qt/simple-graph-tool/graphgraphicsscene.cpp -o CMakeFiles/simple_graph_tool.dir/graphgraphicsscene.cpp.s
+CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsScene.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsScene.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/haophancs/Projects/Qt/simple-graph-tool/sources/GraphGraphicsScene.cpp -o CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsScene.cpp.s
 
-CMakeFiles/simple_graph_tool.dir/graphgraphicsview.cpp.o: CMakeFiles/simple_graph_tool.dir/flags.make
-CMakeFiles/simple_graph_tool.dir/graphgraphicsview.cpp.o: ../graphgraphicsview.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/simple_graph_tool.dir/graphgraphicsview.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/simple_graph_tool.dir/graphgraphicsview.cpp.o -c /home/haophancs/Projects/Qt/simple-graph-tool/graphgraphicsview.cpp
+CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsView.cpp.o: CMakeFiles/simple_graph_tool.dir/flags.make
+CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsView.cpp.o: ../sources/GraphGraphicsView.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsView.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsView.cpp.o -c /home/haophancs/Projects/Qt/simple-graph-tool/sources/GraphGraphicsView.cpp
 
-CMakeFiles/simple_graph_tool.dir/graphgraphicsview.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/simple_graph_tool.dir/graphgraphicsview.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/haophancs/Projects/Qt/simple-graph-tool/graphgraphicsview.cpp > CMakeFiles/simple_graph_tool.dir/graphgraphicsview.cpp.i
+CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsView.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsView.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/haophancs/Projects/Qt/simple-graph-tool/sources/GraphGraphicsView.cpp > CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsView.cpp.i
 
-CMakeFiles/simple_graph_tool.dir/graphgraphicsview.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/simple_graph_tool.dir/graphgraphicsview.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/haophancs/Projects/Qt/simple-graph-tool/graphgraphicsview.cpp -o CMakeFiles/simple_graph_tool.dir/graphgraphicsview.cpp.s
+CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsView.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsView.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/haophancs/Projects/Qt/simple-graph-tool/sources/GraphGraphicsView.cpp -o CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsView.cpp.s
 
-CMakeFiles/simple_graph_tool.dir/graphmatrixtable.cpp.o: CMakeFiles/simple_graph_tool.dir/flags.make
-CMakeFiles/simple_graph_tool.dir/graphmatrixtable.cpp.o: ../graphmatrixtable.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/simple_graph_tool.dir/graphmatrixtable.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/simple_graph_tool.dir/graphmatrixtable.cpp.o -c /home/haophancs/Projects/Qt/simple-graph-tool/graphmatrixtable.cpp
+CMakeFiles/simple_graph_tool.dir/sources/GraphMatrixTable.cpp.o: CMakeFiles/simple_graph_tool.dir/flags.make
+CMakeFiles/simple_graph_tool.dir/sources/GraphMatrixTable.cpp.o: ../sources/GraphMatrixTable.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/simple_graph_tool.dir/sources/GraphMatrixTable.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/simple_graph_tool.dir/sources/GraphMatrixTable.cpp.o -c /home/haophancs/Projects/Qt/simple-graph-tool/sources/GraphMatrixTable.cpp
 
-CMakeFiles/simple_graph_tool.dir/graphmatrixtable.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/simple_graph_tool.dir/graphmatrixtable.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/haophancs/Projects/Qt/simple-graph-tool/graphmatrixtable.cpp > CMakeFiles/simple_graph_tool.dir/graphmatrixtable.cpp.i
+CMakeFiles/simple_graph_tool.dir/sources/GraphMatrixTable.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/simple_graph_tool.dir/sources/GraphMatrixTable.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/haophancs/Projects/Qt/simple-graph-tool/sources/GraphMatrixTable.cpp > CMakeFiles/simple_graph_tool.dir/sources/GraphMatrixTable.cpp.i
 
-CMakeFiles/simple_graph_tool.dir/graphmatrixtable.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/simple_graph_tool.dir/graphmatrixtable.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/haophancs/Projects/Qt/simple-graph-tool/graphmatrixtable.cpp -o CMakeFiles/simple_graph_tool.dir/graphmatrixtable.cpp.s
+CMakeFiles/simple_graph_tool.dir/sources/GraphMatrixTable.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/simple_graph_tool.dir/sources/GraphMatrixTable.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/haophancs/Projects/Qt/simple-graph-tool/sources/GraphMatrixTable.cpp -o CMakeFiles/simple_graph_tool.dir/sources/GraphMatrixTable.cpp.s
 
-CMakeFiles/simple_graph_tool.dir/graphutils.cpp.o: CMakeFiles/simple_graph_tool.dir/flags.make
-CMakeFiles/simple_graph_tool.dir/graphutils.cpp.o: ../graphutils.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/simple_graph_tool.dir/graphutils.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/simple_graph_tool.dir/graphutils.cpp.o -c /home/haophancs/Projects/Qt/simple-graph-tool/graphutils.cpp
+CMakeFiles/simple_graph_tool.dir/sources/GraphUtils.cpp.o: CMakeFiles/simple_graph_tool.dir/flags.make
+CMakeFiles/simple_graph_tool.dir/sources/GraphUtils.cpp.o: ../sources/GraphUtils.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/simple_graph_tool.dir/sources/GraphUtils.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/simple_graph_tool.dir/sources/GraphUtils.cpp.o -c /home/haophancs/Projects/Qt/simple-graph-tool/sources/GraphUtils.cpp
 
-CMakeFiles/simple_graph_tool.dir/graphutils.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/simple_graph_tool.dir/graphutils.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/haophancs/Projects/Qt/simple-graph-tool/graphutils.cpp > CMakeFiles/simple_graph_tool.dir/graphutils.cpp.i
+CMakeFiles/simple_graph_tool.dir/sources/GraphUtils.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/simple_graph_tool.dir/sources/GraphUtils.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/haophancs/Projects/Qt/simple-graph-tool/sources/GraphUtils.cpp > CMakeFiles/simple_graph_tool.dir/sources/GraphUtils.cpp.i
 
-CMakeFiles/simple_graph_tool.dir/graphutils.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/simple_graph_tool.dir/graphutils.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/haophancs/Projects/Qt/simple-graph-tool/graphutils.cpp -o CMakeFiles/simple_graph_tool.dir/graphutils.cpp.s
+CMakeFiles/simple_graph_tool.dir/sources/GraphUtils.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/simple_graph_tool.dir/sources/GraphUtils.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/haophancs/Projects/Qt/simple-graph-tool/sources/GraphUtils.cpp -o CMakeFiles/simple_graph_tool.dir/sources/GraphUtils.cpp.s
 
-CMakeFiles/simple_graph_tool.dir/inputdialog.cpp.o: CMakeFiles/simple_graph_tool.dir/flags.make
-CMakeFiles/simple_graph_tool.dir/inputdialog.cpp.o: ../inputdialog.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/simple_graph_tool.dir/inputdialog.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/simple_graph_tool.dir/inputdialog.cpp.o -c /home/haophancs/Projects/Qt/simple-graph-tool/inputdialog.cpp
+CMakeFiles/simple_graph_tool.dir/sources/InputDialog.cpp.o: CMakeFiles/simple_graph_tool.dir/flags.make
+CMakeFiles/simple_graph_tool.dir/sources/InputDialog.cpp.o: ../sources/InputDialog.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/simple_graph_tool.dir/sources/InputDialog.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/simple_graph_tool.dir/sources/InputDialog.cpp.o -c /home/haophancs/Projects/Qt/simple-graph-tool/sources/InputDialog.cpp
 
-CMakeFiles/simple_graph_tool.dir/inputdialog.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/simple_graph_tool.dir/inputdialog.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/haophancs/Projects/Qt/simple-graph-tool/inputdialog.cpp > CMakeFiles/simple_graph_tool.dir/inputdialog.cpp.i
+CMakeFiles/simple_graph_tool.dir/sources/InputDialog.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/simple_graph_tool.dir/sources/InputDialog.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/haophancs/Projects/Qt/simple-graph-tool/sources/InputDialog.cpp > CMakeFiles/simple_graph_tool.dir/sources/InputDialog.cpp.i
 
-CMakeFiles/simple_graph_tool.dir/inputdialog.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/simple_graph_tool.dir/inputdialog.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/haophancs/Projects/Qt/simple-graph-tool/inputdialog.cpp -o CMakeFiles/simple_graph_tool.dir/inputdialog.cpp.s
+CMakeFiles/simple_graph_tool.dir/sources/InputDialog.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/simple_graph_tool.dir/sources/InputDialog.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/haophancs/Projects/Qt/simple-graph-tool/sources/InputDialog.cpp -o CMakeFiles/simple_graph_tool.dir/sources/InputDialog.cpp.s
 
 CMakeFiles/simple_graph_tool.dir/main.cpp.o: CMakeFiles/simple_graph_tool.dir/flags.make
 CMakeFiles/simple_graph_tool.dir/main.cpp.o: ../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/simple_graph_tool.dir/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/simple_graph_tool.dir/main.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/simple_graph_tool.dir/main.cpp.o -c /home/haophancs/Projects/Qt/simple-graph-tool/main.cpp
 
 CMakeFiles/simple_graph_tool.dir/main.cpp.i: cmake_force
@@ -176,7 +183,7 @@ CMakeFiles/simple_graph_tool.dir/main.cpp.s: cmake_force
 
 CMakeFiles/simple_graph_tool.dir/mainwindow.cpp.o: CMakeFiles/simple_graph_tool.dir/flags.make
 CMakeFiles/simple_graph_tool.dir/mainwindow.cpp.o: ../mainwindow.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/simple_graph_tool.dir/mainwindow.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/simple_graph_tool.dir/mainwindow.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/simple_graph_tool.dir/mainwindow.cpp.o -c /home/haophancs/Projects/Qt/simple-graph-tool/mainwindow.cpp
 
 CMakeFiles/simple_graph_tool.dir/mainwindow.cpp.i: cmake_force
@@ -187,68 +194,98 @@ CMakeFiles/simple_graph_tool.dir/mainwindow.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/simple_graph_tool.dir/mainwindow.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/haophancs/Projects/Qt/simple-graph-tool/mainwindow.cpp -o CMakeFiles/simple_graph_tool.dir/mainwindow.cpp.s
 
-CMakeFiles/simple_graph_tool.dir/node.cpp.o: CMakeFiles/simple_graph_tool.dir/flags.make
-CMakeFiles/simple_graph_tool.dir/node.cpp.o: ../node.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/simple_graph_tool.dir/node.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/simple_graph_tool.dir/node.cpp.o -c /home/haophancs/Projects/Qt/simple-graph-tool/node.cpp
+CMakeFiles/simple_graph_tool.dir/sources/Node.cpp.o: CMakeFiles/simple_graph_tool.dir/flags.make
+CMakeFiles/simple_graph_tool.dir/sources/Node.cpp.o: ../sources/Node.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/simple_graph_tool.dir/sources/Node.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/simple_graph_tool.dir/sources/Node.cpp.o -c /home/haophancs/Projects/Qt/simple-graph-tool/sources/Node.cpp
 
-CMakeFiles/simple_graph_tool.dir/node.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/simple_graph_tool.dir/node.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/haophancs/Projects/Qt/simple-graph-tool/node.cpp > CMakeFiles/simple_graph_tool.dir/node.cpp.i
+CMakeFiles/simple_graph_tool.dir/sources/Node.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/simple_graph_tool.dir/sources/Node.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/haophancs/Projects/Qt/simple-graph-tool/sources/Node.cpp > CMakeFiles/simple_graph_tool.dir/sources/Node.cpp.i
 
-CMakeFiles/simple_graph_tool.dir/node.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/simple_graph_tool.dir/node.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/haophancs/Projects/Qt/simple-graph-tool/node.cpp -o CMakeFiles/simple_graph_tool.dir/node.cpp.s
+CMakeFiles/simple_graph_tool.dir/sources/Node.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/simple_graph_tool.dir/sources/Node.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/haophancs/Projects/Qt/simple-graph-tool/sources/Node.cpp -o CMakeFiles/simple_graph_tool.dir/sources/Node.cpp.s
 
-CMakeFiles/simple_graph_tool.dir/nodegraphicsitem.cpp.o: CMakeFiles/simple_graph_tool.dir/flags.make
-CMakeFiles/simple_graph_tool.dir/nodegraphicsitem.cpp.o: ../nodegraphicsitem.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/simple_graph_tool.dir/nodegraphicsitem.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/simple_graph_tool.dir/nodegraphicsitem.cpp.o -c /home/haophancs/Projects/Qt/simple-graph-tool/nodegraphicsitem.cpp
+CMakeFiles/simple_graph_tool.dir/sources/NodeGraphicsItem.cpp.o: CMakeFiles/simple_graph_tool.dir/flags.make
+CMakeFiles/simple_graph_tool.dir/sources/NodeGraphicsItem.cpp.o: ../sources/NodeGraphicsItem.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/simple_graph_tool.dir/sources/NodeGraphicsItem.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/simple_graph_tool.dir/sources/NodeGraphicsItem.cpp.o -c /home/haophancs/Projects/Qt/simple-graph-tool/sources/NodeGraphicsItem.cpp
 
-CMakeFiles/simple_graph_tool.dir/nodegraphicsitem.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/simple_graph_tool.dir/nodegraphicsitem.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/haophancs/Projects/Qt/simple-graph-tool/nodegraphicsitem.cpp > CMakeFiles/simple_graph_tool.dir/nodegraphicsitem.cpp.i
+CMakeFiles/simple_graph_tool.dir/sources/NodeGraphicsItem.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/simple_graph_tool.dir/sources/NodeGraphicsItem.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/haophancs/Projects/Qt/simple-graph-tool/sources/NodeGraphicsItem.cpp > CMakeFiles/simple_graph_tool.dir/sources/NodeGraphicsItem.cpp.i
 
-CMakeFiles/simple_graph_tool.dir/nodegraphicsitem.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/simple_graph_tool.dir/nodegraphicsitem.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/haophancs/Projects/Qt/simple-graph-tool/nodegraphicsitem.cpp -o CMakeFiles/simple_graph_tool.dir/nodegraphicsitem.cpp.s
+CMakeFiles/simple_graph_tool.dir/sources/NodeGraphicsItem.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/simple_graph_tool.dir/sources/NodeGraphicsItem.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/haophancs/Projects/Qt/simple-graph-tool/sources/NodeGraphicsItem.cpp -o CMakeFiles/simple_graph_tool.dir/sources/NodeGraphicsItem.cpp.s
+
+CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.o: CMakeFiles/simple_graph_tool.dir/flags.make
+CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.o: ../sources/ElementTableWidget.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.o -c /home/haophancs/Projects/Qt/simple-graph-tool/sources/ElementTableWidget.cpp
+
+CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/haophancs/Projects/Qt/simple-graph-tool/sources/ElementTableWidget.cpp > CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.i
+
+CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/haophancs/Projects/Qt/simple-graph-tool/sources/ElementTableWidget.cpp -o CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.s
+
+CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.o: CMakeFiles/simple_graph_tool.dir/flags.make
+CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.o: simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.o -c /home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp
+
+CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp > CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.i
+
+CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp -o CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.s
 
 # Object files for target simple_graph_tool
 simple_graph_tool_OBJECTS = \
 "CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/mocs_compilation.cpp.o" \
-"CMakeFiles/simple_graph_tool.dir/arcgraphicsitem.cpp.o" \
-"CMakeFiles/simple_graph_tool.dir/graph.cpp.o" \
-"CMakeFiles/simple_graph_tool.dir/graphgraphicsscene.cpp.o" \
-"CMakeFiles/simple_graph_tool.dir/graphgraphicsview.cpp.o" \
-"CMakeFiles/simple_graph_tool.dir/graphmatrixtable.cpp.o" \
-"CMakeFiles/simple_graph_tool.dir/graphutils.cpp.o" \
-"CMakeFiles/simple_graph_tool.dir/inputdialog.cpp.o" \
+"CMakeFiles/simple_graph_tool.dir/sources/ArcGraphicsItem.cpp.o" \
+"CMakeFiles/simple_graph_tool.dir/sources/Graph.cpp.o" \
+"CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsScene.cpp.o" \
+"CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsView.cpp.o" \
+"CMakeFiles/simple_graph_tool.dir/sources/GraphMatrixTable.cpp.o" \
+"CMakeFiles/simple_graph_tool.dir/sources/GraphUtils.cpp.o" \
+"CMakeFiles/simple_graph_tool.dir/sources/InputDialog.cpp.o" \
 "CMakeFiles/simple_graph_tool.dir/main.cpp.o" \
 "CMakeFiles/simple_graph_tool.dir/mainwindow.cpp.o" \
-"CMakeFiles/simple_graph_tool.dir/node.cpp.o" \
-"CMakeFiles/simple_graph_tool.dir/nodegraphicsitem.cpp.o"
+"CMakeFiles/simple_graph_tool.dir/sources/Node.cpp.o" \
+"CMakeFiles/simple_graph_tool.dir/sources/NodeGraphicsItem.cpp.o" \
+"CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.o" \
+"CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.o"
 
 # External object files for target simple_graph_tool
 simple_graph_tool_EXTERNAL_OBJECTS =
 
 simple_graph_tool: CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/mocs_compilation.cpp.o
-simple_graph_tool: CMakeFiles/simple_graph_tool.dir/arcgraphicsitem.cpp.o
-simple_graph_tool: CMakeFiles/simple_graph_tool.dir/graph.cpp.o
-simple_graph_tool: CMakeFiles/simple_graph_tool.dir/graphgraphicsscene.cpp.o
-simple_graph_tool: CMakeFiles/simple_graph_tool.dir/graphgraphicsview.cpp.o
-simple_graph_tool: CMakeFiles/simple_graph_tool.dir/graphmatrixtable.cpp.o
-simple_graph_tool: CMakeFiles/simple_graph_tool.dir/graphutils.cpp.o
-simple_graph_tool: CMakeFiles/simple_graph_tool.dir/inputdialog.cpp.o
+simple_graph_tool: CMakeFiles/simple_graph_tool.dir/sources/ArcGraphicsItem.cpp.o
+simple_graph_tool: CMakeFiles/simple_graph_tool.dir/sources/Graph.cpp.o
+simple_graph_tool: CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsScene.cpp.o
+simple_graph_tool: CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsView.cpp.o
+simple_graph_tool: CMakeFiles/simple_graph_tool.dir/sources/GraphMatrixTable.cpp.o
+simple_graph_tool: CMakeFiles/simple_graph_tool.dir/sources/GraphUtils.cpp.o
+simple_graph_tool: CMakeFiles/simple_graph_tool.dir/sources/InputDialog.cpp.o
 simple_graph_tool: CMakeFiles/simple_graph_tool.dir/main.cpp.o
 simple_graph_tool: CMakeFiles/simple_graph_tool.dir/mainwindow.cpp.o
-simple_graph_tool: CMakeFiles/simple_graph_tool.dir/node.cpp.o
-simple_graph_tool: CMakeFiles/simple_graph_tool.dir/nodegraphicsitem.cpp.o
+simple_graph_tool: CMakeFiles/simple_graph_tool.dir/sources/Node.cpp.o
+simple_graph_tool: CMakeFiles/simple_graph_tool.dir/sources/NodeGraphicsItem.cpp.o
+simple_graph_tool: CMakeFiles/simple_graph_tool.dir/sources/ElementTableWidget.cpp.o
+simple_graph_tool: CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.o
 simple_graph_tool: CMakeFiles/simple_graph_tool.dir/build.make
 simple_graph_tool: /usr/lib/x86_64-linux-gnu/libQt5Widgets.so.5.9.5
 simple_graph_tool: /usr/lib/x86_64-linux-gnu/libQt5Gui.so.5.9.5
 simple_graph_tool: /usr/lib/x86_64-linux-gnu/libQt5Core.so.5.9.5
 simple_graph_tool: CMakeFiles/simple_graph_tool.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Linking CXX executable simple_graph_tool"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Linking CXX executable simple_graph_tool"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/simple_graph_tool.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -260,7 +297,7 @@ CMakeFiles/simple_graph_tool.dir/clean:
 	$(CMAKE_COMMAND) -P CMakeFiles/simple_graph_tool.dir/cmake_clean.cmake
 .PHONY : CMakeFiles/simple_graph_tool.dir/clean
 
-CMakeFiles/simple_graph_tool.dir/depend:
+CMakeFiles/simple_graph_tool.dir/depend: simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp
 	cd /home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/haophancs/Projects/Qt/simple-graph-tool /home/haophancs/Projects/Qt/simple-graph-tool /home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug /home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug /home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles/simple_graph_tool.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/simple_graph_tool.dir/depend
 

@@ -118,49 +118,49 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/arcgraphicsitem.cpp">
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp">
 			<Option target="simple_graph_tool"/>
 		</Unit>
-		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/arcgraphicsitem.h">
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.rule">
 			<Option target="simple_graph_tool"/>
 		</Unit>
 		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/simple_graph_tool_autogen/mocs_compilation.cpp">
 			<Option target="simple_graph_tool"/>
 		</Unit>
-		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/graph.cpp">
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/headers/ArcGraphicsItem.h">
 			<Option target="simple_graph_tool"/>
 		</Unit>
-		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/graph.h">
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/headers/ElementTableWidget.h">
 			<Option target="simple_graph_tool"/>
 		</Unit>
-		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/graphgraphicsscene.cpp">
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/headers/Graph.h">
 			<Option target="simple_graph_tool"/>
 		</Unit>
-		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/graphgraphicsscene.h">
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/headers/GraphGraphicsScene.h">
 			<Option target="simple_graph_tool"/>
 		</Unit>
-		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/graphgraphicsview.cpp">
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/headers/GraphGraphicsView.h">
 			<Option target="simple_graph_tool"/>
 		</Unit>
-		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/graphgraphicsview.h">
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/headers/GraphMatrixTable.h">
 			<Option target="simple_graph_tool"/>
 		</Unit>
-		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/graphmatrixtable.cpp">
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/headers/GraphUtils.h">
 			<Option target="simple_graph_tool"/>
 		</Unit>
-		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/graphmatrixtable.h">
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/headers/InputDialog.h">
 			<Option target="simple_graph_tool"/>
 		</Unit>
-		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/graphutils.cpp">
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/headers/Node.h">
 			<Option target="simple_graph_tool"/>
 		</Unit>
-		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/graphutils.h">
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/headers/NodeGraphicsItem.h">
 			<Option target="simple_graph_tool"/>
 		</Unit>
-		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/inputdialog.cpp">
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/headers/qdebugstream.h">
 			<Option target="simple_graph_tool"/>
 		</Unit>
-		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/inputdialog.h">
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/headers/random.h">
 			<Option target="simple_graph_tool"/>
 		</Unit>
 		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/main.cpp">
@@ -172,22 +172,43 @@
 		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/mainwindow.h">
 			<Option target="simple_graph_tool"/>
 		</Unit>
-		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/node.cpp">
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/resource.qrc">
 			<Option target="simple_graph_tool"/>
 		</Unit>
-		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/node.h">
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/sources/ArcGraphicsItem.cpp">
 			<Option target="simple_graph_tool"/>
 		</Unit>
-		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/nodegraphicsitem.cpp">
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/sources/ElementTableWidget.cpp">
 			<Option target="simple_graph_tool"/>
 		</Unit>
-		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/nodegraphicsitem.h">
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/sources/Graph.cpp">
 			<Option target="simple_graph_tool"/>
 		</Unit>
-		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/qdebugstream.h">
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/sources/GraphGraphicsScene.cpp">
+			<Option target="simple_graph_tool"/>
+		</Unit>
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/sources/GraphGraphicsView.cpp">
+			<Option target="simple_graph_tool"/>
+		</Unit>
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/sources/GraphMatrixTable.cpp">
+			<Option target="simple_graph_tool"/>
+		</Unit>
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/sources/GraphUtils.cpp">
+			<Option target="simple_graph_tool"/>
+		</Unit>
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/sources/InputDialog.cpp">
+			<Option target="simple_graph_tool"/>
+		</Unit>
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/sources/Node.cpp">
+			<Option target="simple_graph_tool"/>
+		</Unit>
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/sources/NodeGraphicsItem.cpp">
 			<Option target="simple_graph_tool"/>
 		</Unit>
 		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/resource.qrc">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
 		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreConfig.cmake">

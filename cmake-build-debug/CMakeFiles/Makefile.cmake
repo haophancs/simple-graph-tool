@@ -11,6 +11,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.16.5/CMakeCCompiler.cmake"
   "CMakeFiles/3.16.5/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.16.5/CMakeSystem.cmake"
+  "../resource.qrc"
   "/snap/clion/114/bin/cmake/linux/share/cmake-3.16/Modules/CMakeCInformation.cmake"
   "/snap/clion/114/bin/cmake/linux/share/cmake-3.16/Modules/CMakeCXXInformation.cmake"
   "/snap/clion/114/bin/cmake/linux/share/cmake-3.16/Modules/CMakeCheckCompilerFlagCommonPatterns.cmake"
@@ -57,6 +58,7 @@ set(CMAKE_MAKEFILE_OUTPUTS
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
   "CMakeFiles/simple_graph_tool_autogen.dir/AutogenInfo.json"
+  "CMakeFiles/simple_graph_tool_autogen.dir/AutoRcc_resource_EWIEGA46WW_Info.json"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 

@@ -8,59 +8,69 @@
 	"HEADERS" : 
 	[
 		[
-			"/home/haophancs/Projects/Qt/simple-graph-tool/arcgraphicsitem.h",
+			"/home/haophancs/Projects/Qt/simple-graph-tool/headers/ArcGraphicsItem.h",
 			"MU",
-			"EWIEGA46WW/moc_arcgraphicsitem.cpp"
+			"K6S233IZAZ/moc_ArcGraphicsItem.cpp"
 		],
 		[
-			"/home/haophancs/Projects/Qt/simple-graph-tool/graph.h",
+			"/home/haophancs/Projects/Qt/simple-graph-tool/headers/ElementTableWidget.h",
 			"MU",
-			"EWIEGA46WW/moc_graph.cpp"
+			"K6S233IZAZ/moc_ElementTableWidget.cpp"
 		],
 		[
-			"/home/haophancs/Projects/Qt/simple-graph-tool/graphgraphicsscene.h",
+			"/home/haophancs/Projects/Qt/simple-graph-tool/headers/Graph.h",
 			"MU",
-			"EWIEGA46WW/moc_graphgraphicsscene.cpp"
+			"K6S233IZAZ/moc_Graph.cpp"
 		],
 		[
-			"/home/haophancs/Projects/Qt/simple-graph-tool/graphgraphicsview.h",
+			"/home/haophancs/Projects/Qt/simple-graph-tool/headers/GraphGraphicsScene.h",
 			"MU",
-			"EWIEGA46WW/moc_graphgraphicsview.cpp"
+			"K6S233IZAZ/moc_GraphGraphicsScene.cpp"
 		],
 		[
-			"/home/haophancs/Projects/Qt/simple-graph-tool/graphmatrixtable.h",
+			"/home/haophancs/Projects/Qt/simple-graph-tool/headers/GraphGraphicsView.h",
 			"MU",
-			"EWIEGA46WW/moc_graphmatrixtable.cpp"
+			"K6S233IZAZ/moc_GraphGraphicsView.cpp"
 		],
 		[
-			"/home/haophancs/Projects/Qt/simple-graph-tool/graphutils.h",
+			"/home/haophancs/Projects/Qt/simple-graph-tool/headers/GraphMatrixTable.h",
 			"MU",
-			"EWIEGA46WW/moc_graphutils.cpp"
+			"K6S233IZAZ/moc_GraphMatrixTable.cpp"
 		],
 		[
-			"/home/haophancs/Projects/Qt/simple-graph-tool/inputdialog.h",
+			"/home/haophancs/Projects/Qt/simple-graph-tool/headers/GraphUtils.h",
 			"MU",
-			"EWIEGA46WW/moc_inputdialog.cpp"
+			"K6S233IZAZ/moc_GraphUtils.cpp"
+		],
+		[
+			"/home/haophancs/Projects/Qt/simple-graph-tool/headers/InputDialog.h",
+			"MU",
+			"K6S233IZAZ/moc_InputDialog.cpp"
+		],
+		[
+			"/home/haophancs/Projects/Qt/simple-graph-tool/headers/Node.h",
+			"MU",
+			"K6S233IZAZ/moc_Node.cpp"
+		],
+		[
+			"/home/haophancs/Projects/Qt/simple-graph-tool/headers/NodeGraphicsItem.h",
+			"MU",
+			"K6S233IZAZ/moc_NodeGraphicsItem.cpp"
+		],
+		[
+			"/home/haophancs/Projects/Qt/simple-graph-tool/headers/qdebugstream.h",
+			"MU",
+			"K6S233IZAZ/moc_qdebugstream.cpp"
+		],
+		[
+			"/home/haophancs/Projects/Qt/simple-graph-tool/headers/random.h",
+			"MU",
+			"K6S233IZAZ/moc_random.cpp"
 		],
 		[
 			"/home/haophancs/Projects/Qt/simple-graph-tool/mainwindow.h",
 			"MU",
 			"EWIEGA46WW/moc_mainwindow.cpp"
-		],
-		[
-			"/home/haophancs/Projects/Qt/simple-graph-tool/node.h",
-			"MU",
-			"EWIEGA46WW/moc_node.cpp"
-		],
-		[
-			"/home/haophancs/Projects/Qt/simple-graph-tool/nodegraphicsitem.h",
-			"MU",
-			"EWIEGA46WW/moc_nodegraphicsitem.cpp"
-		],
-		[
-			"/home/haophancs/Projects/Qt/simple-graph-tool/qdebugstream.h",
-			"MU",
-			"EWIEGA46WW/moc_qdebugstream.cpp"
 		]
 	],
 	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
@@ -116,30 +126,46 @@
 	"SETTINGS_FILE" : "/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles/simple_graph_tool_autogen.dir/AutogenUsed.txt",
 	"SOURCES" : 
 	[
-		[
-			"/home/haophancs/Projects/Qt/simple-graph-tool/arcgraphicsitem.cpp",
-			"MU"
-		],
-		[ "/home/haophancs/Projects/Qt/simple-graph-tool/graph.cpp", "MU" ],
-		[
-			"/home/haophancs/Projects/Qt/simple-graph-tool/graphgraphicsscene.cpp",
-			"MU"
-		],
-		[
-			"/home/haophancs/Projects/Qt/simple-graph-tool/graphgraphicsview.cpp",
-			"MU"
-		],
-		[
-			"/home/haophancs/Projects/Qt/simple-graph-tool/graphmatrixtable.cpp",
-			"MU"
-		],
-		[ "/home/haophancs/Projects/Qt/simple-graph-tool/graphutils.cpp", "MU" ],
-		[ "/home/haophancs/Projects/Qt/simple-graph-tool/inputdialog.cpp", "MU" ],
 		[ "/home/haophancs/Projects/Qt/simple-graph-tool/main.cpp", "MU" ],
 		[ "/home/haophancs/Projects/Qt/simple-graph-tool/mainwindow.cpp", "MU" ],
-		[ "/home/haophancs/Projects/Qt/simple-graph-tool/node.cpp", "MU" ],
 		[
-			"/home/haophancs/Projects/Qt/simple-graph-tool/nodegraphicsitem.cpp",
+			"/home/haophancs/Projects/Qt/simple-graph-tool/sources/ArcGraphicsItem.cpp",
+			"MU"
+		],
+		[
+			"/home/haophancs/Projects/Qt/simple-graph-tool/sources/ElementTableWidget.cpp",
+			"MU"
+		],
+		[
+			"/home/haophancs/Projects/Qt/simple-graph-tool/sources/Graph.cpp",
+			"MU"
+		],
+		[
+			"/home/haophancs/Projects/Qt/simple-graph-tool/sources/GraphGraphicsScene.cpp",
+			"MU"
+		],
+		[
+			"/home/haophancs/Projects/Qt/simple-graph-tool/sources/GraphGraphicsView.cpp",
+			"MU"
+		],
+		[
+			"/home/haophancs/Projects/Qt/simple-graph-tool/sources/GraphMatrixTable.cpp",
+			"MU"
+		],
+		[
+			"/home/haophancs/Projects/Qt/simple-graph-tool/sources/GraphUtils.cpp",
+			"MU"
+		],
+		[
+			"/home/haophancs/Projects/Qt/simple-graph-tool/sources/InputDialog.cpp",
+			"MU"
+		],
+		[
+			"/home/haophancs/Projects/Qt/simple-graph-tool/sources/Node.cpp",
+			"MU"
+		],
+		[
+			"/home/haophancs/Projects/Qt/simple-graph-tool/sources/NodeGraphicsItem.cpp",
 			"MU"
 		]
 	],
