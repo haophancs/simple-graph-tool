@@ -16,7 +16,7 @@ private:
     bool isRunningAlgoDemo;
     NodeGraphicsItem *itemFrom;
     qreal currentScale;
-    const qreal scaleMax = 1.;
+    const qreal scaleMax = 1.5;
 
 public:
     GraphGraphicsView();

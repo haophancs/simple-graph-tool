@@ -21,7 +21,7 @@ public:
     static const QColor defaultOnSelectedColor;
 
     ArcGraphicsItem(GraphGraphicsScene *scene, NodeGraphicsItem *startItem, NodeGraphicsItem *endItem, QColor color = defaultColor,
-      QGraphicsItem *parent = 0);
+      QGraphicsItem *parent = nullptr);
 
     int type() const override { return Type; }
     QRectF boundingRect() const override;

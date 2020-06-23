@@ -1,0 +1,4 @@
+/snap/clion/114/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH=/usr/bin/qmake -G "CodeBlocks - Unix Makefiles" /home/haophancs/Projects/Qt/simple-graph-tool
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug

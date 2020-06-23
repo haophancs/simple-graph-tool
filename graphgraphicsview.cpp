@@ -117,7 +117,8 @@ void GraphGraphicsView::mousePressEvent(QMouseEvent *event)
     }
 
     auto graphScene = dynamic_cast<GraphGraphicsScene*>(scene());
-    graphScene->unique_timer->stop();
+    if (graphScene->unique_timer)
+        graphScene->unique_timer->stop();
     graphScene->resetAfterDemoAlgo();
 
     if (!selectTargetNode)

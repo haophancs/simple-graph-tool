@@ -1,12 +1,11 @@
 #include "graph.h"
-#include <math.h>
+#include <cmath>
 #include <iomanip>
 #include <QDebug>
 #include <algorithm>
 #include "nodegraphicsitem.h"
 
-Graph::Graph() {
-}
+Graph::Graph() = default;
 
 Graph::Graph(int node_num) {
     init(node_num);
@@ -17,7 +16,7 @@ void Graph::clear() {
     this->adj_mat.clear();
 }
 
-void Graph::readFromFile(std::string file) {
+void Graph::readFromFile(const std::string& file) {
     clear();
     std::ifstream in(file);
     if (!in) throw "file not existed";
@@ -50,7 +49,7 @@ void Graph::readFromFile(std::string file) {
     in.close();
 }
 
-void Graph::writeToFile(std::string file) {
+void Graph::writeToFile(const std::string& file) {
 
     std::ofstream out(file);
     out << getNodeNum() << "\n";
@@ -84,13 +83,13 @@ void Graph::writeToFile(std::string file) {
 void Graph::init(int node_num) {
     if (node_num <= 0) return;
     if (node_num > 26) {
-        std::cout << "Maximum number of automatically gererated nodes is 26\n";
+        std::cout << "Maximum number of automatically generated nodes is 26\n";
         return;
     }
     this->clear();
     this->adj_mat = std::vector<std::vector<int>>(node_num, std::vector<int>(node_num, INT_MAX));
     for (int i = 0; i < node_num; i++) {
-        this->node_list.push_back(Node(std::string(1, 'a' + i), i));
+        this->node_list.emplace_back(std::string(1, 'a' + i), i);
         this->adj_mat[i][i] = 0;
         QPointF point((1 - sin((i * 6.28) / node_num)) * node_num*NodeGraphicsItem::radius/2.,
                       (1 - cos((i * 6.28) / node_num)) * node_num*NodeGraphicsItem::radius/2.);
@@ -98,13 +97,13 @@ void Graph::init(int node_num) {
     }
 }
 
-Graph Graph::getTranpose() {
+Graph Graph::getTranspose() {
 
     Graph graph(getNodeNum());
     for (int u = 0; u < getNodeNum(); u++)
         for (int v = 0; v < getNodeNum(); v++)
             if (adj_mat[u][v] != INT_MAX)
-                graph.setArc(v, u, adj_mat[u][v]);
+                graph.setArc(u, v, adj_mat[u][v]);
     return graph;
 }
 void Graph::printAdjMat() const {
@@ -138,7 +137,7 @@ void Graph::printAdjMat() const {
     }
 }
 
-int Graph::findNodeIdByName(std::string name) const {
+int Graph::findNodeIdByName(const std::string& name) const {
     for (int i = 0; i < getNodeNum(); i++)
         if (node_list[i].getName() == name)
             return i;
@@ -247,6 +246,21 @@ std::vector<std::pair<int, int>> Graph::getArcList() const
     for (int u = 0; u < getNodeNum(); u++)
         for (int v = 0; v < getNodeNum(); v++)
             if (hasThisArc(u, v))
-                res.push_back(std::make_pair(u, v));
+                res.emplace_back(u, v);
     return res;
+}
+
+Node *Graph::getNode(int id) {
+    if (!hasThisNode(id))
+        return nullptr;
+    return &node_list[id];
+}
+
+int Graph::getArcWeight(int u, int v) const {
+    if (u == v)
+        return 0;
+    if (hasThisArc(u, v))
+        return this->adj_mat[u][v];
+    else
+        return INT_MAX;
 }

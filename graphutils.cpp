@@ -1,6 +1,6 @@
 #include "graphutils.h"
 
-std::list<std::pair<int, int>> GraphUtils::BfsToDemo(Graph graph, int source) {
+std::list<std::pair<int, int>> GraphUtils::BfsToDemo(const Graph& graph, int source) {
     std::list<std::pair<int, int>> res;
     if (!graph.hasThisNode(source)) return res;
 
@@ -17,7 +17,7 @@ std::list<std::pair<int, int>> GraphUtils::BfsToDemo(Graph graph, int source) {
         int v = q.front();
         steps.push_back(v);
         std::cout << graph.getNodeName(v) << " ";
-        res.push_back(std::make_pair(parent[steps.back()], steps.back()));
+        res.emplace_back(parent[steps.back()], steps.back());
         q.pop();
 
         for (int adj = 0; adj < n; adj++) {
@@ -32,7 +32,7 @@ std::list<std::pair<int, int>> GraphUtils::BfsToDemo(Graph graph, int source) {
     return res;
 }
 
-std::list<std::pair<int, int>> GraphUtils::DfsToDemo(Graph graph, int source) {
+std::list<std::pair<int, int>> GraphUtils::DfsToDemo(const Graph& graph, int source) {
     std::list<std::pair<int, int>> res;
     if (!graph.hasThisNode(source)) return res;
 
@@ -49,7 +49,7 @@ std::list<std::pair<int, int>> GraphUtils::DfsToDemo(Graph graph, int source) {
         int v = s.top();
         std::cout << graph.getNodeName(v) << " ";
         steps.push_back(v);
-        res.push_back(std::make_pair(parent[steps.back()], steps.back()));
+        res.emplace_back(parent[steps.back()], steps.back());
         s.pop();
 
         for (int adj = 0; adj < n; adj++) {
@@ -64,7 +64,7 @@ std::list<std::pair<int, int>> GraphUtils::DfsToDemo(Graph graph, int source) {
     return res;
 }
 
-std::list<int> GraphUtils::BFS(Graph &graph, int source) {
+std::list<int> GraphUtils::BFS(const Graph& graph, int source) {
 
     std::list<int> steps;
     if (!graph.hasThisNode(source)) return steps;
@@ -90,7 +90,7 @@ std::list<int> GraphUtils::BFS(Graph &graph, int source) {
     return steps;
 }
 
-void GraphUtils::DFSUtil(Graph &graph, int v, std::vector<bool> &visited, std::list<int> &steps){
+void GraphUtils::DFSUtil(const Graph &graph, int v, std::vector<bool> &visited, std::list<int> &steps){
     visited[v] = true;
     steps.push_back(v);
     for (int i = 0; i < graph.getNodeNum(); i++) {
@@ -99,7 +99,7 @@ void GraphUtils::DFSUtil(Graph &graph, int v, std::vector<bool> &visited, std::l
     }
 }
 
-void UndirectedDFSUtil(Graph &graph, int v, std::vector<bool> &visited, std::list<int> &steps){
+void UndirectedDFSUtil(const Graph &graph, int v, std::vector<bool> &visited, std::list<int> &steps){
     visited[v] = true;
     steps.push_back(v);
     for (int i = 0; i < graph.getNodeNum(); i++) {
@@ -108,7 +108,7 @@ void UndirectedDFSUtil(Graph &graph, int v, std::vector<bool> &visited, std::lis
     }
 }
 
-std::list<int> GraphUtils::DFS(Graph &graph, int source) {
+std::list<int> GraphUtils::DFS(const Graph& graph, int source) {
     std::list<int> steps;
     if (!graph.hasThisNode(source)) return steps;
     std::vector<bool> visited(graph.getNodeNum(), false);
@@ -116,17 +116,15 @@ std::list<int> GraphUtils::DFS(Graph &graph, int source) {
     return steps;
 }
 
-bool GraphUtils::isConnectedFromUtoV(Graph graph, int u, int v) {
+bool GraphUtils::isConnectedFromUtoV(const Graph& graph, int u, int v) {
     if (!graph.hasThisNode(u) || !graph.hasThisNode(v)) return false;
     std::vector<bool> visited(graph.getNodeNum(), false);
     std::list<int> steps;
     DFSUtil(graph, u, visited, steps);
-    if (!visited[v])
-        return false;
-    return true;
+    return !!visited[v];
 }
 
-bool GraphUtils::isAllStronglyConnected(Graph graph) {
+bool GraphUtils::isAllStronglyConnected(const Graph& graph) {
     std::vector<bool> visited (graph.getNodeNum(), false);
     for(int u = 0; u < graph.getNodeNum(); u++) {
         visited = std::vector<bool>(graph.getNodeNum(), false);
@@ -139,7 +137,7 @@ bool GraphUtils::isAllStronglyConnected(Graph graph) {
     }
     return true;
 }
-bool GraphUtils::isAllWeaklyConnected(Graph graph) {
+bool GraphUtils::isAllWeaklyConnected(const Graph& graph) {
 
     int n = graph.getNodeNum();
     std::queue<int> q;
@@ -158,8 +156,8 @@ bool GraphUtils::isAllWeaklyConnected(Graph graph) {
             }
         }
     }
-    for (int i = 0; i < (int)visited.size(); i++)
-        if (visited[i] == false)
+    for (auto && i : visited)
+        if (i == false)
             return false;
     return true;
 }
@@ -219,7 +217,7 @@ int minKey(std::vector<int> &key, std::vector<bool> &mstSet) {
     return min_index;
 }
 
-std::list<std::pair<int, int>> GraphUtils::Prim(Graph &graph, int source) {
+std::list<std::pair<int, int>> GraphUtils::Prim(const Graph& graph, int source) {
 
     std::list<std::pair<int, int>> res;
     if (!graph.hasThisNode(source)) return res;
@@ -254,13 +252,13 @@ std::list<std::pair<int, int>> GraphUtils::Prim(Graph &graph, int source) {
     for (int i = 0; i < n; i++) {
         if (i != source) {
             if (graph.hasThisArc(parent[i], i)) {
-                res.push_back(std::make_pair(parent[i], i));
+                res.emplace_back(parent[i], i);
                 std::cout << node_list[i].getName() << "\t" << node_list[parent[i]].getName() << "\t" << adj_mat[parent[i]][i] << std::endl;
                 cost += adj_mat[parent[i]][i];
             }
         }
     }
-    if (res.size() > 0)
+    if (!res.empty())
         std::cout << "total cost: " << cost;
     else
         std::cout << "not found";
@@ -284,7 +282,7 @@ void stronglyFillOrder(Graph &graph, int v, std::vector<bool> &visited, std::sta
     stack.push(v);
 }
 
-std::list<std::list<int>> GraphUtils::stronglyConnectedComponents(Graph &graph) {
+std::list<std::list<int>> GraphUtils::stronglyConnectedComponents(Graph graph) {
     std::list<std::list<int>> res;
     std::vector<bool> visited(graph.getNodeNum(), false);
     std::stack<int> stack;
@@ -293,7 +291,7 @@ std::list<std::list<int>> GraphUtils::stronglyConnectedComponents(Graph &graph) 
         if (!visited[i])
             stronglyFillOrder(graph, i, visited, stack);
 
-    Graph gr = graph.getTranpose();
+    Graph gr = graph.getTranspose();
     visited.clear();
     visited = std::vector<bool> (graph.getNodeNum(), false);
 
@@ -310,7 +308,7 @@ std::list<std::list<int>> GraphUtils::stronglyConnectedComponents(Graph &graph) 
     return res;
 }
 
-std::list<std::list<int>> GraphUtils::weaklyConnectedComponents(Graph &graph) {
+std::list<std::list<int>> GraphUtils::weaklyConnectedComponents(const Graph& graph) {
     std::list<std::list<int>> res;
     std::vector<bool> visited(graph.getNodeNum(), false);
     for (int v = 0; v < graph.getNodeNum(); v++) {
@@ -323,7 +321,7 @@ std::list<std::list<int>> GraphUtils::weaklyConnectedComponents(Graph &graph) {
     return res;
 }
 
-void bridgeUtil(Graph &graph, int u,
+void bridgeUtil(const Graph &graph, int u,
                 std::vector<bool> &visited,
                 std::vector<int> &disc,
                 std::vector<int> &low,
@@ -338,7 +336,7 @@ void bridgeUtil(Graph &graph, int u,
             bridgeUtil(graph, v, visited, disc, low, parent, res, time);
             low[u] = std::min(low[u], low[v]);
             if (low[v] > disc[u]) {
-                res.push_back(std::make_pair(u, v));
+                res.emplace_back(u, v);
             }
         }
         else if (v != parent[u] && graph.hasThisArc(u, v))
@@ -346,7 +344,7 @@ void bridgeUtil(Graph &graph, int u,
     }
 }
 
-std::list<std::pair<int, int>> GraphUtils::getBridges(Graph &graph) {
+std::list<std::pair<int, int>> GraphUtils::getBridges(const Graph& graph) {
     std::list<std::pair<int, int>> res;
     std::vector<bool> visited(graph.getNodeNum(), false);
     std::vector<int> disc(graph.getNodeNum());
@@ -361,7 +359,7 @@ std::list<std::pair<int, int>> GraphUtils::getBridges(Graph &graph) {
     return res;
 }
 
-void APUtil(Graph &graph, int u,
+void APUtil(const Graph &graph, int u,
             std::vector<bool> &visited,
             std::vector<int> &disc,
             std::vector<int> &low,
@@ -394,7 +392,7 @@ void APUtil(Graph &graph, int u,
     }
 }
 
-std::list<int> GraphUtils::getArticulationNodes(Graph graph) {
+std::list<int> GraphUtils::getArticulationNodes(const Graph& graph) {
     std::vector<bool> visited(graph.getNodeNum(), false);
     std::vector<int> disc(graph.getNodeNum());
     std::vector<int> low(graph.getNodeNum());
@@ -407,7 +405,7 @@ std::list<int> GraphUtils::getArticulationNodes(Graph graph) {
     return ap;
 }
 
-std::list<int> GraphUtils::displayArticulationNodes(Graph graph) {
+std::list<int> GraphUtils::displayArticulationNodes(const Graph& graph) {
     std::list<int> nodes = getArticulationNodes(graph);
     std::cout << "All articulation nodes: ";
     if (nodes.empty()) {
@@ -420,7 +418,7 @@ std::list<int> GraphUtils::displayArticulationNodes(Graph graph) {
     return nodes;
 }
 
-std::list<std::pair<int, int>> GraphUtils::displayBridges(Graph &graph) {
+std::list<std::pair<int, int>> GraphUtils::displayBridges(const Graph& graph) {
     std::list<std::pair<int, int>> bridges = getBridges(graph);
     std::cout << "Number of bridges: " << bridges.size() << "\n";
     for (auto b: bridges)
@@ -428,32 +426,7 @@ std::list<std::pair<int, int>> GraphUtils::displayBridges(Graph &graph) {
     return bridges;
 }
 
-void GraphUtils::displayBFS(Graph &graph, int source) {
-    if (!graph.hasThisNode(source)) return;
-
-    std::vector<Node> node_list = graph.getNodeList();
-    std::list<int> steps = BFS(graph, source);
-    std::cout << "BFS (source = " << node_list[source].getName() << "): ";
-
-    for (auto si: steps)
-        std::cout << node_list[si].getName() << " ";
-    std::cout << "\n";
-}
-
-void GraphUtils::displayDFS(Graph &graph, int source) {
-    if (!graph.hasThisNode(source)) return;
-
-    std::cout << "DFS (source = " << graph.getNodeName(source) << "): ";
-
-    std::vector<Node> node_list = graph.getNodeList();
-    std::list<int> steps = DFS(graph, source);
-
-    for (auto si: steps)
-        std::cout << node_list[si].getName() << " ";
-    std::cout << "\n";
-}
-
-std::list<std::list<int>> GraphUtils::displayConnectedComponents(Graph &graph, bool strong) {
+std::list<std::list<int>> GraphUtils::displayConnectedComponents(const Graph& graph, bool strong) {
     std::vector<Node> node_list = graph.getNodeList();
     std::list<std::list<int>> res;
     if (strong)
@@ -463,7 +436,7 @@ std::list<std::list<int>> GraphUtils::displayConnectedComponents(Graph &graph, b
 
     std::cout << "Number of " << (strong? "strongly":"weakly") <<" connected components: " << res.size() << "\n";
 
-    for (auto ri: res) {
+    for (const auto& ri: res) {
         std::cout << " - ";
         for (auto si: ri)
             std::cout << node_list[si].getName() << " ";
@@ -472,7 +445,7 @@ std::list<std::list<int>> GraphUtils::displayConnectedComponents(Graph &graph, b
     return res;
 }
 
-bool isSafe(Graph &graph, int v,
+bool isSafe(const Graph &graph, int v,
             std::vector<int> &path, int pos) {
     if (!graph.hasThisArc(path[pos - 1], v))
         return false;
@@ -482,19 +455,15 @@ bool isSafe(Graph &graph, int v,
     return true;
 }
 
-bool hamCycleUtil(Graph &graph, std::vector<int> &path, int pos) {
+bool hamCycleUtil(const Graph &graph, std::vector<int> &path, int pos) {
     int V = graph.getNodeNum();
-    if (pos == V) {
-        if (graph.hasThisArc(path[pos - 1], path[0]))
-            return true;
-        else
-            return false;
-    }
+    if (pos == V)
+        return graph.hasThisArc(path[pos - 1], path[0]);
 
     for (int v = 0; v < V; v++) {
         if (v != path[0] && isSafe(graph, v, path, pos)) {
             path[pos] = v;
-            if (hamCycleUtil(graph, path, pos + 1) == true)
+            if (hamCycleUtil(graph, path, pos + 1))
                 return true;
             path[pos] = -1;
         }
@@ -502,12 +471,12 @@ bool hamCycleUtil(Graph &graph, std::vector<int> &path, int pos) {
     return false;
 }
 
-std::list<int> GraphUtils::getHamiltonianCycle(Graph graph, int source) {
+std::list<int> GraphUtils::getHamiltonianCycle(const Graph& graph, int source) {
 
     std::vector<int> path(graph.getNodeNum(), -1);
     std::list<int> res;
     path[0] = source;
-    if (hamCycleUtil(graph, path, 1) == false)
+    if (!hamCycleUtil(graph, path, 1))
         return res;
 
     for (int i = 0; i < graph.getNodeNum(); i++)
@@ -516,7 +485,7 @@ std::list<int> GraphUtils::getHamiltonianCycle(Graph graph, int source) {
     return res;
 }
 
-std::list<std::list<int>> GraphUtils::displayHamiltonianCycle(Graph graph) {
+std::list<std::list<int>> GraphUtils::displayHamiltonianCycle(const Graph& graph) {
 
     std::list<std::list<int>> res;
     if (graph.getNodeNum() < 3) {
@@ -569,13 +538,13 @@ std::list<int> GraphUtils::getEulerianCircuit(Graph graph, int source) {
     return cycle;
 }
 
-std::list<std::list<int>> GraphUtils::displayEulerianCircuit(Graph graph) {
+std::list<std::list<int>> GraphUtils::displayEulerianCircuit(const Graph& graph) {
     std::list<std::list<int>> res;
     if (!isAllStronglyConnected(graph)) {
         std::cout << "Eulerian Circuit not found because the graph is not strongly connected\n";
         return res;
     }
-    for (Node node: graph.getNodeList()) {
+    for (const Node& node: graph.getNodeList()) {
         if (node.getNegativeDeg() != node.getPositiveDeg()) {
             std::cout << "Eulerian Circuit not found because Node " << node.getName() << " has deg+ != deg-\n";
             return res;

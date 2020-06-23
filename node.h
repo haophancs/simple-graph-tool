@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <QPoint>
+#include <utility>
 class Node {
 
 private:
@@ -12,7 +13,7 @@ private:
     std::string name;
     QPointF euclide_pos;
 
-    void setId(int id) { this->id = id; }
+    void setId(int newId) { this->id = newId; }
     void incPositiveDeg() { this->deg_pos++; }
     void incNegativeDeg() { this->deg_neg++;  }
     void decPositiveDeg() { if (this->deg_pos > 0) this->deg_pos--; }
@@ -24,10 +25,10 @@ private:
 
 public:
     Node(std::string name, int id);
-    Node(std::string name);
+    explicit Node(std::string name);
     Node(std::string name, QPointF pos);
     std::string getName() const { return this->name; }
-    void setName(std::string name) { this->name = name; }
+    void setName(std::string newName) { this->name = std::move(newName); }
     void setEuclidePos(QPointF pos) { this->euclide_pos = pos; }
 
     QPointF getEuclidePos() const { return this->euclide_pos; }
