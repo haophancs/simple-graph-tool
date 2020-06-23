@@ -30,7 +30,7 @@ private slots:
     void on_actionNew_Graph_triggered();
     void on_actionOpen_Graph_triggered();
     void on_actionCredits_triggered();
-    void on_actionExit_triggered();
+    static void on_actionExit_triggered();
     void on_actionAddNode_triggered();
     void on_actionAddArc_triggered();
     void on_actionEditArc_triggered();
@@ -68,7 +68,7 @@ signals:
     void startDemoAlgorithm(std::list<std::list<int>> listOfList, GraphDemoFlag flag);
 
 protected:
-    void closeEvent(QCloseEvent *event);
+    void closeEvent(QCloseEvent *event) override;
 
 private:
     QString workingFileName;
@@ -79,13 +79,11 @@ private:
     Graph *graph;
     bool dataNeedSaving;
 
-    void askToSave();
     QString showOpenFileDialog();
     QString showSaveFileDialog();
     void showNewNodeDialog(QPointF pos = QPointF(0, 0));
-    void showNewArcDialog();
     void setWorkspaceEnabled(bool ready);
-    void initWorkspace(QString filename, bool newfile = false);
+    void initWorkspace(const QString& filename, bool newFile = false);
 };
 
 #endif // MAINWINDOW_H

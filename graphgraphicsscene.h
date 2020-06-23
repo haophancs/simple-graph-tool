@@ -14,7 +14,7 @@ class GraphGraphicsScene : public QGraphicsScene
     Q_OBJECT
 public:
     GraphGraphicsScene();
-    GraphGraphicsScene(Graph *graph);
+    explicit GraphGraphicsScene(Graph *graph);
     Graph* graph() const;
     void setGraph(Graph *graph);
 
@@ -31,7 +31,7 @@ signals:
     void needRedraw();
 
 private:
-    Graph *myGraph;
+    Graph *myGraph{};
     std::vector<NodeGraphicsItem*> nodeItems;
     std::vector<ArcGraphicsItem*> arcItems;
     int getArcId(int u, int v);

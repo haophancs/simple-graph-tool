@@ -463,3 +463,31 @@ Parsed CXX implicit link information from above output:
   implicit fwks: []
 
 
+Determining if the include file pthread.h exists passed with the following output:
+Change Dir: /home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_d1586/fast && /usr/bin/make -f CMakeFiles/cmTC_d1586.dir/build.make CMakeFiles/cmTC_d1586.dir/build
+make[1]: Entering directory '/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_d1586.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_d1586.dir/CheckIncludeFile.c.o   -c /home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_d1586
+/snap/clion/114/bin/cmake/linux/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d1586.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_d1586.dir/CheckIncludeFile.c.o  -o cmTC_d1586 
+make[1]: Leaving directory '/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles/CMakeTmp'
+
+
+
+Determining if the function pthread_create exists in the pthread passed with the following output:
+Change Dir: /home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_2ab6a/fast && /usr/bin/make -f CMakeFiles/cmTC_2ab6a.dir/build.make CMakeFiles/cmTC_2ab6a.dir/build
+make[1]: Entering directory '/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_2ab6a.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_2ab6a.dir/CheckFunctionExists.c.o   -c /snap/clion/114/bin/cmake/linux/share/cmake-3.16/Modules/CheckFunctionExists.c
+Linking C executable cmTC_2ab6a
+/snap/clion/114/bin/cmake/linux/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2ab6a.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_2ab6a.dir/CheckFunctionExists.c.o  -o cmTC_2ab6a  -lpthread 
+make[1]: Leaving directory '/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/CMakeFiles/CMakeTmp'
+
+
+

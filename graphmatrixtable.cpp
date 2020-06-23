@@ -19,7 +19,7 @@ void GraphMatrixTable::setGraph(Graph *graph)
 {
 
     this->myGraph = graph;
-    if (myGraph == NULL) return;
+    if (myGraph == nullptr) return;
     reloadData();
 }
 
@@ -74,8 +74,7 @@ void GraphMatrixTable::adjustCell(int row, int column) {
     }
 }
 
-GraphMatrixTable::GraphMatrixTable(Graph *myGraph)
-{
+GraphMatrixTable::GraphMatrixTable(Graph *myGraph) {
     defaultSetting();
     setGraph(myGraph);
 
@@ -99,7 +98,7 @@ void GraphMatrixTable::reloadData() {
     this->setRowCount(myGraph->getNodeNum());
     this->setColumnCount(myGraph->getNodeNum());
     QStringList table_header;
-    for (Node node: myGraph->getNodeList()) {
+    for (const Node& node: myGraph->getNodeList()) {
         table_header << QString::fromStdString(node.getName());
     }
     this->setHorizontalHeaderLabels(table_header);

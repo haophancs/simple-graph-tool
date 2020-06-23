@@ -17,7 +17,7 @@ utility
 -
 vector
 -
-limits.h
+climits
 -
 fstream
 -
@@ -94,8 +94,6 @@ qmath.h
 QPen
 -
 QDebug
--
-QtMath
 -
 QPainter
 -
@@ -179,7 +177,7 @@ utility
 -
 vector
 -
-limits.h
+climits
 -
 fstream
 -
@@ -190,6 +188,10 @@ memory
 graphgraphicsscene.h
 /home/haophancs/Projects/Qt/simple-graph-tool/graphgraphicsscene.h
 QDebug
+-
+memory
+-
+utility
 -
 
 /home/haophancs/Projects/Qt/simple-graph-tool/graphgraphicsscene.h
@@ -297,10 +299,6 @@ graphmatrixtable.h
 /home/haophancs/Projects/Qt/simple-graph-tool/graphmatrixtable.h
 graphgraphicsview.h
 /home/haophancs/Projects/Qt/simple-graph-tool/graphgraphicsview.h
-
-/home/haophancs/Projects/Qt/simple-graph-tool/node.cpp
-node.h
-/home/haophancs/Projects/Qt/simple-graph-tool/node.h
 
 /home/haophancs/Projects/Qt/simple-graph-tool/node.h
 iostream
@@ -739,10 +737,6 @@ qtcoreversion.h
 /usr/include/x86_64-linux-gnu/qt5/QtCore/qtcoreversion.h
 
 /usr/include/x86_64-linux-gnu/qt5/QtCore/QtCoreDepends
-
-/usr/include/x86_64-linux-gnu/qt5/QtCore/QtMath
-qmath.h
-/usr/include/x86_64-linux-gnu/qt5/QtCore/qmath.h
 
 /usr/include/x86_64-linux-gnu/qt5/QtCore/qabstractanimation.h
 QtCore/qobject.h

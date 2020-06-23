@@ -10,7 +10,7 @@ class InputDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit InputDialog(QWidget *parent = nullptr, QString title = "Input", QList<QString> labelText = QList<QString>());
+    explicit InputDialog(QWidget *parent = nullptr, const QString& title = "Input", QList<QString> labelText = QList<QString>());
 
     static QStringList getStrings(QWidget *parent, QString title, QList<QString> labelText = QList<QString>(), bool *ok = nullptr);
 

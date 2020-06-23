@@ -4,7 +4,7 @@
 #include "node.h"
 #include <utility>
 #include <vector>
-#include <limits.h>
+#include <climits>
 #include <fstream>
 #include <memory>
 
@@ -19,6 +19,7 @@ class Graph {
     explicit Graph(int node_num);
     Graph getTranspose();
     void init(int node_num);
+
     void printAdjMat() const;
     void clear();
 
@@ -38,8 +39,7 @@ class Graph {
     bool setArc(const std::string& uname, const std::string& vname, int w = 1) {
         return setArc(findNodeIdByName(uname), findNodeIdByName(vname), w);
     }
-    bool setArc(int u, const std::string& vname, int w = 1) { return setArc(u, findNodeIdByName(vname), w); }
-    bool setArc(const std::string& uname, int v, int w = 1) { return setArc(findNodeIdByName(uname), v, w); }
+
     bool removeArc(int u, int v);
     bool removeArc(const std::string& uname, const std::string& vname) { return setArc(uname, vname, INT_MAX);}
     bool hasThisArc(int u, int v) const { return hasThisNode(u) && hasThisNode(v) && adj_mat[u][v] != INT_MAX && adj_mat[u][v] != 0; }

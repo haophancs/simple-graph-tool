@@ -39,8 +39,8 @@ public:
     void setOnSelectedColor(QColor color);
 
 protected:
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
 
 private:
     GraphGraphicsScene *myScene;

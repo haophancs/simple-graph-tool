@@ -10,9 +10,9 @@ class GraphMatrixTable : public QTableWidget
 {
    Q_OBJECT
 private:
-    Graph *myGraph;
+    Graph *myGraph{};
 public:
-    GraphMatrixTable(Graph *myGraph);
+    explicit GraphMatrixTable(Graph *myGraph);
     void setGraph(Graph *myGraph);
     Graph* graph() const;
     void defaultSetting();

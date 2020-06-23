@@ -9,18 +9,17 @@ class GraphGraphicsView : public QGraphicsView
 {
     Q_OBJECT
 private:
-    GraphGraphicsScene *myScene;
-    QMenu *contextMenu;
+    GraphGraphicsScene *myScene{};
+    QMenu *contextMenu{};
     bool moving;
     bool selectTargetNode;
     bool isRunningAlgoDemo;
-    NodeGraphicsItem *itemFrom;
+    NodeGraphicsItem *itemFrom{};
     qreal currentScale;
     const qreal scaleMax = 1.5;
 
 public:
     GraphGraphicsView();
-    ~GraphGraphicsView();
     void setScene(GraphGraphicsScene *scene);
 
 public slots:

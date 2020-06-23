@@ -1,10 +1,9 @@
 #include "graphgraphicsscene.h"
 #include <QDebug>
+#include <memory>
+#include <utility>
 //#include <QRandomGenerator>
-GraphGraphicsScene::GraphGraphicsScene()
-{
-
-}
+GraphGraphicsScene::GraphGraphicsScene() = default;
 
 GraphGraphicsScene::GraphGraphicsScene(Graph *graph)
 {
@@ -48,8 +47,8 @@ void GraphGraphicsScene::reloadData() {
 void GraphGraphicsScene::demoAlgorithm(std::list<std::pair<int, int> > listOfPair, GraphDemoFlag flag)
 {
     resetAfterDemoAlgo();
-    this->listOfPair = listOfPair;
-    unique_timer = std::unique_ptr<QTimer>(new QTimer());
+    this->listOfPair = std::move(listOfPair);
+    unique_timer = std::make_unique<QTimer>();
     connect(unique_timer.get(), &QTimer::timeout, this, [this, flag]() {
         if (!this->listOfPair.empty()) {
             std::pair<int, int> pii = this->listOfPair.front();
@@ -87,7 +86,7 @@ void GraphGraphicsScene::demoAlgorithm(std::list<int> listOfNum, GraphDemoFlag f
 {
     resetAfterDemoAlgo();
     this->listOfNum = listOfNum;
-    unique_timer = std::unique_ptr<QTimer>(new QTimer());
+    unique_timer = std::make_unique<QTimer>();
 
     if (flag != GraphDemoFlag::Coloring) {
         connect(unique_timer.get(), &QTimer::timeout, this, [this, flag]() {
@@ -122,11 +121,11 @@ void GraphGraphicsScene::demoAlgorithm(std::list<int> listOfNum, GraphDemoFlag f
         const int org_size = listOfNum.size();
         connect(unique_timer.get(), &QTimer::timeout, this, [this, colorMap, org_size]() {
             if (!this->listOfNum.empty()) {
-                int id = org_size - this->listOfNum.size();
+                int id = static_cast<int>(org_size - this->listOfNum.size());
                 int currColor = this->listOfNum.front();
                 this->listOfNum.pop_front();
                 if (id > -1) {
-                    std::map<int, QColor>::const_iterator pos = colorMap.find(currColor);
+                    auto pos = colorMap.find(currColor);
                     this->nodeItems[id]->setOnSelectedColor(pos->second);
                     this->nodeItems[id]->setSelected(true);
                 }
@@ -144,7 +143,7 @@ void GraphGraphicsScene::demoAlgorithm(std::list<std::list<int> > listOfList, Gr
 {
     resetAfterDemoAlgo();
     this->listOfList = listOfList;
-    unique_timer = std::unique_ptr<QTimer>(new QTimer());
+    unique_timer = std::make_unique<QTimer>();
 
     if (flag == GraphDemoFlag::Component) {
         std::vector<QColor> colorTable;
@@ -152,7 +151,7 @@ void GraphGraphicsScene::demoAlgorithm(std::list<std::list<int> > listOfList, Gr
             if (i < 14)
                 colorTable.push_back(NodeGraphicsItem::colorTable[i+2]);
             else
-                colorTable.push_back(QColor(rand() % 256, rand() % 256, rand() % 256));
+                colorTable.emplace_back(rand() % 256, rand() % 256, rand() % 256);
         }
         int org_size = listOfList.size();
         connect(unique_timer.get(), &QTimer::timeout, this, [this, colorTable, org_size]() {
@@ -184,7 +183,7 @@ void GraphGraphicsScene::demoAlgorithm(std::list<std::list<int> > listOfList, Gr
     else if (flag == GraphDemoFlag::ArcAndNode) {
         connect(unique_timer.get(), &QTimer::timeout, this, [this]() {
             if (!this->listOfList.empty() || !this->listOfNum.empty()) {
-                bool theLast = false;
+                bool theLast;
                 if (this->listOfNum.empty()) {
                     this->listOfNum = this->listOfList.front();
                     unique_timer->setInterval(300);

@@ -24,7 +24,6 @@ CMakeFiles/simple_graph_tool.dir/arcgraphicsitem.cpp.o: /usr/include/x86_64-linu
 CMakeFiles/simple_graph_tool.dir/arcgraphicsitem.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QVariant
 CMakeFiles/simple_graph_tool.dir/arcgraphicsitem.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QtCore
 CMakeFiles/simple_graph_tool.dir/arcgraphicsitem.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QtCoreDepends
-CMakeFiles/simple_graph_tool.dir/arcgraphicsitem.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QtMath
 CMakeFiles/simple_graph_tool.dir/arcgraphicsitem.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qabstractanimation.h
 CMakeFiles/simple_graph_tool.dir/arcgraphicsitem.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qabstracteventdispatcher.h
 CMakeFiles/simple_graph_tool.dir/arcgraphicsitem.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qabstractitemmodel.h

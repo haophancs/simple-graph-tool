@@ -106,6 +106,7 @@ Graph Graph::getTranspose() {
                 graph.setArc(u, v, adj_mat[u][v]);
     return graph;
 }
+
 void Graph::printAdjMat() const {
 
     int max_length = 0;

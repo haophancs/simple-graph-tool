@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="effolkronium_random_test"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\random\;CMake Files\random\cmake\;CMake Files\random\test\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\usr\;CMake Files\..\..\..\..\..\usr\lib\;CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\;CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\;CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Core\;CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\;CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Widgets\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="random_static_test">
+				<Option output="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/random_static_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DRANDOM_STATIC"/>
+					<Add directory="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test"/>
+					<Add directory="/home/haophancs/Projects/Qt/simple-graph-tool/random/test"/>
+					<Add directory="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/random_static_test_autogen/include"/>
+					<Add directory="/home/haophancs/Projects/Qt/simple-graph-tool/."/>
+					<Add directory="/home/haophancs/Projects/Qt/simple-graph-tool/random/test/../include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 random_static_test"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="random_static_test/fast">
+				<Option output="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/random_static_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DRANDOM_STATIC"/>
+					<Add directory="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test"/>
+					<Add directory="/home/haophancs/Projects/Qt/simple-graph-tool/random/test"/>
+					<Add directory="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/random_static_test_autogen/include"/>
+					<Add directory="/home/haophancs/Projects/Qt/simple-graph-tool/."/>
+					<Add directory="/home/haophancs/Projects/Qt/simple-graph-tool/random/test/../include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 random_static_test/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="random_thread_local_test">
+				<Option output="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/random_thread_local_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DRANDOM_THREAD_LOCAL"/>
+					<Add directory="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test"/>
+					<Add directory="/home/haophancs/Projects/Qt/simple-graph-tool/random/test"/>
+					<Add directory="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/random_thread_local_test_autogen/include"/>
+					<Add directory="/home/haophancs/Projects/Qt/simple-graph-tool/."/>
+					<Add directory="/home/haophancs/Projects/Qt/simple-graph-tool/random/test/../include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 random_thread_local_test"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="random_thread_local_test/fast">
+				<Option output="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/random_thread_local_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DRANDOM_THREAD_LOCAL"/>
+					<Add directory="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test"/>
+					<Add directory="/home/haophancs/Projects/Qt/simple-graph-tool/random/test"/>
+					<Add directory="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/random_thread_local_test_autogen/include"/>
+					<Add directory="/home/haophancs/Projects/Qt/simple-graph-tool/."/>
+					<Add directory="/home/haophancs/Projects/Qt/simple-graph-tool/random/test/../include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 random_thread_local_test/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="random_local_test">
+				<Option output="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/random_local_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DRANDOM_LOCAL"/>
+					<Add directory="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test"/>
+					<Add directory="/home/haophancs/Projects/Qt/simple-graph-tool/random/test"/>
+					<Add directory="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/random_local_test_autogen/include"/>
+					<Add directory="/home/haophancs/Projects/Qt/simple-graph-tool/."/>
+					<Add directory="/home/haophancs/Projects/Qt/simple-graph-tool/random/test/../include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 random_local_test"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="random_local_test/fast">
+				<Option output="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/random_local_test" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DRANDOM_LOCAL"/>
+					<Add directory="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test"/>
+					<Add directory="/home/haophancs/Projects/Qt/simple-graph-tool/random/test"/>
+					<Add directory="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/random_local_test_autogen/include"/>
+					<Add directory="/home/haophancs/Projects/Qt/simple-graph-tool/."/>
+					<Add directory="/home/haophancs/Projects/Qt/simple-graph-tool/random/test/../include"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 random_local_test/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="random_static_test_autogen">
+				<Option working_dir="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 random_static_test_autogen"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="random_thread_local_test_autogen">
+				<Option working_dir="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 random_thread_local_test_autogen"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="random_local_test_autogen">
+				<Option working_dir="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 random_local_test_autogen"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/random_local_test_autogen/mocs_compilation.cpp">
+			<Option target="random_local_test"/>
+		</Unit>
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/random_static_test_autogen/mocs_compilation.cpp">
+			<Option target="random_static_test"/>
+		</Unit>
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/random/test/random_thread_local_test_autogen/mocs_compilation.cpp">
+			<Option target="random_thread_local_test"/>
+		</Unit>
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/random/test/random_test.cpp">
+			<Option target="random_static_test"/>
+			<Option target="random_thread_local_test"/>
+			<Option target="random_local_test"/>
+		</Unit>
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/random/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\random\"/>
+		</Unit>
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/random/cmake/config.cmake.in">
+			<Option virtualFolder="CMake Files\random\cmake\"/>
+		</Unit>
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/random/test/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\random\test\"/>
+		</Unit>
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/random/test/set_up_warnings.cmake">
+			<Option virtualFolder="CMake Files\random\test\"/>
+		</Unit>
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Core\"/>
+		</Unit>
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreConfigExtras.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Core\"/>
+		</Unit>
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreConfigExtrasMkspecDir.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Core\"/>
+		</Unit>
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Core\"/>
+		</Unit>
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreMacros.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Core\"/>
+		</Unit>
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5GuiConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5GuiConfigExtras.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Gui/Qt5GuiConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Gui\"/>
+		</Unit>
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Widgets/Qt5WidgetsConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Widgets\"/>
+		</Unit>
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Widgets/Qt5WidgetsConfigExtras.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Widgets\"/>
+		</Unit>
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Widgets/Qt5WidgetsConfigVersion.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Widgets\"/>
+		</Unit>
+		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Widgets/Qt5WidgetsMacros.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\Qt5Widgets\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

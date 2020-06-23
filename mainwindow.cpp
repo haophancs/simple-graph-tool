@@ -4,7 +4,6 @@
 #include "graphutils.h"
 #include "inputdialog.h"
 #include <QtGui>
-#include <QDebug>
 #include <QMessageBox>
 #include <QTimer>
 #include "qdebugstream.h"
@@ -19,9 +18,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     this->dataNeedSaving = false;
     this->setWindowTitle("Simple Graph Tool");
-    QSignalMapper *m = new QSignalMapper(this);
-    QShortcut *s1 = new QShortcut(QKeySequence("Alt+1"), this);
-    QShortcut *s2 = new QShortcut(QKeySequence("Alt+2"), this);
+    auto *m = new QSignalMapper(this);
+    auto *s1 = new QShortcut(QKeySequence("Alt+1"), this);
+    auto *s2 = new QShortcut(QKeySequence("Alt+2"), this);
     connect(s1, SIGNAL(activated()), m, SLOT(map()));
     connect(s2, SIGNAL(activated()), m, SLOT(map()));
     m->setMapping(s1, 0);
@@ -75,17 +74,16 @@ MainWindow::MainWindow(QWidget *parent) :
         if (ok && this->graph->setArc(u, v, w))
             emit graphChanged();
     });
-    connect(view, &GraphGraphicsView::startAlgorithm, this, [this](QString algo, int id) {
-        GraphUtils graph_utils;
+    connect(view, &GraphGraphicsView::startAlgorithm, this, [this](const QString& algo, int id) {
         QDebugStream qout(std::cout, ui->console_text);
         if (algo == "BFS") {
             this->ui->console_text->clear();
-            std::list<std::pair<int, int>> res = graph_utils.BfsToDemo(*(this->graph), id);
+            std::list<std::pair<int, int>> res = GraphUtils::BfsToDemo(*(this->graph), id);
             emit startDemoAlgorithm(res, GraphDemoFlag::ArcAndNode);
         }
         else if (algo == "DFS") {
             this->ui->console_text->clear();
-            std::list<std::pair<int, int>> res = graph_utils.DfsToDemo(*(this->graph), id);
+            std::list<std::pair<int, int>> res = GraphUtils::DfsToDemo(*(this->graph), id);
             emit startDemoAlgorithm(res, GraphDemoFlag::ArcAndNode);
         }
         else if (algo == "Find path") {
@@ -100,8 +98,8 @@ MainWindow::MainWindow(QWidget *parent) :
                     return;
                 }
                 this->ui->console_text->clear();
-                qDebug() << graph_utils.isConnectedFromUtoV(*graph, id, toId);
-                std::list<int> res = graph_utils.Dijkstra(*(this->graph), id, toId);
+                qDebug() << GraphUtils::isConnectedFromUtoV(*graph, id, toId);
+                std::list<int> res = GraphUtils::Dijkstra(*(this->graph), id, toId);
                 emit startDemoAlgorithm(res, GraphDemoFlag::ArcAndNode);
             }
         }
@@ -217,20 +215,20 @@ MainWindow::MainWindow(QWidget *parent) :
     setWorkspaceEnabled(false);
 }
 
-void MainWindow::initWorkspace(QString filename, bool newfile) {
+void MainWindow::initWorkspace(const QString& filename, bool newFile) {
 
     try {
-        if (!newfile) {
+        if (!newFile) {
             graph->readFromFile(filename.toStdString());
             this->dataNeedSaving = false;
         }
         else {
             this->dataNeedSaving = true;
-            bool okpressed = false;
+            bool okIsPressed = false;
             int n = QInputDialog::getInt(this, "Initialize graph with nodes",
                                          "Maximum 26 nodes that can be automatically generated",
-                                         0, 0, 26, 1, &okpressed);
-            if (!okpressed) return;
+                                         0, 0, 26, 1, &okIsPressed);
+            if (!okIsPressed) return;
             graph->init(n);
         }
         emit graphChanged();
@@ -277,26 +275,26 @@ QString MainWindow::showOpenFileDialog() {
                 tr("Open Document"),
                 QDir::currentPath(),
                 tr("Graph files (*.gph)"),
-                0,
+                nullptr,
                 QFileDialog::DontUseNativeDialog);
 }
 
 QString MainWindow::showSaveFileDialog()
 {
-     QString newfilename;
+     QString newFilename;
     for (int i = 1; true; i++) {
         std::ifstream is(QDir::currentPath().toStdString()
                          + "/graph" + std::to_string(i) + ".gph");
         if (!is.good()) {
-            newfilename = QString::fromStdString(QDir::currentPath().toStdString()
-                         + "/graph" + std::to_string(i) + ".gph");
+            newFilename = QString::fromStdString(QDir::currentPath().toStdString()
+                                                 + "/graph" + std::to_string(i) + ".gph");
             break;
         }
     }
     return QFileDialog::getSaveFileName(this, tr("New Graph"),
-                                        newfilename,
+                                        newFilename,
                                         tr("Graph files (*.gph)"),
-                                        0,
+                                        nullptr,
                                         QFileDialog::DontUseNativeDialog);
 }
 
@@ -327,7 +325,7 @@ void MainWindow::setWorkspaceEnabled(bool ready)
     ui->working_widget->setVisible(ready);
     ui->menuGraph->setEnabled(ready);
     ui->menuAlgorithms->setEnabled(ready);
-    foreach (QAction *action, ui->menuFile->actions())
+    for (auto action: ui->menuFile->actions())
         if (!action->menu() && !action->isSeparator()
                 && action->text().contains("Save"))
             action->setEnabled(ready);
@@ -446,9 +444,9 @@ void MainWindow::on_actionEditArc_triggered()
 void MainWindow::on_actionDelNode_triggered()
 {
     bool ok;
-    QString todelName = QInputDialog::getText(this, "Delete node", "Name: ",QLineEdit::Normal, QString(), &ok);
+    QString nameToDel = QInputDialog::getText(this, "Delete node", "Name: ",QLineEdit::Normal, QString(), &ok);
     if (ok) {
-        bool succeeded = graph->removeNode(todelName.toStdString());
+        bool succeeded = graph->removeNode(nameToDel.toStdString());
         if (!succeeded)
             QMessageBox::critical(this, "Error", "There's no node like this!");
         else
@@ -475,18 +473,16 @@ void MainWindow::on_actionDelArc_triggered()
 void MainWindow::on_articulationNodeBtn_clicked()
 {
     ui->console_text->clear();
-    GraphUtils graph_utils;
     QDebugStream qout(std::cout, ui->console_text);
-    std::list<int> res = graph_utils.displayArticulationNodes(*graph);
+    std::list<int> res = GraphUtils::displayArticulationNodes(*graph);
     emit startDemoAlgorithm(res, GraphDemoFlag::OnlyNode);
 }
 
 void MainWindow::on_bridgesBtn_clicked()
 {
     ui->console_text->clear();
-    GraphUtils graph_utils;
     QDebugStream qout(std::cout, ui->console_text);
-    std::list<std::pair<int, int>> res = graph_utils.displayBridges(*graph);
+    std::list<std::pair<int, int>> res = GraphUtils::displayBridges(*graph);
     emit startDemoAlgorithm(res, GraphDemoFlag::OnlyArc);
 }
 
@@ -501,9 +497,8 @@ void MainWindow::on_coloringBtn_clicked()
 void MainWindow::on_weaklyConnectedBtn_clicked()
 {
     ui->console_text->clear();
-    GraphUtils graph_utils;
     QDebugStream qout(std::cout, ui->console_text);
-    std::list<std::list<int>> res = graph_utils.displayConnectedComponents(*graph, false);
+    std::list<std::list<int>> res = GraphUtils::displayConnectedComponents(*graph, false);
     emit startDemoAlgorithm(res, GraphDemoFlag::Component);
 
 }
@@ -512,7 +507,7 @@ void MainWindow::on_connectedComponentsBtn_clicked()
     ui->console_text->clear();
     GraphUtils graph_utils;
     QDebugStream qout(std::cout, ui->console_text);
-    std::list<std::list<int>> res = graph_utils.displayConnectedComponents(*graph);
+    std::list<std::list<int>> res = GraphUtils::displayConnectedComponents(*graph);
     emit startDemoAlgorithm(res, GraphDemoFlag::Component);
 }
 
@@ -537,7 +532,7 @@ void MainWindow::on_shortestPathBtn_clicked()
             QMessageBox::critical(this,"Error", tr("No node named ") + reply[1]);
             return;
         }
-        std::list<int> res = graph_utils.Dijkstra(*graph, fromId, toId);
+        std::list<int> res = GraphUtils::Dijkstra(*graph, fromId, toId);
         emit startDemoAlgorithm(res, GraphDemoFlag::ArcAndNode);
     }
 }
@@ -565,7 +560,7 @@ void MainWindow::on_BFSbtn_clicked()
         {
             GraphUtils graph_utils;
             QDebugStream qout(std::cout, ui->console_text);
-            std::list<std::pair<int, int>> res = graph_utils.BfsToDemo(*graph, id);
+            std::list<std::pair<int, int>> res = GraphUtils::BfsToDemo(*graph, id);
             emit startDemoAlgorithm(res, GraphDemoFlag::ArcAndNode);
         }
         else {
@@ -583,11 +578,9 @@ void MainWindow::on_DFSbtn_clicked()
     if (ok) {
         if (source_str.isNull())
             return;
-        if (graph->hasThisNode(id))
-        {
-            GraphUtils graph_utils;
+        if (graph->hasThisNode(id)) {
             QDebugStream qout(std::cout, ui->console_text);
-            std::list<std::pair<int, int>> res = graph_utils.DfsToDemo(*graph, id);
+            std::list<std::pair<int, int>> res = GraphUtils::DfsToDemo(*graph, id);
             emit startDemoAlgorithm(res, GraphDemoFlag::ArcAndNode);
         }
         else
@@ -599,9 +592,8 @@ void MainWindow::on_EulerBtn_clicked()
 {
 
     ui->console_text->clear();
-    GraphUtils graph_utils;
     QDebugStream qout(std::cout, ui->console_text);
-    std::list<std::list<int>> res = graph_utils.displayEulerianCircuit(*graph);
+    std::list<std::list<int>> res = GraphUtils::displayEulerianCircuit(*graph);
     emit startDemoAlgorithm(res, GraphDemoFlag::ArcAndNode);
 }
 
@@ -610,7 +602,7 @@ void MainWindow::on_HamiltonBtn_clicked()
     ui->console_text->clear();
     GraphUtils graph_utils;
     QDebugStream qout(std::cout, ui->console_text);
-    std::list<std::list<int>> res = graph_utils.displayHamiltonianCycle(*graph);
+    std::list<std::list<int>> res = GraphUtils::displayHamiltonianCycle(*graph);
     emit startDemoAlgorithm(res, GraphDemoFlag::ArcAndNode);
 }
 
@@ -681,5 +673,3 @@ void MainWindow::on_actionFind_weakly_connected_components_triggered()
 {
     on_weaklyConnectedBtn_clicked();
 }
-
-

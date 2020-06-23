@@ -2,8 +2,8 @@
 #include <qmath.h>
 #include <QPen>
 #include <QDebug>
-#include <QtMath>
 #include <QPainter>
+#include <utility>
 #include "graphgraphicsscene.h"
 
 ArcGraphicsItem::ArcGraphicsItem(GraphGraphicsScene *scene, NodeGraphicsItem *startItem, NodeGraphicsItem *endItem, QColor color, QGraphicsItem *parent)
@@ -12,7 +12,7 @@ ArcGraphicsItem::ArcGraphicsItem(GraphGraphicsScene *scene, NodeGraphicsItem *st
     this->myStartItem = startItem;
     this->myEndItem = endItem;
     this->myScene = scene;
-    this->myColor = color;
+    this->myColor = std::move(color);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setAcceptHoverEvents(true);
     setPen(QPen(myColor, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
@@ -70,7 +70,7 @@ QColor ArcGraphicsItem::onSelectedColor() const
 
 void ArcGraphicsItem::setOnSelectedColor(QColor color)
 {
-    this->selectedColor = color;
+    this->selectedColor = std::move(color);
 }
 
 bool ArcGraphicsItem::inversionAvailable() const {
@@ -97,8 +97,8 @@ void ArcGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
     qreal ty1 = 1 - (NodeGraphicsItem::radius/2.) / length_y;
 
     QPointF centerPos = QPoint(
-                (p + r) / 2,
-                (q + s) / 2);
+            static_cast<int>((p + r) / 2),
+            static_cast<int>((q + s) / 2));
 
     QLineF centerLine(myStartItem->pos(), myEndItem->pos());
     setLine(centerLine);
@@ -119,7 +119,7 @@ void ArcGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
         qreal offset = 4;
         if (length < 350) {
             offset += ((350 - length) / 100) * 4;
-            angle -= ((350 - length / 100)) * (4/180) * M_PI;
+            angle -= ((350 - length / 100)) * (4./180) * M_PI;
         }
         qreal foo = qMax(5., qMin(25., length / 3));
         if (arc().first < arc().second) {

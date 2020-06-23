@@ -31,12 +31,12 @@ void GraphGraphicsView::contextMenuEvent(QContextMenuEvent *event)
         gi->setSelected(false);
 
     QList<QGraphicsItem*> clickedItems = items(event->pos());
-    if (clickedItems.size() > 0 ) {
+    if (!clickedItems.empty() ) {
         auto item = clickedItems[0];
         item->setSelected(true);
 
-        ArcGraphicsItem *arcItem = dynamic_cast<ArcGraphicsItem*>(item);
-        NodeGraphicsItem *nodeItem = dynamic_cast<NodeGraphicsItem*>(item);
+        auto *arcItem = dynamic_cast<ArcGraphicsItem*>(item);
+        auto *nodeItem = dynamic_cast<NodeGraphicsItem*>(item);
         if (nodeItem) {
             int id = nodeItem->node()->getId();
             emit selectedNode(id);
@@ -88,7 +88,7 @@ void GraphGraphicsView::contextMenuEvent(QContextMenuEvent *event)
         }
     }
     else {
-        if (scene()->selectedItems().size() > 0)
+        if (!scene()->selectedItems().empty())
             scene()->selectedItems()[0]->setSelected(false);
         QMenu menu;
         menu.addAction("New &node");
@@ -125,8 +125,8 @@ void GraphGraphicsView::mousePressEvent(QMouseEvent *event)
         QGraphicsView::mousePressEvent(event);
     if (selectTargetNode) {
         QList<QGraphicsItem*> itemsTo = items(event->pos());
-        if (itemsTo.size() > 0) {
-            NodeGraphicsItem *castedItemTo = dynamic_cast<NodeGraphicsItem*>(itemsTo[0]);
+        if (!itemsTo.empty()) {
+            auto *castedItemTo = dynamic_cast<NodeGraphicsItem*>(itemsTo[0]);
             if (itemFrom && castedItemTo && itemFrom != castedItemTo) {
                 castedItemTo->setSelected(false);
                 emit setArc(itemFrom->node()->getId(), castedItemTo->node()->getId());
@@ -141,7 +141,7 @@ void GraphGraphicsView::mousePressEvent(QMouseEvent *event)
 
 void GraphGraphicsView::mouseReleaseEvent(QMouseEvent *event)
 {
-    if (scene()->selectedItems().size() > 0) {
+    if (!scene()->selectedItems().empty()) {
         auto fni = dynamic_cast<NodeGraphicsItem*>(scene()->selectedItems()[0]);
         auto fai = dynamic_cast<ArcGraphicsItem*>(scene()->selectedItems()[0]);
         if (fai) emit selectedArc(fai->arc().first, fai->arc().second);
@@ -152,10 +152,6 @@ void GraphGraphicsView::mouseReleaseEvent(QMouseEvent *event)
         emit unSelect();
 
     QGraphicsView::mouseReleaseEvent(event);
-}
-
-GraphGraphicsView::~GraphGraphicsView()
-{
 }
 
 void GraphGraphicsView::setScene(GraphGraphicsScene *scene)

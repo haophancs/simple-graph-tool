@@ -1,22 +1,28 @@
 <component name="ProjectDictionaryState">
   <dictionary name="haophancs">
     <words>
+      <w>algo</w>
       <w>arcgraphicsitem</w>
+      <w>arcitem</w>
       <w>euclide</w>
       <w>eulerian</w>
       <w>graphgraphicsscene</w>
       <w>graphgraphicsview</w>
       <w>graphmatrixtable</w>
+      <w>graphtable</w>
       <w>graphutils</w>
       <w>inputdialog</w>
       <w>mainwindow</w>
       <w>nodegraphicsitem</w>
       <w>nodename</w>
+      <w>okpressed</w>
       <w>qdebugstream</w>
       <w>qmake</w>
+      <w>qout</w>
       <w>topo</w>
       <w>tranpose</w>
       <w>vname</w>
+      <w>xsputn</w>
     </words>
   </dictionary>
 </component>
