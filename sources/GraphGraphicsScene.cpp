@@ -11,11 +11,11 @@ GraphGraphicsScene::GraphGraphicsScene(Graph *graph) {
 }
 
 Graph *GraphGraphicsScene::getGraph() const {
-    return this->graph;
+    return this->myGraph;
 }
 
 void GraphGraphicsScene::setGraph(Graph *graph) {
-    this->graph = graph;
+    this->myGraph = graph;
     reloadData();
 }
 
@@ -24,12 +24,12 @@ void GraphGraphicsScene::reloadData() {
     NodeGraphicsItem::radius = 50;
     this->clear();
 
-    this->nodeItems = std::vector<NodeGraphicsItem *>(graph->getNodeNum());
-    std::vector<std::pair<int, int>> arcList = graph->getArcList();
+    this->nodeItems = std::vector<NodeGraphicsItem *>(myGraph->getNodeNum());
+    std::vector<std::pair<int, int>> arcList = myGraph->getArcList();
     this->arcItems = std::vector<ArcGraphicsItem *>(arcList.size());
 
-    for (int i = 0; i < graph->getNodeNum(); i++) {
-        nodeItems[i] = new NodeGraphicsItem(this, graph->getNode(i));
+    for (int i = 0; i < myGraph->getNodeNum(); i++) {
+        nodeItems[i] = new NodeGraphicsItem(this, myGraph->getNode(i));
     }
     for (int i = 0; i < (int) arcList.size(); i++) {
         arcItems[i] = new ArcGraphicsItem(this,
@@ -37,7 +37,7 @@ void GraphGraphicsScene::reloadData() {
                                           nodeItems[arcList[i].second]);
         this->addItem(arcItems[i]);
     }
-    for (int i = 0; i < graph->getNodeNum(); i++)
+    for (int i = 0; i < myGraph->getNodeNum(); i++)
         this->addItem(nodeItems[i]);
     this->update();
 }

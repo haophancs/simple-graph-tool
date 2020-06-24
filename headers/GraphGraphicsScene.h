@@ -41,7 +41,7 @@ signals:
     void needRedraw();
 
 private:
-    Graph *graph{};
+    Graph *myGraph{};
     std::vector<NodeGraphicsItem *> nodeItems;
     std::vector<ArcGraphicsItem *> arcItems;
 

@@ -9,7 +9,7 @@
 class GraphMatrixTable : public QTableWidget {
 Q_OBJECT
 private:
-    Graph *graph{};
+    Graph *myGraph{};
     int sectionSize;
 
 public:

@@ -15,7 +15,8 @@ class QPainterPath;
 
 class GraphGraphicsScene;
 
-class ArcGraphicsItem : public QGraphicsLineItem {
+class ArcGraphicsItem : public QObject, public QGraphicsLineItem {
+Q_OBJECT
 public:
     enum {
         Type = UserType + 4
@@ -37,23 +38,18 @@ public:
 
     QPainterPath shape() const override;
 
-    void setColor(const QColor &newColor) { this->color = newColor; }
-
-    NodeGraphicsItem *getStartItem() const { return startItem; }
-
-    NodeGraphicsItem *getEndItem() const { return endItem; }
-
     std::pair<int, int> arc() const;
 
     bool inversionAvailable() const;
 
-    int weight();
-
-    void updatePosition();
-
-    QColor onSelectedColor() const;
+    int getWeight() const;
 
     void setOnSelectedColor(QColor color);
+
+    QColor getOnSelectedColor() const { return this->onSelectedColor; }
+
+public slots:
+    void updatePosition();
 
 protected:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
@@ -65,8 +61,7 @@ private:
     NodeGraphicsItem *startItem;
     NodeGraphicsItem *endItem;
     QColor color;
-    QColor selectedColor;
-    QPolygonF arcHead;
+    QColor onSelectedColor;
     QPainterPath path;
 };
 

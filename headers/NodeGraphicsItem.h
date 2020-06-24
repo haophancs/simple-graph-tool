@@ -6,7 +6,8 @@
 
 class GraphGraphicsScene;
 
-class NodeGraphicsItem : public QGraphicsItem {
+class NodeGraphicsItem : public QObject, public QGraphicsItem {
+Q_OBJECT
 public:
     NodeGraphicsItem(GraphGraphicsScene *scene, Node *node, QColor color = colorTable()[0]);
 
@@ -40,6 +41,9 @@ public:
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
+signals:
+    void positionChanged();
+
 private:
     Node *node{};
     QColor color;
@@ -53,6 +57,7 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+
 };
 
 #endif // NODEGRAPHICSITEM_H

@@ -87,6 +87,7 @@ void NodeGraphicsItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     setCursor(Qt::ClosedHandCursor);
     setPos(event->scenePos());
     this->getNode()->setEuclidePos(this->pos());
+    emit positionChanged();
     emit myScene->needRedraw();
     QGraphicsItem::mouseMoveEvent(event);
 }

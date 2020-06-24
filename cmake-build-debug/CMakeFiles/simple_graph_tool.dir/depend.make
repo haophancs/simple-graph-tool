@@ -974,11 +974,13 @@ CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/mocs_compilation.cpp.
 CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/mocs_compilation.cpp.o: ../headers/NodeGraphicsItem.h
 CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/mocs_compilation.cpp.o: ../mainwindow.h
 CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/mocs_compilation.cpp.o: simple_graph_tool_autogen/EWIEGA46WW/moc_mainwindow.cpp
+CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/mocs_compilation.cpp.o: simple_graph_tool_autogen/K6S233IZAZ/moc_ArcGraphicsItem.cpp
 CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/mocs_compilation.cpp.o: simple_graph_tool_autogen/K6S233IZAZ/moc_ElementPropertiesTable.cpp
 CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/mocs_compilation.cpp.o: simple_graph_tool_autogen/K6S233IZAZ/moc_GraphGraphicsScene.cpp
 CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/mocs_compilation.cpp.o: simple_graph_tool_autogen/K6S233IZAZ/moc_GraphGraphicsView.cpp
 CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/mocs_compilation.cpp.o: simple_graph_tool_autogen/K6S233IZAZ/moc_GraphMatrixTable.cpp
 CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/mocs_compilation.cpp.o: simple_graph_tool_autogen/K6S233IZAZ/moc_InputDialog.cpp
+CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/mocs_compilation.cpp.o: simple_graph_tool_autogen/K6S233IZAZ/moc_NodeGraphicsItem.cpp
 CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/mocs_compilation.cpp.o: simple_graph_tool_autogen/mocs_compilation.cpp
 CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/mocs_compilation.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QEvent
 CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/mocs_compilation.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/QList
@@ -2789,7 +2791,6 @@ CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsView.cpp.o: /usr/include/x
 CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsView.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtGui/QOpenGLContext
 CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsView.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtGui/QPaintDevice
 CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsView.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtGui/QPaintDeviceWindow
-CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsView.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtGui/QRadialGradient
 CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsView.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtGui/QSurfaceFormat
 CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsView.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtGui/QTransform
 CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsView.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtGui/QVector3D

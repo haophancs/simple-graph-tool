@@ -975,11 +975,13 @@ CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/mocs_compilation.cpp.
  ../headers/NodeGraphicsItem.h
  ../mainwindow.h
  /home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/simple_graph_tool_autogen/EWIEGA46WW/moc_mainwindow.cpp
+ /home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/simple_graph_tool_autogen/K6S233IZAZ/moc_ArcGraphicsItem.cpp
  /home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/simple_graph_tool_autogen/K6S233IZAZ/moc_ElementPropertiesTable.cpp
  /home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/simple_graph_tool_autogen/K6S233IZAZ/moc_GraphGraphicsScene.cpp
  /home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/simple_graph_tool_autogen/K6S233IZAZ/moc_GraphGraphicsView.cpp
  /home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/simple_graph_tool_autogen/K6S233IZAZ/moc_GraphMatrixTable.cpp
  /home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/simple_graph_tool_autogen/K6S233IZAZ/moc_InputDialog.cpp
+ /home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/simple_graph_tool_autogen/K6S233IZAZ/moc_NodeGraphicsItem.cpp
  /home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/simple_graph_tool_autogen/mocs_compilation.cpp
  /usr/include/x86_64-linux-gnu/qt5/QtCore/QEvent
  /usr/include/x86_64-linux-gnu/qt5/QtCore/QList
@@ -2790,7 +2792,6 @@ CMakeFiles/simple_graph_tool.dir/sources/GraphGraphicsView.cpp.o
  /usr/include/x86_64-linux-gnu/qt5/QtGui/QOpenGLContext
  /usr/include/x86_64-linux-gnu/qt5/QtGui/QPaintDevice
  /usr/include/x86_64-linux-gnu/qt5/QtGui/QPaintDeviceWindow
- /usr/include/x86_64-linux-gnu/qt5/QtGui/QRadialGradient
  /usr/include/x86_64-linux-gnu/qt5/QtGui/QSurfaceFormat
  /usr/include/x86_64-linux-gnu/qt5/QtGui/QTransform
  /usr/include/x86_64-linux-gnu/qt5/QtGui/QVector3D

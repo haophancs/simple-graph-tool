@@ -45,11 +45,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(matrix, SIGNAL(graphChanged()), this, SLOT(onGraphChanged()));
     connect(scene, SIGNAL(graphChanged()), this, SLOT(onGraphChanged()));
 
-    connect(view, SIGNAL(unSelect()), this->propertiesTable, SLOT(onUnSelected()));
-    connect(this, SIGNAL(graphChanged()), this->propertiesTable, SLOT(onGraphChanged()));
-    connect(view, &GraphGraphicsView::selectedNode, this->propertiesTable, &ElementPropertiesTable::onNodeSelected);
-    connect(view, &GraphGraphicsView::selectedArc, this->propertiesTable, &ElementPropertiesTable::onArcSelected);
-    connect(matrix, &GraphMatrixTable::selectedArc, this->propertiesTable, &ElementPropertiesTable::onArcSelected);
+    connect(view, SIGNAL(unSelect()), propertiesTable, SLOT(onUnSelected()));
+    connect(this, SIGNAL(graphChanged()), propertiesTable, SLOT(onGraphChanged()));
+    connect(view, &GraphGraphicsView::selectedNode, propertiesTable, &ElementPropertiesTable::onNodeSelected);
+    connect(view, &GraphGraphicsView::selectedArc, propertiesTable, &ElementPropertiesTable::onArcSelected);
+    connect(matrix, &GraphMatrixTable::selectedArc, propertiesTable, &ElementPropertiesTable::onArcSelected);
 
     connect(this, SIGNAL(startDemoAlgorithm(std::list<std::list<int> >, GraphDemoFlag)), scene,
             SLOT(demoAlgorithm(std::list<std::list<int> >, GraphDemoFlag)));

@@ -123,8 +123,8 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(1538, 971);
-        MainWindow->setMinimumSize(QSize(720, 540));
+        MainWindow->resize(1772, 1089);
+        MainWindow->setMinimumSize(QSize(1024, 768));
         MainWindow->setMaximumSize(QSize(16777215, 16777215));
         actionNew_Graph = new QAction(MainWindow);
         actionNew_Graph->setObjectName(QStringLiteral("actionNew_Graph"));
@@ -318,11 +318,12 @@ public:
         splitter->addWidget(layoutWidget);
         utils = new QWidget(splitter);
         utils->setObjectName(QStringLiteral("utils"));
-        QSizePolicy sizePolicy2(QSizePolicy::Expanding, QSizePolicy::Preferred);
+        QSizePolicy sizePolicy2(QSizePolicy::Minimum, QSizePolicy::Preferred);
         sizePolicy2.setHorizontalStretch(0);
         sizePolicy2.setVerticalStretch(0);
         sizePolicy2.setHeightForWidth(utils->sizePolicy().hasHeightForWidth());
         utils->setSizePolicy(sizePolicy2);
+        utils->setMinimumSize(QSize(480, 0));
         utils->setMaximumSize(QSize(540, 16777215));
         verticalLayout = new QVBoxLayout(utils);
         verticalLayout->setSpacing(6);
@@ -334,11 +335,8 @@ public:
         propertiesLayout->setContentsMargins(-1, -1, -1, 6);
         propertiesLabel = new QLabel(utils);
         propertiesLabel->setObjectName(QStringLiteral("propertiesLabel"));
-        QSizePolicy sizePolicy3(QSizePolicy::Preferred, QSizePolicy::Preferred);
-        sizePolicy3.setHorizontalStretch(0);
-        sizePolicy3.setVerticalStretch(0);
-        sizePolicy3.setHeightForWidth(propertiesLabel->sizePolicy().hasHeightForWidth());
-        propertiesLabel->setSizePolicy(sizePolicy3);
+        sizePolicy2.setHeightForWidth(propertiesLabel->sizePolicy().hasHeightForWidth());
+        propertiesLabel->setSizePolicy(sizePolicy2);
 
         propertiesLayout->addWidget(propertiesLabel);
 
@@ -347,8 +345,8 @@ public:
 
         line_4 = new QFrame(utils);
         line_4->setObjectName(QStringLiteral("line_4"));
-        sizePolicy3.setHeightForWidth(line_4->sizePolicy().hasHeightForWidth());
-        line_4->setSizePolicy(sizePolicy3);
+        sizePolicy2.setHeightForWidth(line_4->sizePolicy().hasHeightForWidth());
+        line_4->setSizePolicy(sizePolicy2);
         line_4->setFrameShape(QFrame::HLine);
         line_4->setFrameShadow(QFrame::Sunken);
 
@@ -356,8 +354,8 @@ public:
 
         algorithmsLabel = new QLabel(utils);
         algorithmsLabel->setObjectName(QStringLiteral("algorithmsLabel"));
-        sizePolicy3.setHeightForWidth(algorithmsLabel->sizePolicy().hasHeightForWidth());
-        algorithmsLabel->setSizePolicy(sizePolicy3);
+        sizePolicy2.setHeightForWidth(algorithmsLabel->sizePolicy().hasHeightForWidth());
+        algorithmsLabel->setSizePolicy(sizePolicy2);
 
         verticalLayout->addWidget(algorithmsLabel);
 
@@ -366,15 +364,15 @@ public:
         horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
         BFSbtn = new QPushButton(utils);
         BFSbtn->setObjectName(QStringLiteral("BFSbtn"));
-        sizePolicy3.setHeightForWidth(BFSbtn->sizePolicy().hasHeightForWidth());
-        BFSbtn->setSizePolicy(sizePolicy3);
+        sizePolicy2.setHeightForWidth(BFSbtn->sizePolicy().hasHeightForWidth());
+        BFSbtn->setSizePolicy(sizePolicy2);
 
         horizontalLayout_4->addWidget(BFSbtn);
 
         DFSbtn = new QPushButton(utils);
         DFSbtn->setObjectName(QStringLiteral("DFSbtn"));
-        sizePolicy3.setHeightForWidth(DFSbtn->sizePolicy().hasHeightForWidth());
-        DFSbtn->setSizePolicy(sizePolicy3);
+        sizePolicy2.setHeightForWidth(DFSbtn->sizePolicy().hasHeightForWidth());
+        DFSbtn->setSizePolicy(sizePolicy2);
 
         horizontalLayout_4->addWidget(DFSbtn);
 
@@ -386,15 +384,15 @@ public:
         horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
         EulerBtn = new QPushButton(utils);
         EulerBtn->setObjectName(QStringLiteral("EulerBtn"));
-        sizePolicy3.setHeightForWidth(EulerBtn->sizePolicy().hasHeightForWidth());
-        EulerBtn->setSizePolicy(sizePolicy3);
+        sizePolicy2.setHeightForWidth(EulerBtn->sizePolicy().hasHeightForWidth());
+        EulerBtn->setSizePolicy(sizePolicy2);
 
         horizontalLayout_5->addWidget(EulerBtn);
 
         HamiltonBtn = new QPushButton(utils);
         HamiltonBtn->setObjectName(QStringLiteral("HamiltonBtn"));
-        sizePolicy3.setHeightForWidth(HamiltonBtn->sizePolicy().hasHeightForWidth());
-        HamiltonBtn->setSizePolicy(sizePolicy3);
+        sizePolicy2.setHeightForWidth(HamiltonBtn->sizePolicy().hasHeightForWidth());
+        HamiltonBtn->setSizePolicy(sizePolicy2);
 
         horizontalLayout_5->addWidget(HamiltonBtn);
 
@@ -403,57 +401,57 @@ public:
 
         coloringBtn = new QPushButton(utils);
         coloringBtn->setObjectName(QStringLiteral("coloringBtn"));
-        sizePolicy3.setHeightForWidth(coloringBtn->sizePolicy().hasHeightForWidth());
-        coloringBtn->setSizePolicy(sizePolicy3);
+        sizePolicy2.setHeightForWidth(coloringBtn->sizePolicy().hasHeightForWidth());
+        coloringBtn->setSizePolicy(sizePolicy2);
 
         verticalLayout->addWidget(coloringBtn);
 
         topoSortBtn = new QPushButton(utils);
         topoSortBtn->setObjectName(QStringLiteral("topoSortBtn"));
-        sizePolicy3.setHeightForWidth(topoSortBtn->sizePolicy().hasHeightForWidth());
-        topoSortBtn->setSizePolicy(sizePolicy3);
+        sizePolicy2.setHeightForWidth(topoSortBtn->sizePolicy().hasHeightForWidth());
+        topoSortBtn->setSizePolicy(sizePolicy2);
 
         verticalLayout->addWidget(topoSortBtn);
 
         bridgesBtn = new QPushButton(utils);
         bridgesBtn->setObjectName(QStringLiteral("bridgesBtn"));
-        sizePolicy3.setHeightForWidth(bridgesBtn->sizePolicy().hasHeightForWidth());
-        bridgesBtn->setSizePolicy(sizePolicy3);
+        sizePolicy2.setHeightForWidth(bridgesBtn->sizePolicy().hasHeightForWidth());
+        bridgesBtn->setSizePolicy(sizePolicy2);
 
         verticalLayout->addWidget(bridgesBtn);
 
         shortestPathBtn = new QPushButton(utils);
         shortestPathBtn->setObjectName(QStringLiteral("shortestPathBtn"));
-        sizePolicy3.setHeightForWidth(shortestPathBtn->sizePolicy().hasHeightForWidth());
-        shortestPathBtn->setSizePolicy(sizePolicy3);
+        sizePolicy2.setHeightForWidth(shortestPathBtn->sizePolicy().hasHeightForWidth());
+        shortestPathBtn->setSizePolicy(sizePolicy2);
 
         verticalLayout->addWidget(shortestPathBtn);
 
         articulationNodeBtn = new QPushButton(utils);
         articulationNodeBtn->setObjectName(QStringLiteral("articulationNodeBtn"));
-        sizePolicy3.setHeightForWidth(articulationNodeBtn->sizePolicy().hasHeightForWidth());
-        articulationNodeBtn->setSizePolicy(sizePolicy3);
+        sizePolicy2.setHeightForWidth(articulationNodeBtn->sizePolicy().hasHeightForWidth());
+        articulationNodeBtn->setSizePolicy(sizePolicy2);
 
         verticalLayout->addWidget(articulationNodeBtn);
 
         spanningTreeBtn = new QPushButton(utils);
         spanningTreeBtn->setObjectName(QStringLiteral("spanningTreeBtn"));
-        sizePolicy3.setHeightForWidth(spanningTreeBtn->sizePolicy().hasHeightForWidth());
-        spanningTreeBtn->setSizePolicy(sizePolicy3);
+        sizePolicy2.setHeightForWidth(spanningTreeBtn->sizePolicy().hasHeightForWidth());
+        spanningTreeBtn->setSizePolicy(sizePolicy2);
 
         verticalLayout->addWidget(spanningTreeBtn);
 
         weaklyConnectedBtn = new QPushButton(utils);
         weaklyConnectedBtn->setObjectName(QStringLiteral("weaklyConnectedBtn"));
-        sizePolicy3.setHeightForWidth(weaklyConnectedBtn->sizePolicy().hasHeightForWidth());
-        weaklyConnectedBtn->setSizePolicy(sizePolicy3);
+        sizePolicy2.setHeightForWidth(weaklyConnectedBtn->sizePolicy().hasHeightForWidth());
+        weaklyConnectedBtn->setSizePolicy(sizePolicy2);
 
         verticalLayout->addWidget(weaklyConnectedBtn);
 
         connectedComponentsBtn = new QPushButton(utils);
         connectedComponentsBtn->setObjectName(QStringLiteral("connectedComponentsBtn"));
-        sizePolicy3.setHeightForWidth(connectedComponentsBtn->sizePolicy().hasHeightForWidth());
-        connectedComponentsBtn->setSizePolicy(sizePolicy3);
+        sizePolicy2.setHeightForWidth(connectedComponentsBtn->sizePolicy().hasHeightForWidth());
+        connectedComponentsBtn->setSizePolicy(sizePolicy2);
 
         verticalLayout->addWidget(connectedComponentsBtn);
 
@@ -475,7 +473,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1538, 37));
+        menuBar->setGeometry(QRect(0, 0, 1772, 37));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
         menuGraph = new QMenu(menuBar);

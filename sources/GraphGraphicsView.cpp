@@ -1,5 +1,4 @@
 #include "headers/GraphGraphicsView.h"
-#include "QRadialGradient"
 #include <QDebug>
 
 GraphGraphicsView::GraphGraphicsView() {
