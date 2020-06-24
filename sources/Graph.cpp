@@ -52,7 +52,7 @@ void Graph::readFromFile(const std::string &file) {
     in.close();
 }
 
-void Graph::writeToFile(const std::string &file) {
+void Graph::writeToFile(const std::string &file) const {
 
     std::ofstream out(file);
     out << getNodeNum() << "\n";
@@ -100,7 +100,7 @@ void Graph::init(int node_num) {
     }
 }
 
-Graph Graph::getTranspose() {
+Graph Graph::getTranspose() const {
 
     Graph graph(getNodeNum());
     for (int u = 0; u < getNodeNum(); u++)

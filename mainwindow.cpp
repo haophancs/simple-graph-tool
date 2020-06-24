@@ -394,9 +394,8 @@ void MainWindow::on_bridgesBtn_clicked() {
 
 void MainWindow::on_coloringBtn_clicked() {
     ui->consoleText->clear();
-    GraphUtils graph_utils;
     QDebugStream qout(std::cout, ui->consoleText);
-    std::list<int> res = graph_utils.displayColoring(*graph);
+    std::list<int> res = GraphUtils::displayColoring(*graph);
     emit startDemoAlgorithm(res, GraphDemoFlag::Coloring);
 }
 
@@ -410,7 +409,6 @@ void MainWindow::on_weaklyConnectedBtn_clicked() {
 
 void MainWindow::on_connectedComponentsBtn_clicked() {
     ui->consoleText->clear();
-    GraphUtils graph_utils;
     QDebugStream qout(std::cout, ui->consoleText);
     std::list<std::list<int>> res = GraphUtils::displayConnectedComponents(*graph);
     emit startDemoAlgorithm(res, GraphDemoFlag::Component);
@@ -418,7 +416,6 @@ void MainWindow::on_connectedComponentsBtn_clicked() {
 
 void MainWindow::on_shortestPathBtn_clicked() {
     ui->consoleText->clear();
-    GraphUtils graph_utils;
     QDebugStream qout(std::cout, ui->consoleText);
     bool ok{};
     QList<QString> labels;
@@ -446,9 +443,8 @@ void MainWindow::on_shortestPathBtn_clicked() {
 void MainWindow::on_topoSortBtn_clicked() {
 
     ui->consoleText->clear();
-    GraphUtils graph_utils;
     QDebugStream qout(std::cout, ui->consoleText);
-    std::list<int> res = graph_utils.displayTopoSort(*graph);
+    std::list<int> res = GraphUtils::displayTopoSort(*graph);
     emit startDemoAlgorithm(res, GraphDemoFlag::OnlyNode);
 }
 
@@ -461,7 +457,6 @@ void MainWindow::on_BFSbtn_clicked() {
         if (source_str.isNull())
             return;
         if (graph->hasThisNode(id)) {
-            GraphUtils graph_utils;
             QDebugStream qout(std::cout, ui->consoleText);
             std::list<std::pair<int, int>> res = GraphUtils::BfsToDemo(*graph, id);
             emit startDemoAlgorithm(res, GraphDemoFlag::ArcAndNode);
@@ -498,7 +493,6 @@ void MainWindow::on_EulerBtn_clicked() {
 
 void MainWindow::on_HamiltonBtn_clicked() {
     ui->consoleText->clear();
-    GraphUtils graph_utils;
     QDebugStream qout(std::cout, ui->consoleText);
     std::list<std::list<int>> res = GraphUtils::displayHamiltonianCycle(*graph);
     emit startDemoAlgorithm(res, GraphDemoFlag::ArcAndNode);
@@ -506,9 +500,8 @@ void MainWindow::on_HamiltonBtn_clicked() {
 
 void MainWindow::on_spanningTreeBtn_clicked() {
     ui->consoleText->clear();
-    GraphUtils graph_utils;
     QDebugStream qout(std::cout, ui->consoleText);
-    std::list<std::pair<int, int>> res = graph_utils.Prim(*graph);
+    std::list<std::pair<int, int>> res = GraphUtils::Prim(*graph);
     emit startDemoAlgorithm(res, GraphDemoFlag::ArcAndNode);
 }
 

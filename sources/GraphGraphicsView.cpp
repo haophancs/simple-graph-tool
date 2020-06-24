@@ -35,7 +35,7 @@ void GraphGraphicsView::contextMenuEvent(QContextMenuEvent *event) {
         auto *arcItem = dynamic_cast<ArcGraphicsItem *>(item);
         auto *nodeItem = dynamic_cast<NodeGraphicsItem *>(item);
         if (nodeItem) {
-            int id = nodeItem->node()->getId();
+            int id = nodeItem->getNode()->getId();
             emit selectedNode(id);
             QMenu menu;
             menu.addAction("&Delete");
@@ -123,7 +123,7 @@ void GraphGraphicsView::mousePressEvent(QMouseEvent *event) {
             auto *castedItemTo = dynamic_cast<NodeGraphicsItem *>(itemsTo[0]);
             if (itemFrom && castedItemTo && itemFrom != castedItemTo) {
                 castedItemTo->setSelected(false);
-                emit setArc(itemFrom->node()->getId(), castedItemTo->node()->getId());
+                emit setArc(itemFrom->getNode()->getId(), castedItemTo->getNode()->getId());
             }
         }
     }
@@ -138,7 +138,7 @@ void GraphGraphicsView::mouseReleaseEvent(QMouseEvent *event) {
         auto fni = dynamic_cast<NodeGraphicsItem *>(scene()->selectedItems()[0]);
         auto fai = dynamic_cast<ArcGraphicsItem *>(scene()->selectedItems()[0]);
         if (fai) emit selectedArc(fai->arc().first, fai->arc().second);
-        else if (fni) emit selectedNode(fni->node()->getId());
+        else if (fni) emit selectedNode(fni->getNode()->getId());
     }
     if (items(event->pos()).empty())
             emit unSelect();

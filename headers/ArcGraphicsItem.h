@@ -37,11 +37,11 @@ public:
 
     QPainterPath shape() const override;
 
-    void setColor(const QColor &color) { myColor = color; }
+    void setColor(const QColor &newColor) { this->color = newColor; }
 
-    NodeGraphicsItem *startItem() const { return myStartItem; }
+    NodeGraphicsItem *getStartItem() const { return startItem; }
 
-    NodeGraphicsItem *endItem() const { return myEndItem; }
+    NodeGraphicsItem *getEndItem() const { return endItem; }
 
     std::pair<int, int> arc() const;
 
@@ -62,12 +62,12 @@ protected:
 
 private:
     GraphGraphicsScene *myScene;
-    NodeGraphicsItem *myStartItem;
-    NodeGraphicsItem *myEndItem;
-    QColor myColor;
+    NodeGraphicsItem *startItem;
+    NodeGraphicsItem *endItem;
+    QColor color;
     QColor selectedColor;
     QPolygonF arcHead;
-    QPainterPath myPath;
+    QPainterPath path;
 };
 
 #endif // ARCGRAPHICSITEM_H

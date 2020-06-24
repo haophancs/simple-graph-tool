@@ -18,7 +18,7 @@ public:
 
     explicit GraphGraphicsScene(Graph *graph);
 
-    Graph *graph() const;
+    Graph *getGraph() const;
 
     void setGraph(Graph *graph);
 
@@ -41,7 +41,7 @@ signals:
     void needRedraw();
 
 private:
-    Graph *myGraph{};
+    Graph *graph{};
     std::vector<NodeGraphicsItem *> nodeItems;
     std::vector<ArcGraphicsItem *> arcItems;
 

@@ -2,12 +2,13 @@
 #include "headers/GraphGraphicsScene.h"
 #include <QtWidgets>
 #include <QDebug>
+#include <utility>
 
 int NodeGraphicsItem::radius = 80;
 
 NodeGraphicsItem::NodeGraphicsItem(GraphGraphicsScene *scene, Node *node, QColor color) {
     this->myScene = scene;
-    this->myColor = color;
+    this->color = std::move(color);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setAcceptHoverEvents(true);
     setNode(node);
@@ -15,14 +16,14 @@ NodeGraphicsItem::NodeGraphicsItem(GraphGraphicsScene *scene, Node *node, QColor
     selectedColor = defaultOnSelectedColor();
 }
 
-void NodeGraphicsItem::setNode(Node *node) {
-    this->myNode = node;
-    this->setPos(myNode->getEuclidePos());
-    radius = std::max(radius, 20 + (int) node->getName().length() * 10);
+void NodeGraphicsItem::setNode(Node *newNode) {
+    this->node = newNode;
+    this->setPos(newNode->getEuclidePos());
+    radius = std::max(radius, 20 + (int) newNode->getName().length() * 10);
 }
 
-Node *NodeGraphicsItem::node() const {
-    return this->myNode;
+Node *NodeGraphicsItem::getNode() const {
+    return this->node;
 }
 
 QRectF NodeGraphicsItem::boundingRect() const {
@@ -63,17 +64,17 @@ void NodeGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     Q_UNUSED(option);
     Q_UNUSED(widget);
     if (isSelected())
-        myColor = onSelectedColor();
+        color = onSelectedColor();
     else
-        myColor = defaultColor();
+        color = defaultColor();
     painter->setPen(QPen(Qt::black, 2, Qt::SolidLine));
-    painter->setBrush(QBrush(myColor));
+    painter->setBrush(QBrush(color));
     painter->drawEllipse(-radius / 2, -radius / 2, radius, radius);
 
     QFont font;
     font.setPixelSize(20);
     painter->setFont(font);
-    QString txt = QString::fromStdString(this->node()->getName());
+    QString txt = QString::fromStdString(this->getNode()->getName());
     painter->drawText(-4 * txt.length(), 5, txt);
 }
 
@@ -85,7 +86,7 @@ void NodeGraphicsItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     isMoving = true;
     setCursor(Qt::ClosedHandCursor);
     setPos(event->scenePos());
-    this->node()->setEuclidePos(this->pos());
+    this->getNode()->setEuclidePos(this->pos());
     emit myScene->needRedraw();
     QGraphicsItem::mouseMoveEvent(event);
 }
@@ -105,9 +106,9 @@ void NodeGraphicsItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {
     setCursor(Qt::PointingHandCursor);
 }
 
-QColor NodeGraphicsItem::color() const {
+QColor NodeGraphicsItem::getColor() const {
 
-    return this->myColor;
+    return this->color;
 }
 
 QColor NodeGraphicsItem::onSelectedColor() const {

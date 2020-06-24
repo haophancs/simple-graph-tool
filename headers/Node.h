@@ -29,13 +29,11 @@ private:
     friend class Graph;
 
 public:
-    Node(std::string name, int id);
+    explicit Node(std::string name, int id);
 
     explicit Node(std::string name);
 
-    Node(std::string name, QPointF pos);
-
-    std::string getName() const { return this->name; }
+    explicit Node(std::string name, QPointF pos);
 
     void setName(std::string newName) { this->name = std::move(newName); }
 
@@ -50,6 +48,8 @@ public:
     int getDeg() const { return this->degPos + this->degNeg; }
 
     int getId() const { return this->id; }
+
+    std::string getName() const { return this->name; }
 };
 
 #endif

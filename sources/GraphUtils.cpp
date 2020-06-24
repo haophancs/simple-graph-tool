@@ -173,7 +173,7 @@ int minDistance(std::vector<int> &dist, std::vector<bool> &sptSet) {
     return min_index;
 }
 
-std::list<int> GraphUtils::Dijkstra(Graph &graph, int start, int goal) {
+std::list<int> GraphUtils::Dijkstra(const Graph &graph, int start, int goal) {
     std::vector<int> dist(graph.getNodeNum(), INT_MAX);
     std::vector<bool> sptSet(graph.getNodeNum(), false);
     std::vector<int> parent(graph.getNodeNum(), -1);
@@ -277,7 +277,7 @@ void weaklyFillOrder(Graph &graph, int v, std::vector<bool> &visited, std::stack
     stack.push(v);
 }
 
-void stronglyFillOrder(Graph &graph, int v, std::vector<bool> &visited, std::stack<int> &stack) {
+void stronglyFillOrder(const Graph &graph, int v, std::vector<bool> &visited, std::stack<int> &stack) {
     visited[v] = true;
     for (int i = 0; i < graph.getNodeNum(); i++)
         if (!visited[i] && graph.hasThisArc(v, i))
@@ -285,7 +285,7 @@ void stronglyFillOrder(Graph &graph, int v, std::vector<bool> &visited, std::sta
     stack.push(v);
 }
 
-std::list<std::list<int>> GraphUtils::stronglyConnectedComponents(Graph graph) {
+std::list<std::list<int>> GraphUtils::stronglyConnectedComponents(const Graph &graph) {
     std::list<std::list<int>> res;
     std::vector<bool> visited(graph.getNodeNum(), false);
     std::stack<int> stack;
@@ -566,7 +566,7 @@ std::list<std::list<int>> GraphUtils::displayEulerianCircuit(const Graph &graph)
     return res;
 }
 
-void topoSortUtil(Graph &graph, int v, std::vector<bool> &visited, std::stack<int> &stack) {
+void topoSortUtil(const Graph &graph, int v, std::vector<bool> &visited, std::stack<int> &stack) {
     visited[v] = true;
     for (int i = 0; i < graph.getNodeNum(); i++)
         if (graph.hasThisArc(v, i) && !visited[i])
@@ -574,7 +574,7 @@ void topoSortUtil(Graph &graph, int v, std::vector<bool> &visited, std::stack<in
     stack.push(v);
 }
 
-std::list<int> GraphUtils::getTopoSortResult(Graph graph) {
+std::list<int> GraphUtils::getTopoSortResult(const Graph &graph) {
     if (!isAllWeaklyConnected(graph)) {
         std::cout << "The graph is not weakly connected\n";
         return std::list<int>();
@@ -593,7 +593,7 @@ std::list<int> GraphUtils::getTopoSortResult(Graph graph) {
     return res;
 }
 
-std::list<int> GraphUtils::displayTopoSort(Graph graph) {
+std::list<int> GraphUtils::displayTopoSort(const Graph& graph) {
     std::list<int> topo_sorted = getTopoSortResult(graph);
     std::cout << "Topo sorted: ";
     if (topo_sorted.empty()) {
@@ -606,7 +606,7 @@ std::list<int> GraphUtils::displayTopoSort(Graph graph) {
     return topo_sorted;
 }
 
-std::list<int> GraphUtils::getColoringResult(Graph graph, int source) {
+std::list<int> GraphUtils::getColoringResult(const Graph& graph, int source) {
     std::vector<bool> available(graph.getNodeNum(), false);
     std::vector<int> res(graph.getNodeNum(), -1);
     res[source] = source;
@@ -636,7 +636,7 @@ std::list<int> GraphUtils::getColoringResult(Graph graph, int source) {
     return res_list;
 }
 
-std::list<int> GraphUtils::displayColoring(Graph graph, int source) {
+std::list<int> GraphUtils::displayColoring(const Graph& graph, int source) {
     std::list<int> res = getColoringResult(graph, source);
     std::cout << "Coloring of the graph: " << std::endl;
     int v = 0;

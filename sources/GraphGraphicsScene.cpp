@@ -10,12 +10,12 @@ GraphGraphicsScene::GraphGraphicsScene(Graph *graph) {
     setGraph(graph);
 }
 
-Graph *GraphGraphicsScene::graph() const {
-    return this->myGraph;
+Graph *GraphGraphicsScene::getGraph() const {
+    return this->graph;
 }
 
 void GraphGraphicsScene::setGraph(Graph *graph) {
-    this->myGraph = graph;
+    this->graph = graph;
     reloadData();
 }
 
@@ -24,12 +24,12 @@ void GraphGraphicsScene::reloadData() {
     NodeGraphicsItem::radius = 50;
     this->clear();
 
-    this->nodeItems = std::vector<NodeGraphicsItem *>(myGraph->getNodeNum());
-    std::vector<std::pair<int, int>> arcList = myGraph->getArcList();
+    this->nodeItems = std::vector<NodeGraphicsItem *>(graph->getNodeNum());
+    std::vector<std::pair<int, int>> arcList = graph->getArcList();
     this->arcItems = std::vector<ArcGraphicsItem *>(arcList.size());
 
-    for (int i = 0; i < myGraph->getNodeNum(); i++) {
-        nodeItems[i] = new NodeGraphicsItem(this, myGraph->getNode(i));
+    for (int i = 0; i < graph->getNodeNum(); i++) {
+        nodeItems[i] = new NodeGraphicsItem(this, graph->getNode(i));
     }
     for (int i = 0; i < (int) arcList.size(); i++) {
         arcItems[i] = new ArcGraphicsItem(this,
@@ -37,7 +37,7 @@ void GraphGraphicsScene::reloadData() {
                                           nodeItems[arcList[i].second]);
         this->addItem(arcItems[i]);
     }
-    for (int i = 0; i < myGraph->getNodeNum(); i++)
+    for (int i = 0; i < graph->getNodeNum(); i++)
         this->addItem(nodeItems[i]);
     this->update();
 }
@@ -73,7 +73,7 @@ void GraphGraphicsScene::demoAlgorithm(std::list<std::pair<int, int> > listOfPai
             unique_timer->stop();
         }
     });
-    unique_timer->start(700);
+    unique_timer->start(600);
 }
 
 void GraphGraphicsScene::demoAlgorithm(const std::list<int> &listOfNumToDemo, GraphDemoFlag flag) {
@@ -126,7 +126,7 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<int> &listOfNumToDemo, Gr
             }
         });
     }
-    unique_timer->start(700);
+    unique_timer->start(600);
 }
 
 void GraphGraphicsScene::demoAlgorithm(const std::list<std::list<int> > &listOfListToDemo, GraphDemoFlag flag) {
@@ -169,7 +169,7 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<std::list<int> > &listOfL
                 unique_timer->stop();
             }
         });
-        unique_timer->start(700);
+        unique_timer->start(600);
     } else if (flag == GraphDemoFlag::ArcAndNode) {
         connect(unique_timer.get(), &QTimer::timeout, this, [this]() {
             if (!this->listOfList.empty() || !this->listOfNum.empty()) {
@@ -203,7 +203,7 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<std::list<int> > &listOfL
                 unique_timer->stop();
             }
         });
-        unique_timer->start(700);
+        unique_timer->start(600);
     }
 }
 

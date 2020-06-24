@@ -5,7 +5,7 @@
 #include <QDialogButtonBox>
 #include <QFormLayout>
 
-InputDialog::InputDialog(QWidget *parent, const QString &title, QList<QString> labelText) : QDialog(parent) {
+InputDialog::InputDialog(QWidget *parent, const QString &title, const QList<QString>& labelText) : QDialog(parent) {
     auto *lytMain = new QFormLayout(this);
     setWindowTitle(title);
     for (auto &i : labelText) {
@@ -28,7 +28,7 @@ InputDialog::InputDialog(QWidget *parent, const QString &title, QList<QString> l
     setLayout(lytMain);
 }
 
-QStringList InputDialog::getStrings(QWidget *parent, QString title, QList<QString> labelText, bool *ok) {
+QStringList InputDialog::getStrings(QWidget *parent, const QString& title, const QList<QString>& labelText, bool *ok) {
     auto *dialog = new InputDialog(parent, title, labelText);
     QStringList list;
     const int ret = dialog->exec();

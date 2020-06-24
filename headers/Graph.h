@@ -19,8 +19,6 @@ public:
 
     explicit Graph(int node_num);
 
-    Graph getTranspose();
-
     void init(int node_num);
 
     void printAdjMatrix() const;
@@ -29,11 +27,13 @@ public:
 
     void readFromFile(const std::string &file);
 
-    void writeToFile(const std::string &file);
+    void writeToFile(const std::string &file) const ;
 
     inline int getNodeNum() const { return this->nodeList.size(); }
 
     int findNodeIdByName(const std::string &name) const;
+
+    Graph getTranspose() const;
 
     std::vector<std::vector<int>> getAdjMatrix() const { return this->adjMatrix; }
 

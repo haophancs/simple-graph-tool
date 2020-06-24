@@ -24,25 +24,25 @@ public:
 
     int type() const override { return Type; }
 
-    void setNode(Node *myNode);
+    void setNode(Node *newNode);
 
-    Node *node() const;
-
-    QColor color() const;
+    Node *getNode() const;
 
     QColor onSelectedColor() const;
 
-    void setColor(const QColor &color) { myColor = color; }
+    QColor getColor() const;
 
-    void setOnSelectedColor(const QColor &color) { selectedColor = color; }
+    void setColor(const QColor &newColor) { this->color = newColor; }
+
+    void setOnSelectedColor(const QColor &newColor) { this->selectedColor = newColor; }
 
     QRectF boundingRect() const override;
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
 private:
-    Node *myNode{};
-    QColor myColor;
+    Node *node{};
+    QColor color;
     QColor selectedColor;
     GraphGraphicsScene *myScene;
     bool isMoving;

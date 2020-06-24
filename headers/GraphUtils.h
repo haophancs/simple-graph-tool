@@ -21,11 +21,11 @@ public:
 
     static std::list<std::pair<int, int>> DfsToDemo(const Graph &graph, int source);
 
-    static std::list<int> Dijkstra(Graph &graph, int start, int goal);
+    static std::list<int> Dijkstra(const Graph &graph, int start, int goal);
 
     static std::list<std::pair<int, int>> Prim(const Graph &graph, int source = 0);
 
-    static std::list<std::list<int>> stronglyConnectedComponents(Graph graph);
+    static std::list<std::list<int>> stronglyConnectedComponents(const Graph &graph);
 
     static std::list<std::list<int>> weaklyConnectedComponents(const Graph &graph);
 
@@ -53,13 +53,13 @@ public:
 
     static std::list<std::list<int>> displayEulerianCircuit(const Graph &graph);
 
-    std::list<int> getTopoSortResult(Graph graph);
+    static std::list<int> getTopoSortResult(const Graph &graph);
 
-    std::list<int> displayTopoSort(Graph graph);
+    static std::list<int> displayTopoSort(const Graph& graph);
 
-    std::list<int> getColoringResult(Graph graph, int source = 0);
+    static std::list<int> getColoringResult(const Graph& graph, int source = 0);
 
-    std::list<int> displayColoring(Graph graph, int source = 0);
+    static std::list<int> displayColoring(const Graph& graph, int source = 0);
 };
 
 #endif
