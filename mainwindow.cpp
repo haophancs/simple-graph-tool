@@ -235,8 +235,7 @@ void MainWindow::showNewNodeDialog(QPointF pos) {
                                                  tr("Length of the name mustn't be greater than 3 or smaller than 1"));
             return;
         }
-        Node newNode(newNodeName.toStdString());
-        newNode.setEuclidePos(pos);
+        Node newNode(newNodeName.toStdString(), pos);
         bool succeeded = graph->addNode(newNode);
         if (!succeeded)
             QMessageBox::critical(this, "Error", "This name has been used by another node");

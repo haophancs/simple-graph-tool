@@ -26,6 +26,8 @@ private:
 
     void isolate() { this->degNeg = this->degPos = 0; }
 
+    void setName(std::string newName) { this->name = std::move(newName); }
+
     friend class Graph;
 
 public:
@@ -35,11 +37,9 @@ public:
 
     explicit Node(std::string name, QPointF pos);
 
-    void setName(std::string newName) { this->name = std::move(newName); }
+    QPointF getEuclidePos() const { return this->euclidePos; }
 
     void setEuclidePos(QPointF pos) { this->euclidePos = pos; }
-
-    QPointF getEuclidePos() const { return this->euclidePos; }
 
     int getNegativeDeg() const { return this->degNeg; }
 
