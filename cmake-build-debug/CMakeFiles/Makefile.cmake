@@ -8,11 +8,8 @@ set(CMAKE_DEPENDS_GENERATOR "Unix Makefiles")
 set(CMAKE_MAKEFILE_DEPENDS
   "CMakeCache.txt"
   "../CMakeLists.txt"
-  "CMakeFiles/3.16.5/CMakeCCompiler.cmake"
   "CMakeFiles/3.16.5/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.16.5/CMakeSystem.cmake"
-  "../resource.qrc"
-  "/snap/clion/114/bin/cmake/linux/share/cmake-3.16/Modules/CMakeCInformation.cmake"
   "/snap/clion/114/bin/cmake/linux/share/cmake-3.16/Modules/CMakeCXXInformation.cmake"
   "/snap/clion/114/bin/cmake/linux/share/cmake-3.16/Modules/CMakeCheckCompilerFlagCommonPatterns.cmake"
   "/snap/clion/114/bin/cmake/linux/share/cmake-3.16/Modules/CMakeCommonLanguageInclude.cmake"
@@ -25,11 +22,9 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/snap/clion/114/bin/cmake/linux/share/cmake-3.16/Modules/CMakeSystemSpecificInformation.cmake"
   "/snap/clion/114/bin/cmake/linux/share/cmake-3.16/Modules/CMakeSystemSpecificInitialize.cmake"
   "/snap/clion/114/bin/cmake/linux/share/cmake-3.16/Modules/Compiler/CMakeCommonCompilerMacros.cmake"
-  "/snap/clion/114/bin/cmake/linux/share/cmake-3.16/Modules/Compiler/GNU-C.cmake"
   "/snap/clion/114/bin/cmake/linux/share/cmake-3.16/Modules/Compiler/GNU-CXX.cmake"
   "/snap/clion/114/bin/cmake/linux/share/cmake-3.16/Modules/Compiler/GNU.cmake"
   "/snap/clion/114/bin/cmake/linux/share/cmake-3.16/Modules/Internal/CMakeCheckCompilerFlag.cmake"
-  "/snap/clion/114/bin/cmake/linux/share/cmake-3.16/Modules/Platform/Linux-GNU-C.cmake"
   "/snap/clion/114/bin/cmake/linux/share/cmake-3.16/Modules/Platform/Linux-GNU-CXX.cmake"
   "/snap/clion/114/bin/cmake/linux/share/cmake-3.16/Modules/Platform/Linux-GNU.cmake"
   "/snap/clion/114/bin/cmake/linux/share/cmake-3.16/Modules/Platform/Linux.cmake"
@@ -58,7 +53,6 @@ set(CMAKE_MAKEFILE_OUTPUTS
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
   "CMakeFiles/simple_graph_tool_autogen.dir/AutogenInfo.json"
-  "CMakeFiles/simple_graph_tool_autogen.dir/AutoRcc_resource_EWIEGA46WW_Info.json"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 

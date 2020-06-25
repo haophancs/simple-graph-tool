@@ -56,6 +56,7 @@
 					<Add directory="/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/qt5/QtWidgets"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/qt5/QtGui"/>
+					<Add directory="/usr/include"/>
 					<Add directory="/usr/include/c++/7"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
 					<Add directory="/usr/include/c++/7/backward"/>
@@ -63,7 +64,6 @@
 					<Add directory="/usr/local/include"/>
 					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
 					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
 					<Build command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/Makefile&quot;  VERBOSE=1 simple_graph_tool"/>
@@ -91,6 +91,7 @@
 					<Add directory="/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/qt5/QtWidgets"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/qt5/QtGui"/>
+					<Add directory="/usr/include"/>
 					<Add directory="/usr/include/c++/7"/>
 					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
 					<Add directory="/usr/include/c++/7/backward"/>
@@ -98,7 +99,6 @@
 					<Add directory="/usr/local/include"/>
 					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
 					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
 					<Build command="/usr/bin/make -j8 -f &quot;/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/Makefile&quot;  VERBOSE=1 simple_graph_tool/fast"/>
@@ -118,12 +118,6 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp">
-			<Option target="simple_graph_tool"/>
-		</Unit>
-		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.rule">
-			<Option target="simple_graph_tool"/>
-		</Unit>
 		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/cmake-build-debug/simple_graph_tool_autogen/mocs_compilation.cpp">
 			<Option target="simple_graph_tool"/>
 		</Unit>
@@ -172,12 +166,6 @@
 		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/mainwindow.h">
 			<Option target="simple_graph_tool"/>
 		</Unit>
-		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/mainwindow.ui">
-			<Option target="simple_graph_tool"/>
-		</Unit>
-		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/resource.qrc">
-			<Option target="simple_graph_tool"/>
-		</Unit>
 		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/sources/ArcGraphicsItem.cpp">
 			<Option target="simple_graph_tool"/>
 		</Unit>
@@ -209,9 +197,6 @@
 			<Option target="simple_graph_tool"/>
 		</Unit>
 		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/CMakeLists.txt">
-			<Option virtualFolder="CMake Files\"/>
-		</Unit>
-		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/resource.qrc">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
 		<Unit filename="/home/haophancs/Projects/Qt/simple-graph-tool/../../../../../usr/lib/x86_64-linux-gnu/cmake/Qt5Core/Qt5CoreConfig.cmake">

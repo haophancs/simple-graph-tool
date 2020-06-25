@@ -4,7 +4,6 @@ file(REMOVE_RECURSE
   "simple_graph_tool_autogen"
   "CMakeFiles/simple_graph_tool.dir/main.cpp.o"
   "CMakeFiles/simple_graph_tool.dir/mainwindow.cpp.o"
-  "CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.o"
   "CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/mocs_compilation.cpp.o"
   "CMakeFiles/simple_graph_tool.dir/sources/ArcGraphicsItem.cpp.o"
   "CMakeFiles/simple_graph_tool.dir/sources/ElementPropertiesTable.cpp.o"
@@ -18,7 +17,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/simple_graph_tool.dir/sources/NodeGraphicsItem.cpp.o"
   "simple_graph_tool"
   "simple_graph_tool.pdb"
-  "simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp"
 )
 
 # Per-language clean rules from dependency scanning.

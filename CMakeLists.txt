@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 3.10)
-project(simple_graph_tool)
+cmake_minimum_required(VERSION 3.0.0)
+project(simple_graph_tool VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 14)
 
@@ -41,9 +41,7 @@ add_executable(simple_graph_tool
         headers/qdebugstream.h
         headers/random.h
         sources/ElementPropertiesTable.cpp
-        headers/ElementPropertiesTable.h
-        resource.qrc
-        mainwindow.ui)
+        headers/ElementPropertiesTable.h)
 
 target_link_libraries(simple_graph_tool Qt5::Core)
 target_link_libraries(simple_graph_tool Qt5::Widgets)

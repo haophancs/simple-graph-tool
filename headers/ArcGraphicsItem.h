@@ -42,7 +42,7 @@ public:
 
     bool inversionAvailable() const;
 
-    int getWeight() const;
+    int weight() const;
 
     void setOnSelectedColor(QColor color);
 

@@ -57,7 +57,7 @@ std::pair<int, int> ArcGraphicsItem::arc() const {
                           endItem->getNode()->getId());
 }
 
-int ArcGraphicsItem::getWeight() const {
+int ArcGraphicsItem::weight() const {
     return myScene->getGraph()->getArcWeight(arc().first, arc().second);
 }
 
@@ -79,32 +79,28 @@ void ArcGraphicsItem::updatePosition() {
 
     QLineF centerLine(mapFromItem(startItem, 0, 0), mapFromItem(endItem, 0, 0));
     setLine(centerLine);
+    this->path = QGraphicsLineItem::shape();
 
-    QPointF arcPoint((1 - tx1) * p + tx1 * r, (1 - tx1) * q + tx1 * s);
-    double angle;
+    QPointF arcHeadPoint((1 - tx1) * p + tx1 * r, (1 - tx1) * q + tx1 * s);
     qreal arcHeadSize = 15;
-
+    qreal angle = std::atan2(line().dy(), -line().dx());
+    if (std::abs(angle * 180 / M_PI) >= 45 && std::abs(angle * 180 / M_PI) <= 135) {
+        arcHeadPoint = QPointF(
+                (1 - ty1) * p + ty1 * r,
+                (1 - ty1) * q + ty1 * s);
+    }
     if (inversionAvailable()) {
-        angle = std::atan2(-line().dy(), line().dx());
-        if (std::abs(angle * 180 / M_PI) >= 52 && std::abs(angle * 180 / M_PI) <= 128) {
-            arcPoint = QPointF(
-                    (1 - ty1) * p + ty1 * r,
-                    (1 - ty1) * q + ty1 * s);
-        }
-        qreal offset = 4;
-        if (length < 350) {
-            offset += ((350 - length) / 100) * 4;
-            angle -= ((350 - length / 100)) * (4. / 180) * M_PI;
-        }
-        qreal foo = qMax(5., qMin(25., length / 3));
+        angle = std::atan2(line().dy(), -line().dx());
+        qreal offset = arcHeadSize / 2;
+        qreal foo = qMax(5., qMin(25., length / 6));
         if (arc().first < arc().second) {
             centerPos += QPointF(-foo, -foo);
             setLine(QLineF(line().p1(), line().p2() + QPointF(-4, -4)));
-            arcPoint += QPointF(-offset, -offset);
+            arcHeadPoint += QPointF(-offset, -offset);
         } else {
             centerPos += QPointF(foo, foo);
             setLine(QLineF(line().p1(), line().p2() + QPointF(4, 4)));
-            arcPoint += QPointF(offset, offset);
+            arcHeadPoint += QPointF(offset, offset);
         }
 
         QPainterPath tempPath(line().p1());
@@ -113,24 +109,21 @@ void ArcGraphicsItem::updatePosition() {
         QPainterPath outline = pathStroke.createStroke(tempPath);
         this->path = outline;
     }
-    else {
-        this->path = QGraphicsLineItem::shape();
-        angle = std::atan2(line().dy(), -line().dx());
-        if (std::abs(angle * 180 / M_PI) >= 52 && std::abs(angle * 180 / M_PI) <= 128) {
-            arcPoint = QPointF(
-                    (1 - ty1) * p + ty1 * r,
-                    (1 - ty1) * q + ty1 * s);
-        }
-    }
 
-    QPointF arcP1 = arcPoint + QPointF(sin(angle + M_PI / 3) * arcHeadSize,
+    QPointF arcP1 = arcHeadPoint + QPointF(sin(angle + M_PI / 3) * arcHeadSize,
                                        cos(angle + M_PI / 3) * arcHeadSize);
-    QPointF arcP2 = arcPoint + QPointF(sin(angle + M_PI - M_PI / 3) * arcHeadSize,
+    QPointF arcP2 = arcHeadPoint + QPointF(sin(angle + M_PI - M_PI / 3) * arcHeadSize,
                                        cos(angle + M_PI - M_PI / 3) * arcHeadSize);
 
     QPolygonF arcHead;
-    arcHead << arcPoint << arcP2 << arcP1;
+    arcHead << arcHeadPoint << arcP2 << arcP1;
     this->path.addPolygon(arcHead);
+
+    QFont font;
+    font.setPointSize(13);
+    auto textPos = centerPos;
+    this->path.addText(textPos, font, QString::number(this->weight()));
+    emit myScene->needRedraw();
 }
 
 void ArcGraphicsItem::setOnSelectedColor(QColor newColor) {
@@ -161,16 +154,7 @@ void ArcGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
     myPen.setWidth(4);
     painter->setBrush(color);
     painter->setPen(myPen);
-    painter->drawPath(ArcGraphicsItem::shape());
-
-    QPointF centerPos = QPoint(
-            static_cast<int>((line().p1().x() + line().p2().x()) / 2),
-            static_cast<int>((line().p1().y() + line().p2().y()) / 2));
-    QString weight = QString::number(this->getWeight());
-    QFont font = painter->font();
-    font.setPointSize(14);
-    painter->setFont(font);
-    painter->drawText(centerPos + ((arc().first < arc().second) ? QPointF(-4, -4) : QPointF(4, 4)), weight);
+    painter->drawPath(this->shape());
 }
 
 void ArcGraphicsItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {

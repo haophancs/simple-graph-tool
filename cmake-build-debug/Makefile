@@ -190,33 +190,6 @@ mainwindow.cpp.s:
 	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/mainwindow.cpp.s
 .PHONY : mainwindow.cpp.s
 
-simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.o: simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.o
-
-.PHONY : simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.o
-
-# target to build an object file
-simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.o:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.o
-.PHONY : simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.o
-
-simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.i: simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.i
-
-.PHONY : simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.i
-
-# target to preprocess a source file
-simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.i:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.i
-.PHONY : simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.i
-
-simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.s: simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.s
-
-.PHONY : simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.s
-
-# target to generate assembly for a file
-simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.s:
-	$(MAKE) -f CMakeFiles/simple_graph_tool.dir/build.make CMakeFiles/simple_graph_tool.dir/simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.s
-.PHONY : simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.cpp.s
-
 simple_graph_tool_autogen/mocs_compilation.o: simple_graph_tool_autogen/mocs_compilation.cpp.o
 
 .PHONY : simple_graph_tool_autogen/mocs_compilation.o
@@ -530,9 +503,6 @@ help:
 	@echo "... mainwindow.o"
 	@echo "... mainwindow.i"
 	@echo "... mainwindow.s"
-	@echo "... simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.o"
-	@echo "... simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.i"
-	@echo "... simple_graph_tool_autogen/EWIEGA46WW/qrc_resource.s"
 	@echo "... simple_graph_tool_autogen/mocs_compilation.o"
 	@echo "... simple_graph_tool_autogen/mocs_compilation.i"
 	@echo "... simple_graph_tool_autogen/mocs_compilation.s"
