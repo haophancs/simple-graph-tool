@@ -77,11 +77,15 @@ public:
 
     bool isolateNode(const std::string &nodename) { return isolateNode(findNodeIdByName(nodename)); }
 
-    Node *getNode(int id);
+    const Node *getNode(int id);
 
-    Node *getNodeByName(const std::string &name) { return getNode(findNodeIdByName(name)); }
+    const Node *getNodeByName(const std::string &name) { return getNode(findNodeIdByName(name)); }
 
     std::string getNodeName(int id) const { return nodeList[id].getName(); }
+
+    void setNodeName(int id, std::string newName);
+
+    void setNodeName(std::string oldName, std::string newName);
 };
 
 #endif

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>2024</width>
-    <height>1254</height>
+    <width>1950</width>
+    <height>1212</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -203,70 +203,81 @@
      <widget class="QWidget" name="workingWidget" native="true">
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
-        <widget class="QSplitter" name="splitter">
+        <widget class="QSplitter" name="horizontalSplitter">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
-         <widget class="QWidget" name="layoutWidget">
-          <layout class="QVBoxLayout" name="mainLayout">
-           <property name="leftMargin">
-            <number>6</number>
+         <widget class="QSplitter" name="verticalSplitter">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <widget class="QTabWidget" name="tabWidget">
+           <property name="minimumSize">
+            <size>
+             <width>1024</width>
+             <height>960</height>
+            </size>
            </property>
-           <item>
-            <widget class="QTabWidget" name="tabWidget">
-             <property name="currentIndex">
-              <number>0</number>
-             </property>
-             <widget class="QWidget" name="tabVisualization">
-              <attribute name="title">
-               <string>Visual View</string>
-              </attribute>
-              <layout class="QHBoxLayout" name="horizontalLayout_2">
-               <item>
-                <layout class="QVBoxLayout" name="visualLayout"/>
-               </item>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>2520</height>
+            </size>
+           </property>
+           <property name="currentIndex">
+            <number>0</number>
+           </property>
+           <widget class="QWidget" name="tabVisualization">
+            <attribute name="title">
+             <string>Visual View</string>
+            </attribute>
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <item>
+              <layout class="QVBoxLayout" name="visualLayout"/>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QWidget" name="tabMatrix">
+            <attribute name="title">
+             <string>Matrix View</string>
+            </attribute>
+            <layout class="QVBoxLayout" name="verticalLayout_3">
+             <item>
+              <layout class="QVBoxLayout" name="matrixLayout">
+               <property name="spacing">
+                <number>0</number>
+               </property>
               </layout>
-             </widget>
-             <widget class="QWidget" name="tabMatrix">
-              <attribute name="title">
-               <string>Matrix View</string>
-              </attribute>
-              <layout class="QVBoxLayout" name="verticalLayout_3">
-               <item>
-                <layout class="QVBoxLayout" name="matrixLayout">
-                 <property name="spacing">
-                  <number>0</number>
-                 </property>
-                </layout>
-               </item>
-              </layout>
-             </widget>
-            </widget>
-           </item>
-           <item>
-            <widget class="Line" name="line">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QTextEdit" name="consoleText">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>250</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-          </layout>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+          <widget class="QTextEdit" name="consoleText">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>240</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>240</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>720</height>
+            </size>
+           </property>
+          </widget>
          </widget>
          <widget class="QWidget" name="utils" native="true">
           <property name="sizePolicy">
@@ -550,7 +561,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>2024</width>
+     <width>1950</width>
      <height>37</height>
     </rect>
    </property>

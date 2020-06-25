@@ -522,7 +522,7 @@ std::list<int> GraphUtils::getEulerianCircuit(Graph graph, int source) {
     s.push(source);
     while (!s.empty()) {
         int v = s.top();
-        Node *node_v = graph.getNode(v);
+        const Node *node_v = graph.getNode(v);
         if (node_v->getDeg() > 0) {
             for (int adj = 0; adj < graph.getNodeNum(); adj++) {
                 if (graph.hasThisArc(v, adj)) {

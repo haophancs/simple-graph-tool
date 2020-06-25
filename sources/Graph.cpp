@@ -251,7 +251,7 @@ std::vector<std::pair<int, int>> Graph::getArcList() const {
     return res;
 }
 
-Node *Graph::getNode(int id) {
+const Node *Graph::getNode(int id) {
     if (!hasThisNode(id))
         return nullptr;
     return &nodeList[id];
@@ -264,4 +264,13 @@ int Graph::getArcWeight(int u, int v) const {
         return this->adjMatrix[u][v];
     else
         return INT_MAX;
+}
+
+void Graph::setNodeName(int id, std::string newName) {
+    if (!hasThisNode(id)) return;
+    this->nodeList[id].setName(newName);
+}
+
+void Graph::setNodeName(std::string oldName, std::string newName) {
+    setNodeName(findNodeIdByName(oldName), newName);
 }

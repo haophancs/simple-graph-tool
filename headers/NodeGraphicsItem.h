@@ -9,7 +9,7 @@ class GraphGraphicsScene;
 class NodeGraphicsItem : public QObject, public QGraphicsItem {
 Q_OBJECT
 public:
-    NodeGraphicsItem(GraphGraphicsScene *scene, Node *node, QColor color = colorTable()[0]);
+    NodeGraphicsItem(GraphGraphicsScene *scene, const Node *node, QColor color = colorTable()[0]);
 
     static int radius;
 
@@ -25,7 +25,7 @@ public:
 
     int type() const override { return Type; }
 
-    void setNode(Node *newNode);
+    void setNode(const Node *newNode);
 
     Node *getNode() const;
 

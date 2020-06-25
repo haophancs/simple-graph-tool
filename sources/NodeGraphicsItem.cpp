@@ -6,7 +6,7 @@
 
 int NodeGraphicsItem::radius = 80;
 
-NodeGraphicsItem::NodeGraphicsItem(GraphGraphicsScene *scene, Node *node, QColor color) {
+NodeGraphicsItem::NodeGraphicsItem(GraphGraphicsScene *scene, const Node *node, QColor color) {
     this->myScene = scene;
     this->color = std::move(color);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
@@ -16,8 +16,8 @@ NodeGraphicsItem::NodeGraphicsItem(GraphGraphicsScene *scene, Node *node, QColor
     selectedColor = defaultOnSelectedColor();
 }
 
-void NodeGraphicsItem::setNode(Node *newNode) {
-    this->node = newNode;
+void NodeGraphicsItem::setNode(const Node *newNode) {
+    this->node = const_cast<Node *>(newNode);
     this->setPos(newNode->getEuclidePos());
     radius = std::max(radius, 20 + (int) newNode->getName().length() * 10);
 }

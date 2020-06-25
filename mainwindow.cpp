@@ -15,6 +15,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->statusBar->setStyleSheet("color: darkgrey");
     ui->consoleText->setReadOnly(true);
 
+    ui->horizontalSplitter->setCollapsible(1, false);
+    ui->verticalSplitter->setCollapsible(1, false);
+
     this->dataNeedSaving = false;
     this->setWindowTitle("Simple Graph Tool");
     auto *m = new QSignalMapper(this);
@@ -127,7 +130,7 @@ MainWindow::MainWindow(QWidget *parent) :
             if (this->graph->hasThisNode(newNodeName.toStdString()))
                 QMessageBox::critical(this, "Error", "This name has been used by another node");
             else {
-                this->graph->getNode(id)->setName(newNodeName.toStdString());
+                this->graph->setNodeName(id, newNodeName.toStdString());
                 emit graphChanged();
             }
         }

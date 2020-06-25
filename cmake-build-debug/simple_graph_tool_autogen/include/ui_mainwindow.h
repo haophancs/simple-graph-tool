@@ -76,9 +76,8 @@ public:
     QSpacerItem *horizontalSpacer_2;
     QWidget *workingWidget;
     QHBoxLayout *horizontalLayout_3;
-    QSplitter *splitter;
-    QWidget *layoutWidget;
-    QVBoxLayout *mainLayout;
+    QSplitter *horizontalSplitter;
+    QSplitter *verticalSplitter;
     QTabWidget *tabWidget;
     QWidget *tabVisualization;
     QHBoxLayout *horizontalLayout_2;
@@ -86,7 +85,6 @@ public:
     QWidget *tabMatrix;
     QVBoxLayout *verticalLayout_3;
     QVBoxLayout *matrixLayout;
-    QFrame *line;
     QTextEdit *consoleText;
     QWidget *utils;
     QVBoxLayout *verticalLayout;
@@ -123,7 +121,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(2024, 1254);
+        MainWindow->resize(1950, 1212);
         QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -261,18 +259,18 @@ public:
         horizontalLayout_3->setSpacing(6);
         horizontalLayout_3->setContentsMargins(11, 11, 11, 11);
         horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
-        splitter = new QSplitter(workingWidget);
-        splitter->setObjectName(QStringLiteral("splitter"));
-        splitter->setOrientation(Qt::Horizontal);
-        layoutWidget = new QWidget(splitter);
-        layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
-        mainLayout = new QVBoxLayout(layoutWidget);
-        mainLayout->setSpacing(6);
-        mainLayout->setContentsMargins(11, 11, 11, 11);
-        mainLayout->setObjectName(QStringLiteral("mainLayout"));
-        mainLayout->setContentsMargins(6, 0, 0, 0);
-        tabWidget = new QTabWidget(layoutWidget);
+        horizontalSplitter = new QSplitter(workingWidget);
+        horizontalSplitter->setObjectName(QStringLiteral("horizontalSplitter"));
+        horizontalSplitter->setOrientation(Qt::Horizontal);
+        verticalSplitter = new QSplitter(horizontalSplitter);
+        verticalSplitter->setObjectName(QStringLiteral("verticalSplitter"));
+        sizePolicy1.setHeightForWidth(verticalSplitter->sizePolicy().hasHeightForWidth());
+        verticalSplitter->setSizePolicy(sizePolicy1);
+        verticalSplitter->setOrientation(Qt::Vertical);
+        tabWidget = new QTabWidget(verticalSplitter);
         tabWidget->setObjectName(QStringLiteral("tabWidget"));
+        tabWidget->setMinimumSize(QSize(1024, 960));
+        tabWidget->setMaximumSize(QSize(16777215, 2520));
         tabVisualization = new QWidget();
         tabVisualization->setObjectName(QStringLiteral("tabVisualization"));
         horizontalLayout_2 = new QHBoxLayout(tabVisualization);
@@ -299,29 +297,19 @@ public:
         verticalLayout_3->addLayout(matrixLayout);
 
         tabWidget->addTab(tabMatrix, QString());
-
-        mainLayout->addWidget(tabWidget);
-
-        line = new QFrame(layoutWidget);
-        line->setObjectName(QStringLiteral("line"));
-        line->setFrameShape(QFrame::HLine);
-        line->setFrameShadow(QFrame::Sunken);
-
-        mainLayout->addWidget(line);
-
-        consoleText = new QTextEdit(layoutWidget);
+        verticalSplitter->addWidget(tabWidget);
+        consoleText = new QTextEdit(verticalSplitter);
         consoleText->setObjectName(QStringLiteral("consoleText"));
-        QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Maximum);
-        sizePolicy2.setHorizontalStretch(0);
+        QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        sizePolicy2.setHorizontalStretch(240);
         sizePolicy2.setVerticalStretch(0);
         sizePolicy2.setHeightForWidth(consoleText->sizePolicy().hasHeightForWidth());
         consoleText->setSizePolicy(sizePolicy2);
-        consoleText->setMaximumSize(QSize(16777215, 250));
-
-        mainLayout->addWidget(consoleText);
-
-        splitter->addWidget(layoutWidget);
-        utils = new QWidget(splitter);
+        consoleText->setMinimumSize(QSize(0, 240));
+        consoleText->setMaximumSize(QSize(16777215, 720));
+        verticalSplitter->addWidget(consoleText);
+        horizontalSplitter->addWidget(verticalSplitter);
+        utils = new QWidget(horizontalSplitter);
         utils->setObjectName(QStringLiteral("utils"));
         QSizePolicy sizePolicy3(QSizePolicy::Minimum, QSizePolicy::Preferred);
         sizePolicy3.setHorizontalStretch(0);
@@ -468,9 +456,9 @@ public:
 
         verticalLayout->addItem(verticalSpacer);
 
-        splitter->addWidget(utils);
+        horizontalSplitter->addWidget(utils);
 
-        horizontalLayout_3->addWidget(splitter);
+        horizontalLayout_3->addWidget(horizontalSplitter);
 
 
         horizontalLayout->addWidget(workingWidget);
@@ -478,7 +466,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 2024, 37));
+        menuBar->setGeometry(QRect(0, 0, 1950, 37));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
         menuGraph = new QMenu(menuBar);
