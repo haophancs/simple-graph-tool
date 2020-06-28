@@ -18,21 +18,25 @@ public:
 
     explicit GraphGraphicsScene(Graph *graph);
 
-    Graph *getGraph() const;
+    Graph *graph() const;
 
     void setGraph(Graph *graph);
 
+    void clearAll();
+
     friend class GraphGraphicsView;
+
+    ~GraphGraphicsScene() override;
 
 public slots:
 
-    void reloadData();
+    void reload();
 
-    void demoAlgorithm(std::list<std::pair<int, int>> listOfPairToDemo, GraphDemoFlag flag);
+    void demoAlgorithm(const std::list<std::pair<std::string, std::string>>& listOfPairToDemo, GraphDemoFlag flag);
 
-    void demoAlgorithm(const std::list<int> &listOfNumToDemo, GraphDemoFlag flag);
+    void demoAlgorithm(const std::list<std::string> &listOfNodeToDemo, GraphDemoFlag flag);
 
-    void demoAlgorithm(const std::list<std::list<int>> &listOfListToDemo, GraphDemoFlag flag);
+    void demoAlgorithm(const std::list<std::list<std::string>> &listOfListToDemo, GraphDemoFlag flag);
 
 signals:
 
@@ -41,17 +45,20 @@ signals:
     void needRedraw();
 
 private:
-    Graph *myGraph{};
-    std::vector<NodeGraphicsItem *> nodeItems;
-    std::vector<ArcGraphicsItem *> arcItems;
 
-    int getArcId(int u, int v);
+    using QGraphicsScene::clear;
 
-    std::unique_ptr<QTimer> unique_timer;
+    Graph *_graph{};
+    std::unordered_map<std::string, NodeGraphicsItem *> _nodeItems;
+    std::unordered_map<std::pair<std::string, std::string>, ArcGraphicsItem *> _arcItems;
 
-    std::list<int> listOfNum;
-    std::list<std::list<int>> listOfList;
-    std::list<std::pair<int, int>> listOfPair;
+    ArcGraphicsItem *arcItem(const std::string& uname, const std::string& vname);
+    NodeGraphicsItem *nodeItem(const std::string &name);
+
+    std::unique_ptr<QTimer> _uniqueTimer;
+    std::list<std::string> _listOfNode;
+    std::list<std::list<std::string>> _listOfList;
+    std::list<std::pair<std::string, std::string>> _listOfPair;
 
     void resetAfterDemoAlgo();
 };

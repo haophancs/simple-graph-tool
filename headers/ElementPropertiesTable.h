@@ -22,9 +22,9 @@ public slots:
 
     void onGraphChanged();
 
-    void onNodeSelected(int id);
+    void onNodeSelected(const std::string& node_name);
 
-    void onArcSelected(int u, int v);
+    void onArcSelected(const std::string& uname, const std::string& vname);
 
     void onUnSelected();
 };

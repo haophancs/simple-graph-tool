@@ -10,15 +10,14 @@
 
 MainWindow::MainWindow(QWidget *parent) :
         QMainWindow(parent),
-        ui(new Ui::MainWindow) {
-    ui->setupUi(this);
-    ui->statusBar->setStyleSheet("color: darkgrey");
-    ui->consoleText->setReadOnly(true);
-
-    ui->horizontalSplitter->setCollapsible(1, false);
-    ui->verticalSplitter->setCollapsible(1, false);
-
-    this->dataNeedSaving = false;
+        _ui(new Ui::MainWindow) {
+    _ui->setupUi(this);
+    _ui->statusBar->setStyleSheet("color: darkgrey");
+    _ui->consoleText->setReadOnly(true);
+    //_ui->horizontalSplitter->setCollapsible(1, false);
+    _ui->verticalSplitter->setCollapsible(1, false);
+    _ui->verticalSplitter->setStretchFactor(0, 1);
+    this->_dataNeedSaving = false;
     this->setWindowTitle("Simple Graph Tool");
     auto *m = new QSignalMapper(this);
     auto *s1 = new QShortcut(QKeySequence("Alt+1"), this);
@@ -27,76 +26,76 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(s2, SIGNAL(activated()), m, SLOT(map()));
     m->setMapping(s1, 0);
     m->setMapping(s2, 1);
-    connect(m, SIGNAL(mapped(int)), ui->tabWidget, SLOT(setCurrentIndex(int)));
+    connect(m, SIGNAL(mapped(int)), _ui->tabWidget, SLOT(setCurrentIndex(int)));
     QFont btnFont;
     btnFont.setPixelSize(32);
-    ui->createGraphButton->setFont(btnFont);
-    ui->openGraphButton->setFont(btnFont);
+    _ui->createGraphButton->setFont(btnFont);
+    _ui->openGraphButton->setFont(btnFont);
 
-    this->graph = new Graph();
-    this->scene = new GraphGraphicsScene(graph);
-    this->view = new GraphGraphicsView();
-    this->matrix = new GraphMatrixTable(graph);
-    this->propertiesTable = new ElementPropertiesTable(graph);
+    this->_graph = new Graph();
+    this->_scene = new GraphGraphicsScene(_graph);
+    this->_view = new GraphGraphicsView();
+    this->_matrix = new GraphMatrixTable(_graph);
+    this->_propertiesTable = new ElementPropertiesTable(_graph);
 
-    connect(matrix, SIGNAL(graphChanged()), scene, SLOT(reloadData()));
-    connect(scene, SIGNAL(graphChanged()), matrix, SLOT(reloadData()));
-    connect(this, SIGNAL(graphChanged()), scene, SLOT(reloadData()));
-    connect(this, SIGNAL(graphChanged()), matrix, SLOT(reloadData()));
-    connect(this, SIGNAL(graphChanged()), view, SLOT(redraw()));
+    connect(_matrix, SIGNAL(graphChanged()), _scene, SLOT(reload()));
+    connect(_scene, SIGNAL(graphChanged()), _matrix, SLOT(reload()));
+    connect(this, SIGNAL(graphChanged()), _scene, SLOT(reload()));
+    connect(this, SIGNAL(graphChanged()), _matrix, SLOT(reload()));
+    connect(this, SIGNAL(graphChanged()), _view, SLOT(redraw()));
     connect(this, SIGNAL(graphChanged()), this, SLOT(onGraphChanged()));
-    connect(matrix, SIGNAL(graphChanged()), this, SLOT(onGraphChanged()));
-    connect(scene, SIGNAL(graphChanged()), this, SLOT(onGraphChanged()));
+    connect(_matrix, SIGNAL(graphChanged()), this, SLOT(onGraphChanged()));
+    connect(_scene, SIGNAL(graphChanged()), this, SLOT(onGraphChanged()));
 
-    connect(view, SIGNAL(unSelect()), propertiesTable, SLOT(onUnSelected()));
-    connect(this, SIGNAL(graphChanged()), propertiesTable, SLOT(onGraphChanged()));
-    connect(view, &GraphGraphicsView::selectedNode, propertiesTable, &ElementPropertiesTable::onNodeSelected);
-    connect(view, &GraphGraphicsView::selectedArc, propertiesTable, &ElementPropertiesTable::onArcSelected);
-    connect(matrix, &GraphMatrixTable::selectedArc, propertiesTable, &ElementPropertiesTable::onArcSelected);
+    connect(_view, SIGNAL(unSelected()), _propertiesTable, SLOT(onUnSelected()));
+    connect(this, SIGNAL(graphChanged()), _propertiesTable, SLOT(onGraphChanged()));
+    connect(_view, &GraphGraphicsView::nodeSelected, _propertiesTable, &ElementPropertiesTable::onNodeSelected);
+    connect(_view, &GraphGraphicsView::arcSelected, _propertiesTable, &ElementPropertiesTable::onArcSelected);
+    connect(_matrix, &GraphMatrixTable::arcSelected, _propertiesTable, &ElementPropertiesTable::onArcSelected);
 
-    connect(this, SIGNAL(startDemoAlgorithm(std::list<std::list<int> >, GraphDemoFlag)), scene,
-            SLOT(demoAlgorithm(std::list<std::list<int> >, GraphDemoFlag)));
-    connect(this, SIGNAL(startDemoAlgorithm(std::list<int>, GraphDemoFlag)), scene,
-            SLOT(demoAlgorithm(std::list<int>, GraphDemoFlag)));
-    connect(this, SIGNAL(startDemoAlgorithm(std::list<std::pair<int, int> >, GraphDemoFlag)), scene,
-            SLOT(demoAlgorithm(std::list<std::pair<int, int> >, GraphDemoFlag)));
+    connect(this, SIGNAL(startDemoAlgorithm(std::list<std::list<std::string> >, GraphDemoFlag)), _scene,
+            SLOT(demoAlgorithm(std::list<std::list<std::string> >, GraphDemoFlag)));
+    connect(this, SIGNAL(startDemoAlgorithm(std::list<std::string>, GraphDemoFlag)), _scene,
+            SLOT(demoAlgorithm(std::list<std::string>, GraphDemoFlag)));
+    connect(this, SIGNAL(startDemoAlgorithm(std::list<std::pair<std::string, std::string> >, GraphDemoFlag)), _scene,
+            SLOT(demoAlgorithm(std::list<std::pair<std::string, std::string> >, GraphDemoFlag)));
 
-    connect(view, &GraphGraphicsView::addNewNode, this, [this](QPointF pos) {
+    connect(_view, &GraphGraphicsView::nodeAdded, this, [this](QPointF pos) {
         showNewNodeDialog(pos);
     });
-    connect(view, &GraphGraphicsView::removeNode, this, [this](int id) {
-        if (this->graph->removeNode(id))
+    connect(_view, &GraphGraphicsView::nodeRemoved, this, [this](const std::string& node_name) {
+        if (this->_graph->removeNode(node_name))
                 emit graphChanged();
     });
-    connect(view, &GraphGraphicsView::isolateNode, this, [this](int id) {
-        if (this->graph->isolateNode(id))
+    connect(_view, &GraphGraphicsView::nodeIsolated, this, [this](const std::string& node_name) {
+        if (this->_graph->isolateNode(node_name))
                 emit graphChanged();
     });
-    connect(view, &GraphGraphicsView::removeArc, this, [this](int u, int v) {
-        if (graph->removeArc(u, v))
+    connect(_view, &GraphGraphicsView::arcRemoved, this, [this](const std::string& uname, const std::string& vname) {
+        if (_graph->removeArc(uname, vname))
                 emit graphChanged();
     });
-    connect(view, &GraphGraphicsView::setArc, this, [this](int u, int v) {
+    connect(_view, &GraphGraphicsView::arcSet, this, [this](const std::string& uname, const std::string& vname) {
         bool ok{};
-        int defaultValue = graph->hasThisArc(u, v) ? graph->getArcWeight(u, v) : 1;
+        int defaultValue = _graph->hasArc(uname, vname) ? _graph->weight(uname, vname) : 1;
         int w = QInputDialog::getInt(this, tr("Set weight for arc(")
-                                           + QString::fromStdString(graph->getNodeName(u)) + ", "
-                                           + QString::fromStdString(graph->getNodeName(v)) + tr(")"),
+                                           + QString::fromStdString(_graph->node(uname)->name()) + ", "
+                                           + QString::fromStdString(_graph->node(vname)->name()) + tr(")"),
                                      "0 <= weight < " + QString::number(INT_MAX),
                                      defaultValue, 1, INT_MAX, 1, &ok);
-        if (ok && this->graph->setArc(u, v, w))
+        if (ok && this->_graph->setArc(uname, vname, w))
                 emit graphChanged();
     });
-    connect(view, &GraphGraphicsView::startAlgorithm, this, [this](const QString &algo, int id) {
-        QDebugStream qout(std::cout, ui->consoleText);
+    connect(_view, &GraphGraphicsView::startAlgorithm, this, [this](const QString &algo, const std::string& source_name) {
+        QDebugStream qout(std::cout, _ui->consoleText);
         if (algo == "BFS") {
-            this->ui->consoleText->clear();
-            std::list<std::pair<int, int>> res = GraphUtils::BfsToDemo(*(this->graph), id);
-            emit startDemoAlgorithm(res, GraphDemoFlag::ArcAndNode);
+            this->_ui->consoleText->clear();
+            auto result = GraphUtils::BFSToDemo(this->_graph, source_name);
+            emit startDemoAlgorithm(result, GraphDemoFlag::ArcAndNode);
         } else if (algo == "DFS") {
-            this->ui->consoleText->clear();
-            std::list<std::pair<int, int>> res = GraphUtils::DfsToDemo(*(this->graph), id);
-            emit startDemoAlgorithm(res, GraphDemoFlag::ArcAndNode);
+            this->_ui->consoleText->clear();
+            auto result = GraphUtils::DFSToDemo(this->_graph, source_name);
+            emit startDemoAlgorithm(result, GraphDemoFlag::ArcAndNode);
         } else if (algo == "Find path") {
             bool ok;
             QString goal = QInputDialog::getText(this, "Find shortest path", "To node: ", QLineEdit::Normal, QString(),
@@ -104,60 +103,60 @@ MainWindow::MainWindow(QWidget *parent) :
             if (ok) {
                 if (goal.isNull())
                     return;
-                int toId = this->graph->findNodeIdByName(goal.toStdString());
-                if (!this->graph->hasThisNode(toId)) {
-                    QMessageBox::critical(this, "Error", tr(":waNo node named ") + goal);
+                auto target = this->_graph->node(goal.toStdString());
+                if (!this->_graph->hasNode(target)) {
+                    QMessageBox::critical(this, "Error", tr("No node named ") + goal);
                     return;
                 }
-                this->ui->consoleText->clear();
-                qDebug() << GraphUtils::isConnectedFromUtoV(*graph, id, toId);
-                std::list<int> res = GraphUtils::Dijkstra(*(this->graph), id, toId);
-                emit startDemoAlgorithm(res, GraphDemoFlag::ArcAndNode);
+                this->_ui->consoleText->clear();
+                qDebug() << GraphUtils::isConnectedFromUtoV(this->_graph, source_name, target->name());
+                auto result = GraphUtils::Dijkstra(this->_graph, source_name, target->name());
+                emit startDemoAlgorithm(result, GraphDemoFlag::ArcAndNode);
             }
         }
     });
-    connect(view, &GraphGraphicsView::editNode, this, [this](int id) {
+    connect(_view, &GraphGraphicsView::nodeEdited, this, [this](const std::string& node_name) {
         bool ok;
         QRegExp re("[a-zA-Z0-9]{1,3}");
-        QString newNodeName = QInputDialog::getText(this, "Add new node", "Name: ", QLineEdit::Normal, QString(), &ok);
+        auto new_name = QInputDialog::getText(this, "Add new node", "Name: ", QLineEdit::Normal, QString(), &ok);
         if (ok) {
-            if (!re.exactMatch(newNodeName)) {
+            if (!re.exactMatch(new_name)) {
                 QMessageBox::critical(this, "Error",
                                       tr("Node's name contains only alphabetical or numeric characters\n")
                                       + tr("Length of the name mustn't be greater than 3 or smaller than 1"));
                 return;
             }
-            if (this->graph->hasThisNode(newNodeName.toStdString()))
+            if (this->_graph->hasNode(new_name.toStdString()))
                 QMessageBox::critical(this, "Error", "This name has been used by another node");
             else {
-                this->graph->setNodeName(id, newNodeName.toStdString());
+                this->_graph->setNodeName(node_name, new_name.toStdString());
                 emit graphChanged();
             }
         }
     });
 
-    ui->matrixLayout->addWidget(this->matrix, 0, Qt::AlignCenter);
-    ui->propertiesLayout->addWidget(this->propertiesTable, 0, Qt::AlignTop);
-    this->view->setScene(this->scene);
-    ui->visualLayout->addWidget(this->view);
-    this->view->show();
+    _ui->matrixLayout->addWidget(this->_matrix, 0, Qt::AlignCenter);
+    _ui->propertiesLayout->addWidget(this->_propertiesTable, 0, Qt::AlignTop);
+    this->_view->setScene(this->_scene);
+    _ui->visualLayout->addWidget(this->_view);
+    this->_view->show();
     setWorkspaceEnabled(false);
 }
 
-void MainWindow::initWorkspace(const QString &filename, bool newFile) {
+void MainWindow::initWorkspace(const QString &filename, bool new_file) {
 
     try {
-        if (!newFile) {
-            graph->readFromFile(filename.toStdString());
-            this->dataNeedSaving = false;
+        if (!new_file) {
+            _graph->readFromFile(filename.toStdString());
+            this->_dataNeedSaving = false;
         } else {
-            this->dataNeedSaving = true;
-            bool okIsPressed = false;
+            this->_dataNeedSaving = true;
+            bool ok_pressed = false;
             int n = QInputDialog::getInt(this, "Initialize graph with nodes",
                                          "Maximum 26 nodes that can be automatically generated",
-                                         0, 0, 26, 1, &okIsPressed);
-            if (!okIsPressed) return;
-            graph->init(n);
+                                         0, 0, 26, 1, &ok_pressed);
+            if (!ok_pressed) return;
+            _graph->init(n);
         }
         emit graphChanged();
     }
@@ -166,10 +165,10 @@ void MainWindow::initWorkspace(const QString &filename, bool newFile) {
         QMessageBox::critical(this, "Error",
                               "Something is wrong with this file",
                               QMessageBox::Cancel);
-        if (workingFileName != "") setWorkspaceEnabled(true);
+        if (_workingFilename != "") setWorkspaceEnabled(true);
         return;
     }
-    this->workingFileName = filename;
+    this->_workingFilename = filename;
     int index = filename.toStdString().find_last_of("/\\");
     std::string input_trace_filename = filename.toStdString().substr(index + 1);
     setWindowTitle(QString::fromStdString(input_trace_filename) + " - Simple Graph Tool");
@@ -177,20 +176,21 @@ void MainWindow::initWorkspace(const QString &filename, bool newFile) {
 }
 
 MainWindow::~MainWindow() {
-    delete ui;
-    delete graph;
-    delete scene;
-    delete view;
+    delete _ui;
+    delete _graph;
+    delete _scene;
+    delete _view;
+    delete _propertiesTable;
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
-    if (dataNeedSaving) {
+    if (_dataNeedSaving) {
         QMessageBox::StandardButton reply = QMessageBox::question(this, "Save Graph?",
                                                                   "Your changes will be lost if you don't save them!",
                                                                   QMessageBox::No | QMessageBox::Yes |
                                                                   QMessageBox::Cancel);
         if (reply == QMessageBox::Yes)
-            graph->writeToFile(workingFileName.toStdString());
+            _graph->writeToFile(_workingFilename.toStdString());
         else if (reply == QMessageBox::Cancel)
             event->ignore();
     }
@@ -227,7 +227,7 @@ QString MainWindow::showSaveFileDialog() {
 void MainWindow::showNewNodeDialog(QPointF pos) {
     bool ok;
     QRegExp re("[a-zA-Z0-9]{1,3}");
-    QString newNodeName = QInputDialog::getText(this, "Add new node", "Name: ", QLineEdit::Normal, QString(), &ok);
+    QString newNodeName = QInputDialog::getText(this, "Add new node", "Name: ", QLineEdit::Normal, QString::fromStdString(_graph->nextNodeName()), &ok);
     if (ok) {
         if (!re.exactMatch(newNodeName)) {
             QMessageBox::critical(this, "Error", tr("Node's name contains only alphabetical or numeric characters\n")
@@ -236,7 +236,7 @@ void MainWindow::showNewNodeDialog(QPointF pos) {
             return;
         }
         Node newNode(newNodeName.toStdString(), pos);
-        bool succeeded = graph->addNode(newNode);
+        bool succeeded = _graph->addNode(newNode);
         if (!succeeded)
             QMessageBox::critical(this, "Error", "This name has been used by another node");
         else
@@ -245,22 +245,22 @@ void MainWindow::showNewNodeDialog(QPointF pos) {
 }
 
 void MainWindow::setWorkspaceEnabled(bool ready) {
-    if (ready) ui->entryWidget->setVisible(false);
-    ui->workingWidget->setVisible(ready);
-    ui->menuGraph->setEnabled(ready);
-    ui->menuAlgorithms->setEnabled(ready);
-    for (auto action: ui->menuFile->actions())
+    if (ready) _ui->entryWidget->setVisible(false);
+    _ui->workingWidget->setVisible(ready);
+    _ui->menuGraph->setEnabled(ready);
+    _ui->menuAlgorithms->setEnabled(ready);
+    for (auto action: _ui->menuFile->actions())
         if (!action->menu() && !action->isSeparator()
             && action->text().contains("Save"))
             action->setEnabled(ready);
     if (ready)
-        view->scale(1, 1);
+        _view->scale(1, 1);
 }
 
 void MainWindow::onGraphChanged() {
-    this->dataNeedSaving = true;
-    ui->statusBar->clearMessage();
-    ui->consoleText->clear();
+    this->_dataNeedSaving = true;
+    _ui->statusBar->clearMessage();
+    _ui->consoleText->clear();
 }
 
 void MainWindow::on_createGraphButton_clicked() {
@@ -276,12 +276,12 @@ void MainWindow::on_openGraphButton_clicked() {
 }
 
 void MainWindow::on_actionSave_triggered() {
-    if (dataNeedSaving) {
-        this->dataNeedSaving = false;
-        graph->writeToFile(workingFileName.toStdString());
-        ui->statusBar->showMessage("Saved successfully");
+    if (_dataNeedSaving) {
+        this->_dataNeedSaving = false;
+        _graph->writeToFile(_workingFilename.toStdString());
+        _ui->statusBar->showMessage("Saved successfully");
         QTimer::singleShot(2000, this, [this]() {
-            this->ui->statusBar->clearMessage();
+            this->_ui->statusBar->clearMessage();
         });
     }
 }
@@ -289,7 +289,7 @@ void MainWindow::on_actionSave_triggered() {
 void MainWindow::on_actionSave_As_triggered() {
     QString filename = showSaveFileDialog();
     if (!filename.isNull())
-        graph->writeToFile(filename.toStdString());
+        _graph->writeToFile(filename.toStdString());
 }
 
 void MainWindow::on_actionNew_Graph_triggered() {
@@ -300,7 +300,7 @@ void MainWindow::on_actionNew_Graph_triggered() {
 
 void MainWindow::on_actionOpen_Graph_triggered() {
     QString filename = showOpenFileDialog();
-    if (!filename.isNull() && filename != workingFileName)
+    if (!filename.isNull() && filename != _workingFilename)
         initWorkspace(filename);
 }
 
@@ -325,7 +325,7 @@ void MainWindow::on_actionAddArc_triggered() {
     QList<QString> list = InputDialog::getStrings(this, "Add new arc", labelText, &ok);
     QRegExp re("\\d*");
     if (ok && !list.empty() && re.exactMatch(list[2])) {
-        bool succeeded = graph->setArc(list[0].toStdString(), list[1].toStdString(), list[2].toInt());
+        bool succeeded = _graph->setArc(list[0].toStdString(), list[1].toStdString(), list[2].toInt());
         if (succeeded)
                 emit graphChanged();
         else
@@ -342,8 +342,8 @@ void MainWindow::on_actionEditArc_triggered() {
     QList<QString> list = InputDialog::getStrings(this, "Edit arc", labelText, &ok);
     QRegExp re("\\d*");
     if (ok && !list.empty() && re.exactMatch(list[2])) {
-        if (graph->hasThisArc(list[0].toStdString(), list[1].toStdString())) {
-            bool succeeded = graph->setArc(list[0].toStdString(), list[1].toStdString(), list[2].toInt());
+        if (_graph->hasArc(list[0].toStdString(), list[1].toStdString())) {
+            bool succeeded = _graph->setArc(list[0].toStdString(), list[1].toStdString(), list[2].toInt());
             if (succeeded) {
                 emit graphChanged();
                 return;
@@ -357,7 +357,7 @@ void MainWindow::on_actionDelNode_triggered() {
     bool ok;
     QString nameToDel = QInputDialog::getText(this, "Delete node", "Name: ", QLineEdit::Normal, QString(), &ok);
     if (ok) {
-        bool succeeded = graph->removeNode(nameToDel.toStdString());
+        bool succeeded = _graph->removeNode(nameToDel.toStdString());
         if (!succeeded)
             QMessageBox::critical(this, "Error", "There's no node like this!");
         else
@@ -372,7 +372,7 @@ void MainWindow::on_actionDelArc_triggered() {
     labelText.push_back("To node: ");
     QList<QString> list = InputDialog::getStrings(this, "Delete arc", labelText, &ok);
     if (ok && !list.empty()) {
-        bool succeeded = graph->removeArc(list[0].toStdString(), list[1].toStdString());
+        bool succeeded = _graph->removeArc(list[0].toStdString(), list[1].toStdString());
         if (succeeded)
                 emit graphChanged();
         else
@@ -381,44 +381,44 @@ void MainWindow::on_actionDelArc_triggered() {
 }
 
 void MainWindow::on_articulationNodeBtn_clicked() {
-    ui->consoleText->clear();
-    QDebugStream qout(std::cout, ui->consoleText);
-    std::list<int> res = GraphUtils::displayArticulationNodes(*graph);
-    emit startDemoAlgorithm(res, GraphDemoFlag::OnlyNode);
+    _ui->consoleText->clear();
+    QDebugStream qout(std::cout, _ui->consoleText);
+    auto result = GraphUtils::displayArticulationNodes(_graph);
+    emit startDemoAlgorithm(result, GraphDemoFlag::OnlyNode);
 }
 
 void MainWindow::on_bridgesBtn_clicked() {
-    ui->consoleText->clear();
-    QDebugStream qout(std::cout, ui->consoleText);
-    std::list<std::pair<int, int>> res = GraphUtils::displayBridges(*graph);
-    emit startDemoAlgorithm(res, GraphDemoFlag::OnlyArc);
+    _ui->consoleText->clear();
+    QDebugStream qout(std::cout, _ui->consoleText);
+    auto result = GraphUtils::displayBridges(_graph);
+    emit startDemoAlgorithm(result, GraphDemoFlag::OnlyArc);
 }
 
 void MainWindow::on_coloringBtn_clicked() {
-    ui->consoleText->clear();
-    QDebugStream qout(std::cout, ui->consoleText);
-    std::list<int> res = GraphUtils::displayColoring(*graph);
-    emit startDemoAlgorithm(res, GraphDemoFlag::Coloring);
+    _ui->consoleText->clear();
+    QDebugStream qout(std::cout, _ui->consoleText);
+    auto result = GraphUtils::displayColoring(_graph);
+//    emit startDemoAlgorithm(res, GraphDemoFlag::Coloring);
 }
 
 void MainWindow::on_weaklyConnectedBtn_clicked() {
-    ui->consoleText->clear();
-    QDebugStream qout(std::cout, ui->consoleText);
-    std::list<std::list<int>> res = GraphUtils::displayConnectedComponents(*graph, false);
-    emit startDemoAlgorithm(res, GraphDemoFlag::Component);
+    _ui->consoleText->clear();
+    QDebugStream qout(std::cout, _ui->consoleText);
+    auto result = GraphUtils::displayConnectedComponents(_graph, false);
+    emit startDemoAlgorithm(result, GraphDemoFlag::Component);
 
 }
 
 void MainWindow::on_connectedComponentsBtn_clicked() {
-    ui->consoleText->clear();
-    QDebugStream qout(std::cout, ui->consoleText);
-    std::list<std::list<int>> res = GraphUtils::displayConnectedComponents(*graph);
-    emit startDemoAlgorithm(res, GraphDemoFlag::Component);
+    _ui->consoleText->clear();
+    QDebugStream qout(std::cout, _ui->consoleText);
+    auto result = GraphUtils::displayConnectedComponents(_graph);
+    emit startDemoAlgorithm(result, GraphDemoFlag::Component);
 }
 
 void MainWindow::on_shortestPathBtn_clicked() {
-    ui->consoleText->clear();
-    QDebugStream qout(std::cout, ui->consoleText);
+    _ui->consoleText->clear();
+    QDebugStream qout(std::cout, _ui->consoleText);
     bool ok{};
     QList<QString> labels;
     labels.append("From node: ");
@@ -427,41 +427,41 @@ void MainWindow::on_shortestPathBtn_clicked() {
     if (ok) {
         if (reply[0].trimmed().isNull() || reply[1].trimmed().isNull())
             return;
-        int fromId = graph->findNodeIdByName(reply[0].toStdString());
-        int toId = graph->findNodeIdByName(reply[1].toStdString());
-        if (!graph->hasThisNode(fromId)) {
+        auto startNode = _graph->node(reply[0].toStdString());
+        auto endNode = _graph->node(reply[1].toStdString());
+        if (!_graph->hasNode(startNode)) {
             QMessageBox::critical(this, "Error", tr("No node named ") + reply[0]);
             return;
         }
-        if (!graph->hasThisNode(toId)) {
+        if (!_graph->hasNode(endNode)) {
             QMessageBox::critical(this, "Error", tr("No node named ") + reply[1]);
             return;
         }
-        std::list<int> res = GraphUtils::Dijkstra(*graph, fromId, toId);
-        emit startDemoAlgorithm(res, GraphDemoFlag::ArcAndNode);
+        auto result = GraphUtils::Dijkstra(_graph, startNode->name(), endNode->name());
+        emit startDemoAlgorithm(result, GraphDemoFlag::ArcAndNode);
     }
 }
 
 void MainWindow::on_topoSortBtn_clicked() {
 
-    ui->consoleText->clear();
-    QDebugStream qout(std::cout, ui->consoleText);
-    std::list<int> res = GraphUtils::displayTopoSort(*graph);
-    emit startDemoAlgorithm(res, GraphDemoFlag::OnlyNode);
+    _ui->consoleText->clear();
+    QDebugStream qout(std::cout, _ui->consoleText);
+    auto result = GraphUtils::displayTopoSort(_graph);
+    emit startDemoAlgorithm(result, GraphDemoFlag::OnlyNode);
 }
 
 void MainWindow::on_BFSbtn_clicked() {
-    ui->consoleText->clear();
+    _ui->consoleText->clear();
     bool ok{};
     QString source_str = QInputDialog::getText(this, "Source node", "Name: ", QLineEdit::Normal, QString(), &ok);
-    int id = graph->findNodeIdByName(source_str.toStdString());
     if (ok) {
         if (source_str.isNull())
             return;
-        if (graph->hasThisNode(id)) {
-            QDebugStream qout(std::cout, ui->consoleText);
-            std::list<std::pair<int, int>> res = GraphUtils::BfsToDemo(*graph, id);
-            emit startDemoAlgorithm(res, GraphDemoFlag::ArcAndNode);
+        auto source = _graph->node(source_str.toStdString());
+        if (_graph->hasNode(source)) {
+            QDebugStream qout(std::cout, _ui->consoleText);
+            auto result = GraphUtils::BFSToDemo(_graph, source->name());
+            emit startDemoAlgorithm(result, GraphDemoFlag::ArcAndNode);
         } else {
             QMessageBox::critical(this, "Error", tr("No node named ") + source_str);
         }
@@ -469,17 +469,17 @@ void MainWindow::on_BFSbtn_clicked() {
 }
 
 void MainWindow::on_DFSbtn_clicked() {
-    ui->consoleText->clear();
+    _ui->consoleText->clear();
     bool ok{};
     QString source_str = QInputDialog::getText(this, "Source node", "Name: ", QLineEdit::Normal, QString(), &ok);
-    int id = graph->findNodeIdByName(source_str.toStdString());
     if (ok) {
         if (source_str.isNull())
             return;
-        if (graph->hasThisNode(id)) {
-            QDebugStream qout(std::cout, ui->consoleText);
-            std::list<std::pair<int, int>> res = GraphUtils::DfsToDemo(*graph, id);
-            emit startDemoAlgorithm(res, GraphDemoFlag::ArcAndNode);
+        auto source = _graph->node(source_str.toStdString());
+        if (_graph->hasNode(source)) {
+            QDebugStream qout(std::cout, _ui->consoleText);
+            auto result = GraphUtils::DFSToDemo(_graph, source->name());
+            emit startDemoAlgorithm(result, GraphDemoFlag::ArcAndNode);
         } else
             QMessageBox::critical(this, "Error", tr("No node named ") + source_str);
     }
@@ -487,24 +487,24 @@ void MainWindow::on_DFSbtn_clicked() {
 
 void MainWindow::on_EulerBtn_clicked() {
 
-    ui->consoleText->clear();
-    QDebugStream qout(std::cout, ui->consoleText);
-    std::list<std::list<int>> res = GraphUtils::displayEulerianCircuit(*graph);
-    emit startDemoAlgorithm(res, GraphDemoFlag::ArcAndNode);
+    _ui->consoleText->clear();
+    QDebugStream qout(std::cout, _ui->consoleText);
+    auto result = GraphUtils::displayEulerianCircuit(_graph);
+    emit startDemoAlgorithm(result, GraphDemoFlag::ArcAndNode);
 }
 
 void MainWindow::on_HamiltonBtn_clicked() {
-    ui->consoleText->clear();
-    QDebugStream qout(std::cout, ui->consoleText);
-    std::list<std::list<int>> res = GraphUtils::displayHamiltonianCycle(*graph);
-    emit startDemoAlgorithm(res, GraphDemoFlag::ArcAndNode);
+    _ui->consoleText->clear();
+    QDebugStream qout(std::cout, _ui->consoleText);
+    auto result = GraphUtils::displayHamiltonianCycle(_graph);
+    emit startDemoAlgorithm(result, GraphDemoFlag::ArcAndNode);
 }
 
 void MainWindow::on_spanningTreeBtn_clicked() {
-    ui->consoleText->clear();
-    QDebugStream qout(std::cout, ui->consoleText);
-    std::list<std::pair<int, int>> res = GraphUtils::Prim(*graph);
-    emit startDemoAlgorithm(res, GraphDemoFlag::ArcAndNode);
+    _ui->consoleText->clear();
+    QDebugStream qout(std::cout, _ui->consoleText);
+    auto result = GraphUtils::Prim(_graph);
+    emit startDemoAlgorithm(result, GraphDemoFlag::ArcAndNode);
 }
 
 void MainWindow::on_actionBFS_triggered() {
@@ -554,3 +554,4 @@ void MainWindow::on_actionFInd_minimum_spanning_tree_triggered() {
 void MainWindow::on_actionFind_weakly_connected_components_triggered() {
     on_weaklyConnectedBtn_clicked();
 }
+

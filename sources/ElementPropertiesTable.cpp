@@ -26,7 +26,7 @@ void ElementPropertiesTable::onUnSelected() {
     clearTable();
 }
 
-void ElementPropertiesTable::onNodeSelected(int id) {
+void ElementPropertiesTable::onNodeSelected(const std::string& node_name) {
     clearTable();
     QStringList tableHeader;
     tableHeader << tr("Name") << tr("Positive degree") << tr("Negative degree");
@@ -36,21 +36,21 @@ void ElementPropertiesTable::onNodeSelected(int id) {
 
     this->setItem(0, 0, new QTableWidgetItem());
     this->item(0, 0)->setTextAlignment(Qt::AlignCenter);
-    this->item(0, 0)->setText(QString::fromStdString(this->graph->getNodeName(id)));
+    this->item(0, 0)->setText(QString::fromStdString(node_name));
     this->item(0, 0)->setFlags(Qt::ItemIsEnabled);
 
     this->setItem(1, 0, new QTableWidgetItem());
     this->item(1, 0)->setTextAlignment(Qt::AlignCenter);
-    this->item(1, 0)->setText(QString::number(this->graph->getNode(id)->getPositiveDeg()));
+    this->item(1, 0)->setText(QString::number(this->graph->node(node_name)->positiveDegree()));
     this->item(1, 0)->setFlags(Qt::ItemIsEnabled);
 
     this->setItem(2, 0, new QTableWidgetItem());
     this->item(2, 0)->setTextAlignment(Qt::AlignCenter);
-    this->item(2, 0)->setText(QString::number(this->graph->getNode(id)->getNegativeDeg()));
+    this->item(2, 0)->setText(QString::number(this->graph->node(node_name)->negativeDegree()));
     this->item(2, 0)->setFlags(Qt::ItemIsEnabled);
 }
 
-void ElementPropertiesTable::onArcSelected(int u, int v) {
+void ElementPropertiesTable::onArcSelected(const std::string& uname, const std::string& vname) {
     clearTable();
     QStringList tableHeader;
     tableHeader << tr("From node") << tr("To node") << tr("Weight");
@@ -60,18 +60,18 @@ void ElementPropertiesTable::onArcSelected(int u, int v) {
 
     this->setItem(0, 0, new QTableWidgetItem());
     this->item(0, 0)->setTextAlignment(Qt::AlignCenter);
-    this->item(0, 0)->setText(QString::fromStdString(this->graph->getNodeName(u)));
+    this->item(0, 0)->setText(QString::fromStdString(uname));
     this->item(0, 0)->setFlags(Qt::ItemIsEnabled);
 
     this->setItem(1, 0, new QTableWidgetItem());
     this->item(1, 0)->setTextAlignment(Qt::AlignCenter);
-    this->item(1, 0)->setText(QString::fromStdString(this->graph->getNodeName(v)));
+    this->item(1, 0)->setText(QString::fromStdString(vname));
     this->item(1, 0)->setFlags(Qt::ItemIsEnabled);
 
     this->setItem(2, 0, new QTableWidgetItem());
     this->item(2, 0)->setTextAlignment(Qt::AlignCenter);
-    this->item(2, 0)->setText((this->graph->getArcWeight(u, v) != INT_MAX) ?
-                              QString::number(this->graph->getArcWeight(u, v))
+    this->item(2, 0)->setText((this->graph->weight(uname, vname) != INT_MAX) ?
+                              QString::number(this->graph->weight(uname, vname))
                               : "inf");
     this->item(2, 0)->setFlags(Qt::ItemIsEnabled);
 }

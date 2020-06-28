@@ -1,533 +1,557 @@
 #include "headers/GraphUtils.h"
+#include <unordered_map>
+#include <utility>
 
-std::list<std::pair<int, int>> GraphUtils::BfsToDemo(const Graph &graph, int source) {
-    std::list<std::pair<int, int>> res;
-    if (!graph.hasThisNode(source)) return res;
+std::list<std::pair<std::string, std::string>> GraphUtils::BFSToDemo(const Graph *graph, const std::string &source) {
+    std::list<std::pair<std::string, std::string>> result;
+    if (!graph->hasNode(source)) return result;
 
-    int n = graph.getNodeNum();
-    std::list<int> steps;
-    std::queue<int> q;
-    std::vector<bool> visited(n, false);
-    std::vector<int> parent(n, -1);
+    auto nodes = graph->nodeList();
+    std::list<std::string> steps;
+    std::queue<std::string> q;
+    std::unordered_map<std::string, bool> visited;
+    std::unordered_map<std::string, std::string> parent;
     q.push(source);
     visited[source] = true;
-    std::cout << "BFS (source = " << graph.getNodeName(source) << "): ";
+    std::cout << "BFS (source = " << source << "): ";
 
     while (!q.empty()) {
-        int v = q.front();
-        steps.push_back(v);
-        std::cout << graph.getNodeName(v) << " ";
-        res.emplace_back(parent[steps.back()], steps.back());
+        auto vname = q.front();
+        steps.push_back(vname);
+        std::cout << vname << " ";
+        result.emplace_back(parent[steps.back()], steps.back());
         q.pop();
 
-        for (int adj = 0; adj < n; adj++) {
-            if (graph.hasThisArc(v, adj) && !visited[adj]) {
-                visited[adj] = true;
-                q.push(adj);
-                parent[adj] = v;
+        for (auto &adj : nodes) {
+            if (graph->hasArc(vname, adj->name()) && !visited[adj->name()]) {
+                visited[adj->name()] = true;
+                q.push(adj->name());
+                parent[adj->name()] = vname;
             }
         }
     }
     std::cout << "\n";
-    return res;
+    return result;
 }
 
-std::list<std::pair<int, int>> GraphUtils::DfsToDemo(const Graph &graph, int source) {
-    std::list<std::pair<int, int>> res;
-    if (!graph.hasThisNode(source)) return res;
+std::list<std::pair<std::string, std::string>> GraphUtils::DFSToDemo(const Graph *graph, const std::string &source) {
+    std::list<std::pair<std::string, std::string>> result;
+    if (!graph->hasNode(source)) return result;
 
-    int n = graph.getNodeNum();
-    std::list<int> steps;
-    std::stack<int> s;
-    std::vector<bool> visited(n, false);
-    std::vector<int> parent(n, -1);
+    auto nodes = graph->nodeList();
+    std::list<std::string> steps;
+    std::stack<std::string> s;
+    std::unordered_map<std::string, bool> visited;
+    std::unordered_map<std::string, std::string> parent;
     s.push(source);
     visited[source] = true;
 
-    std::cout << "DFS (source = " << graph.getNodeName(source) << "): ";
+    std::cout << "DFS (source = " << graph->node(source)->name() << "): ";
     while (!s.empty()) {
-        int v = s.top();
-        std::cout << graph.getNodeName(v) << " ";
-        steps.push_back(v);
-        res.emplace_back(parent[steps.back()], steps.back());
+        auto vname = s.top();
+        std::cout << graph->node(vname)->name() << " ";
+        steps.push_back(vname);
+        result.emplace_back(parent[steps.back()], steps.back());
         s.pop();
 
-        for (int adj = 0; adj < n; adj++) {
-            if (graph.hasThisArc(v, adj) && !visited[adj]) {
-                visited[adj] = true;
-                s.push(adj);
-                parent[adj] = v;
+        for (auto &adj: nodes) {
+            if (graph->hasArc(vname, adj->name()) && !visited[adj->name()]) {
+                visited[adj->name()] = true;
+                s.push(adj->name());
+                parent[adj->name()] = vname;
             }
         }
     }
     std::cout << "\n";
-    return res;
+    return result;
 }
 
-std::list<int> GraphUtils::BFS(const Graph &graph, int source) {
-
-    std::list<int> steps;
-    if (!graph.hasThisNode(source)) return steps;
-    int n = graph.getNodeNum();
-
-    std::queue<int> q;
-    std::vector<bool> visited(n, false);
+std::list<std::string> GraphUtils::BFS(const Graph *graph, std::string source) {
+    auto nodes = graph->nodeList();
+    if (source.empty())
+        source = nodes.front()->name();
+    std::list<std::string> steps;
+    if (!graph->hasNode(source)) return steps;
+    std::queue<std::string> q;
+    std::unordered_map<std::string, bool> visited;
     q.push(source);
     visited[source] = true;
-
     while (!q.empty()) {
-        int v = q.front();
-        steps.push_back(v);
+        auto vname = q.front();
+        steps.push_back(vname);
         q.pop();
-
-        for (int adj = 0; adj < n; adj++) {
-            if (graph.hasThisArc(v, adj) && !visited[adj]) {
-                visited[adj] = true;
-                q.push(adj);
+        for (auto &adj: nodes) {
+            if (graph->hasArc(vname, adj->name()) && !visited[adj->name()]) {
+                visited[adj->name()] = true;
+                q.push(adj->name());
             }
         }
     }
     return steps;
 }
 
-void GraphUtils::DFSUtil(const Graph &graph, int v, std::vector<bool> &visited, std::list<int> &steps) {
-    visited[v] = true;
-    steps.push_back(v);
-    for (int i = 0; i < graph.getNodeNum(); i++) {
-        if (graph.hasThisArc(v, i) && !visited[i])
-            DFSUtil(graph, i, visited, steps);
+void GraphUtils::DFSUtil(const Graph *graph, const std::string &vname, std::unordered_map<std::string, bool> &visited,
+                         std::list<std::string> &steps) {
+    visited[vname] = true;
+    steps.push_back(vname);
+    for (auto &adj: graph->nodeList()) {
+        if (graph->hasArc(vname, adj->name()) && !visited[adj->name()])
+            DFSUtil(graph, adj->name(), visited, steps);
     }
 }
 
-void UndirectedDFSUtil(const Graph &graph, int v, std::vector<bool> &visited, std::list<int> &steps) {
-    visited[v] = true;
-    steps.push_back(v);
-    for (int i = 0; i < graph.getNodeNum(); i++) {
-        if ((graph.hasThisArc(v, i) || graph.hasThisArc(i, v)) && !visited[i])
-            UndirectedDFSUtil(graph, i, visited, steps);
+void UndirectedDFSUtil(const Graph *graph, const std::string &vname, std::unordered_map<std::string, bool> &visited,
+                       std::list<std::string> &steps) {
+    visited[vname] = true;
+    steps.push_back(vname);
+    for (auto &adj: graph->nodeList()) {
+        if ((graph->hasArc(vname, adj->name()) || graph->hasArc(adj->name(), vname)) && !visited[adj->name()])
+            UndirectedDFSUtil(graph, adj->name(), visited, steps);
     }
 }
 
-std::list<int> GraphUtils::DFS(const Graph &graph, int source) {
-    std::list<int> steps;
-    if (!graph.hasThisNode(source)) return steps;
-    std::vector<bool> visited(graph.getNodeNum(), false);
+std::list<std::string> GraphUtils::DFS(const Graph *graph, std::string source) {
+    auto nodes = graph->nodeList();
+    if (source.empty())
+        source = nodes.front()->name();
+    std::list<std::string> steps;
+    std::unordered_map<std::string, bool> visited;
+    if (!graph->hasNode(source)) return steps;
     DFSUtil(graph, source, visited, steps);
     return steps;
 }
 
-bool GraphUtils::isConnectedFromUtoV(const Graph &graph, int u, int v) {
-    if (!graph.hasThisNode(u) || !graph.hasThisNode(v)) return false;
-    std::vector<bool> visited(graph.getNodeNum(), false);
-    std::list<int> steps;
-    DFSUtil(graph, u, visited, steps);
-    return !!visited[v];
+bool GraphUtils::isConnectedFromUtoV(const Graph *graph, const std::string &uname, const std::string &vname) {
+    if (!graph->hasNode(uname) || !graph->hasNode(vname)) return false;
+    std::unordered_map<std::string, bool> visited;
+    std::list<std::string> steps;
+    DFSUtil(graph, uname, visited, steps);
+    return visited[vname];
 }
 
-bool GraphUtils::isAllStronglyConnected(const Graph &graph) {
-    std::vector<bool> visited(graph.getNodeNum(), false);
-    for (int u = 0; u < graph.getNodeNum(); u++) {
-        visited = std::vector<bool>(graph.getNodeNum(), false);
-        std::list<int> steps;
-        DFSUtil(graph, u, visited, steps);
-        for (int i = 0; i < graph.getNodeNum(); i++) {
-            if (!visited[i])
+bool GraphUtils::isAllStronglyConnected(const Graph *graph) {
+    auto nodes = graph->nodeList();
+    for (auto &node: nodes) {
+        std::unordered_map<std::string, bool> visited;
+        std::list<std::string> steps;
+        DFSUtil(graph, node->name(), visited, steps);
+        for (auto &v: nodes) {
+            if (!visited[v->name()])
                 return false;
         }
     }
     return true;
 }
 
-bool GraphUtils::isAllWeaklyConnected(const Graph &graph) {
-
-    int n = graph.getNodeNum();
-    std::queue<int> q;
-    std::vector<bool> visited(n, false);
-    q.push(0);
-    visited[0] = true;
+bool GraphUtils::isAllWeaklyConnected(const Graph *graph) {
+    auto nodes = graph->nodeList();
+    std::queue<std::string> q;
+    std::unordered_map<std::string, bool> visited;
+    q.push(nodes.front()->name());
+    visited[nodes.front()->name()] = true;
 
     while (!q.empty()) {
-        int v = q.front();
+        auto vname = q.front();
         q.pop();
 
-        for (int adj = 0; adj < n; adj++) {
-            if ((graph.hasThisArc(v, adj) || graph.hasThisArc(adj, v)) && !visited[adj]) {
-                visited[adj] = true;
-                q.push(adj);
+        for (auto &adj: nodes) {
+            if ((graph->hasArc(vname, adj->name()) || graph->hasArc(adj->name(), vname)) &&
+                !visited[adj->name()]) {
+                visited[adj->name()] = true;
+                q.push(adj->name());
             }
         }
     }
     for (auto &&i : visited)
-        if (i == false)
+        if (!i.second)
             return false;
     return true;
 }
 
-int minDistance(std::vector<int> &dist, std::vector<bool> &sptSet) {
-    int min = INT_MAX, min_index;
+std::string minDistance(std::unordered_map<std::string, int> &dist, std::unordered_map<std::string, bool> &sptSet) {
+    int min = INT_MAX;
+    std::string min_index;
     int n = dist.size();
-    for (int v = 0; v < n; v++)
-        if (sptSet[v] == false && dist[v] < min)
-            min = dist[v], min_index = v;
-
+    for (auto &it: dist)
+        if (!sptSet[it.first] && it.second < min)
+            min = it.second, min_index = it.first;
     return min_index;
 }
 
-std::list<int> GraphUtils::Dijkstra(const Graph &graph, int start, int goal) {
-    std::vector<int> dist(graph.getNodeNum(), INT_MAX);
-    std::vector<bool> sptSet(graph.getNodeNum(), false);
-    std::vector<int> parent(graph.getNodeNum(), -1);
+std::list<std::string> GraphUtils::Dijkstra(const Graph *graph, const std::string &start, const std::string &goal) {
+    if (!graph->hasNode(start) || !graph->hasNode(goal))
+        return std::list<std::string>();
+    auto nodes = graph->nodeList();
+    std::unordered_map<std::string, int> dist;
+    for (auto &node: nodes)
+        dist[node->name()] = INT_MAX;
+
+    std::unordered_map<std::string, bool> sptSet;
+    std::unordered_map<std::string, std::string> parent;
     dist[start] = 0;
-    for (int count = 0; count < graph.getNodeNum() - 1; count++) {
-        int u = minDistance(dist, sptSet);
-        sptSet[u] = true;
-        for (int v = 0; v < graph.getNodeNum(); v++) {
-            if (!sptSet[v] && graph.hasThisArc(u, v) && dist[u] != INT_MAX &&
-                dist[u] + graph.getArcWeight(u, v) < dist[v]) {
-                dist[v] = dist[u] + graph.getArcWeight(u, v);
-                parent[v] = u;
+    for (int count = 0; count < graph->countNodes() - 1; count++) {
+        auto uname = minDistance(dist, sptSet);
+        sptSet[uname] = true;
+        for (auto &v: nodes) {
+            if (!sptSet[v->name()] && graph->hasArc(uname, v->name()) && dist[uname] != INT_MAX &&
+                dist[uname] + graph->weight(uname, v->name()) < dist[v->name()]) {
+                dist[v->name()] = dist[uname] + graph->weight(uname, v->name());
+                parent[v->name()] = uname;
             }
         }
     }
-    std::list<int> path;
-    std::cout << "Shortest path from " << graph.getNodeName(start) << " to " << graph.getNodeName(goal) << ": ";
+    std::list<std::string> path;
+    std::cout << "Shortest path from " << start << " to " << goal << ": ";
     if (dist[goal] == INT_MAX) {
         std::cout << " not found!\n";
         return path;
     }
-    int curr = goal;
-    while (curr != -1) {
+    auto curr = goal;
+    while (!curr.empty()) {
         path.push_front(curr);
         curr = parent[curr];
     }
-    for (auto itr = path.begin(); std::next(itr) != path.end(); itr++)
-        std::cout << graph.getNodeName(*itr) << " -> ";
-    std::cout << graph.getNodeName(goal) << ", cost = " << dist[goal];
+    for (auto &nodeName: path)
+        std::cout << nodeName << " ";
     return path;
 }
 
 
-int minKey(std::vector<int> &key, std::vector<bool> &mstSet) {
-    int min = INT_MAX, min_index;
-    int n = key.size();
-    for (int i = 0; i < n; i++) {
-        if (!mstSet[i] && key[i] < min) {
-            min = key[i];
-            min_index = i;
+std::string minKey(std::unordered_map<std::string, int> &key, std::unordered_map<std::string, bool> &mstSet) {
+    int min = INT_MAX;
+    std::string min_index;
+    for (auto &it: key) {
+        if (!mstSet[it.first] && it.second < min) {
+            min = it.second;
+            min_index = it.first;
         }
     }
     return min_index;
 }
 
-std::list<std::pair<int, int>> GraphUtils::Prim(const Graph &graph, int source) {
-
-    std::list<std::pair<int, int>> res;
-    if (!graph.hasThisNode(source)) return res;
+std::list<std::pair<std::string, std::string>> GraphUtils::Prim(const Graph *graph, std::string source) {
+    const auto nodes = graph->nodeList();
+    if (source.empty())
+        source = nodes.front()->name();
+    std::list<std::pair<std::string, std::string>> result;
+    if (!graph->hasNode(source)) return result;
     if (!isAllWeaklyConnected(graph)) {
         std::cout << "Minimum spanning tree: not found because the graph is not weakly connected!";
-        return res;
+        return result;
     }
-    int n = graph.getNodeNum();
-    std::vector<int> parent(n);
-    std::vector<int> key(n, INT_MAX);
-    std::vector<bool> mstSet(n, false);
-    std::vector<std::vector<int>> adj_mat = graph.getAdjMatrix();
+    std::unordered_map<std::string, std::string> parent;
+    std::unordered_map<std::string, int> key;
+    for (auto &node: nodes)
+        key[node->name()] = INT_MAX;
+    std::unordered_map<std::string, bool> mstSet;
 
     key[source] = 0;
-    parent[source] = -1;
-    for (int count = 0; count < n; count++) {
-        int u = minKey(key, mstSet);
+    parent[source] = "";
+    for (int count = 0; count < graph->countNodes(); count++) {
+        auto u = minKey(key, mstSet);
         mstSet[u] = true;
-        for (int v = 0; v < n; v++) {
+        for (auto &node: nodes) {
+            auto v = node->name();
             if (!mstSet[v]
-                && graph.hasThisArc(u, v)
-                && adj_mat[u][v] < key[v]) {
-                key[v] = adj_mat[u][v];
+                && graph->hasArc(u, v)
+                && graph->weight(u, v) < key[v]) {
+                key[v] = graph->weight(u, v);
                 parent[v] = u;
             }
         }
     }
-    std::vector<Node> node_list = graph.getNodeList();
     int cost = 0;
-    std::cout << "Minimum panning tree (source = " << node_list[source].getName() << "): " << std::endl;
+    std::cout << "Minimum panning tree (source = " << source << "): " << std::endl;
     std::cout << "vertex\tparent\tcost:" << std::endl;
-    for (int i = 0; i < n; i++) {
-        if (i != source) {
-            if (graph.hasThisArc(parent[i], i)) {
-                res.emplace_back(parent[i], i);
-                std::cout << node_list[i].getName() << "\t" << node_list[parent[i]].getName() << "\t"
-                          << adj_mat[parent[i]][i] << std::endl;
-                cost += adj_mat[parent[i]][i];
+    for (auto &node: nodes) {
+        if (node->name() != source) {
+            if (graph->hasArc(parent[node->name()], node->name())) {
+                result.emplace_back(std::make_pair(parent[node->name()], node->name()));
+                std::cout << node->name() << "\t" << parent[node->name()] << "\t"
+                          << graph->weight(parent[node->name()], node->name()) << std::endl;
+                cost += graph->weight(parent[node->name()], node->name());
             }
         }
     }
-    if (!res.empty())
+    if (!result.empty())
         std::cout << "total cost: " << cost;
     else
         std::cout << "not found";
     std::cout << "\n";
-    return res;
+    return result;
 }
 
-void weaklyFillOrder(Graph &graph, int v, std::vector<bool> &visited, std::stack<int> &stack) {
-    visited[v] = true;
-    for (int i = 0; i < graph.getNodeNum(); i++)
-        if (!visited[i] && (graph.hasThisArc(v, i) || graph.hasThisArc(v, i)))
-            weaklyFillOrder(graph, i, visited, stack);
-    stack.push(v);
+void weaklyFillOrder(const Graph *graph, const std::string &vname, std::unordered_map<std::string, bool> &visited,
+                     std::stack<std::string> &stack) {
+    visited[vname] = true;
+    auto nodes = graph->nodeList();
+    for (auto &node: nodes)
+        if (!visited[node->name()] && (graph->hasArc(vname, node->name()) ||
+                                       graph->hasArc(vname, node->name())))
+            weaklyFillOrder(graph, node->name(), visited, stack);
+    stack.push(vname);
 }
 
-void stronglyFillOrder(const Graph &graph, int v, std::vector<bool> &visited, std::stack<int> &stack) {
-    visited[v] = true;
-    for (int i = 0; i < graph.getNodeNum(); i++)
-        if (!visited[i] && graph.hasThisArc(v, i))
-            stronglyFillOrder(graph, i, visited, stack);
-    stack.push(v);
+void stronglyFillOrder(const Graph *graph, const std::string &vname, std::unordered_map<std::string, bool> &visited,
+                       std::stack<std::string> &stack) {
+    visited[vname] = true;
+    auto nodes = graph->nodeList();
+    for (auto &node: nodes)
+        if (!visited[node->name()] && graph->hasArc(vname, node->name()))
+            weaklyFillOrder(graph, node->name(), visited, stack);
+    stack.push(vname);
 }
 
-std::list<std::list<int>> GraphUtils::stronglyConnectedComponents(const Graph &graph) {
-    std::list<std::list<int>> res;
-    std::vector<bool> visited(graph.getNodeNum(), false);
-    std::stack<int> stack;
+std::list<std::list<std::string>> GraphUtils::stronglyConnectedComponents(const Graph *graph) {
+    std::list<std::list<std::string>> result;
+    std::unordered_map<std::string, bool> visited;
+    std::stack<std::string> stack;
 
-    for (int i = 0; i < graph.getNodeNum(); i++)
-        if (!visited[i])
-            stronglyFillOrder(graph, i, visited, stack);
+    auto nodes = graph->nodeList();
+    for (auto &node: nodes)
+        if (!visited[node->name()])
+            stronglyFillOrder(graph, node->name(), visited, stack);
 
-    Graph gr = graph.getTranspose();
+    Graph gr = graph->transpose();
     visited.clear();
-    visited = std::vector<bool>(graph.getNodeNum(), false);
 
     while (!stack.empty()) {
-        int v = stack.top();
+        auto vname = stack.top();
         stack.pop();
 
-        if (!visited[v]) {
-            std::list<int> steps;
-            DFSUtil(gr, v, visited, steps);
-            res.push_back(steps);
+        if (!visited[vname]) {
+            std::list<std::string> steps;
+            DFSUtil(&gr, vname, visited, steps);
+            result.push_back(steps);
         }
     }
-    return res;
+    return result;
 }
 
-std::list<std::list<int>> GraphUtils::weaklyConnectedComponents(const Graph &graph) {
-    std::list<std::list<int>> res;
-    std::vector<bool> visited(graph.getNodeNum(), false);
-    for (int v = 0; v < graph.getNodeNum(); v++) {
-        if (!visited[v]) {
-            std::list<int> component;
-            UndirectedDFSUtil(graph, v, visited, component);
-            res.push_back(component);
+std::list<std::list<std::string>> GraphUtils::weaklyConnectedComponents(const Graph *graph) {
+    std::list<std::list<std::string>> result;
+    std::unordered_map<std::string, bool> visited;
+    auto nodes = graph->nodeList();
+    for (auto &node: nodes) {
+        if (!visited[node->name()]) {
+            std::list<std::string> component;
+            UndirectedDFSUtil(graph, node->name(), visited, component);
+            result.push_back(component);
         }
     }
-    return res;
+    return result;
 }
 
-void bridgeUtil(const Graph &graph, int u,
-                std::vector<bool> &visited,
-                std::vector<int> &disc,
-                std::vector<int> &low,
-                std::vector<int> &parent,
-                std::list<std::pair<int, int>> &res, int &time) {
+void bridgeUtil(const Graph *graph, const std::string &uname,
+                std::unordered_map<std::string, bool> &visited,
+                std::unordered_map<std::string, int> &disc,
+                std::unordered_map<std::string, int> &low,
+                std::unordered_map<std::string, std::string> &parent,
+                std::list<std::pair<std::string, std::string>> &res, int &time) {
 
-    visited[u] = true;
-    disc[u] = low[u] = ++time;
-    for (int v = 0; v < graph.getNodeNum(); v++) {
-        if (!visited[v] && graph.hasThisArc(u, v)) {
-            parent[v] = u;
-            bridgeUtil(graph, v, visited, disc, low, parent, res, time);
-            low[u] = std::min(low[u], low[v]);
-            if (low[v] > disc[u]) {
-                res.emplace_back(u, v);
+    visited[uname] = true;
+    disc[uname] = low[uname] = ++time;
+    auto nodes = graph->nodeList();
+    for (auto &v: nodes) {
+        if (!visited[v->name()] && graph->hasArc(uname, v->name())) {
+            parent[v->name()] = uname;
+            bridgeUtil(graph, v->name(), visited, disc, low, parent, res, time);
+            low[uname] = std::min(low[uname], low[v->name()]);
+            if (low[v->name()] > disc[uname]) {
+                res.emplace_back(uname, v->name());
             }
-        } else if (v != parent[u] && graph.hasThisArc(u, v))
-            low[u] = std::min(low[u], disc[v]);
+        } else if (v->name() != parent[uname] && graph->hasArc(uname, v->name()))
+            low[uname] = std::min(low[uname], disc[v->name()]);
     }
 }
 
-std::list<std::pair<int, int>> GraphUtils::getBridges(const Graph &graph) {
-    std::list<std::pair<int, int>> res;
-    std::vector<bool> visited(graph.getNodeNum(), false);
-    std::vector<int> disc(graph.getNodeNum());
-    std::vector<int> low(graph.getNodeNum());
-    std::vector<int> parent(graph.getNodeNum(), -1);
+std::list<std::pair<std::string, std::string>> GraphUtils::getBridges(const Graph *graph) {
+    std::unordered_map<std::string, bool> visited;
+    std::unordered_map<std::string, int> disc;
+    std::unordered_map<std::string, int> low;
+    std::unordered_map<std::string, std::string> parent;
+    std::list<std::pair<std::string, std::string>> result;
 
     int time = 0;
-    for (int v = 0; v < graph.getNodeNum(); v++) {
-        if (!visited[v])
-            bridgeUtil(graph, v, visited, disc, low, parent, res, time);
+    auto nodes = graph->nodeList();
+    for (auto &v: nodes) {
+        if (!visited[v->name()])
+            bridgeUtil(graph, v->name(), visited, disc, low, parent, result, time);
     }
-    return res;
+    return result;
 }
 
-void APUtil(const Graph &graph, int u,
-            std::vector<bool> &visited,
-            std::vector<int> &disc,
-            std::vector<int> &low,
-            std::vector<int> &parent,
-            std::list<int> &ap) {
+void APUtil(const Graph *graph, const std::string &uname,
+            std::unordered_map<std::string, bool> &visited,
+            std::unordered_map<std::string, int> &disc,
+            std::unordered_map<std::string, int> &low,
+            std::unordered_map<std::string, std::string> &parent,
+            std::list<std::string> &ap) {
 
     static int time = 0;
     int children = 0;
-    visited[u] = true;
+    visited[uname] = true;
 
-    disc[u] = low[u] = ++time;
+    disc[uname] = low[uname] = ++time;
 
-    for (int v = 0; v < graph.getNodeNum(); ++v) {
-        if (graph.hasThisArc(u, v)) {
-            if (!visited[v]) {
+    for (auto &v: graph->nodeList()) {
+        if (graph->hasArc(uname, v->name())) {
+            if (!visited[v->name()]) {
                 children++;
-                parent[v] = u;
-                APUtil(graph, v, visited, disc, low, parent, ap);
+                parent[v->name()] = uname;
+                APUtil(graph, v->name(), visited, disc, low, parent, ap);
 
-                low[u] = std::min(low[u], low[v]);
-                if (parent[u] == -1 && children > 1)
-                    ap.push_front(u);
+                low[uname] = std::min(low[uname], low[v->name()]);
+                if (parent[uname].empty() && children > 1)
+                    ap.push_front(uname);
 
-                if (parent[u] != -1 && low[v] >= disc[u])
-                    ap.push_front(u);
-            } else if (v != parent[u])
-                low[u] = std::min(low[u], disc[v]);
+                if (!parent[uname].empty() && low[v->name()] >= disc[uname])
+                    ap.push_front(uname);
+            } else if (v->name() != parent[uname])
+                low[uname] = std::min(low[uname], disc[v->name()]);
         }
     }
 }
 
-std::list<int> GraphUtils::getArticulationNodes(const Graph &graph) {
-    std::vector<bool> visited(graph.getNodeNum(), false);
-    std::vector<int> disc(graph.getNodeNum());
-    std::vector<int> low(graph.getNodeNum());
-    std::vector<int> parent(graph.getNodeNum(), -1);
-    std::list<int> ap;
+std::list<std::string> GraphUtils::getArticulationNodes(const Graph *graph) {
+    std::unordered_map<std::string, bool> visited;
+    std::unordered_map<std::string, int> disc;
+    std::unordered_map<std::string, int> low;
+    std::unordered_map<std::string, std::string> parent;
+    std::list<std::string> ap;
 
-    for (int i = 0; i < graph.getNodeNum(); i++)
-        if (visited[i] == false)
-            APUtil(graph, i, visited, disc, low, parent, ap);
+    for (auto &node: graph->nodeList())
+        if (!visited[node->name()])
+            APUtil(graph, node->name(), visited, disc, low, parent, ap);
     return ap;
 }
 
-std::list<int> GraphUtils::displayArticulationNodes(const Graph &graph) {
-    std::list<int> nodes = getArticulationNodes(graph);
+std::list<std::string> GraphUtils::displayArticulationNodes(const Graph *graph) {
+
+    std::list<std::string> nodes = getArticulationNodes(graph);
     std::cout << "All articulation nodes: ";
     if (nodes.empty()) {
         std::cout << "not found!\n";
         return nodes;
     }
-    for (auto node: nodes)
-        std::cout << graph.getNodeName(node) << " ";
+    for (auto &node: nodes)
+        std::cout << node << " ";
     std::cout << "\n";
     return nodes;
 }
 
-std::list<std::pair<int, int>> GraphUtils::displayBridges(const Graph &graph) {
-    std::list<std::pair<int, int>> bridges = getBridges(graph);
+std::list<std::pair<std::string, std::string>> GraphUtils::displayBridges(const Graph *graph) {
+    std::list<std::pair<std::string, std::string>> bridges = getBridges(graph);
     std::cout << "Number of bridges: " << bridges.size() << "\n";
-    for (auto b: bridges)
-        std::cout << " - " << graph.getNodeName(b.first) << " " << graph.getNodeName(b.second) << "\n";
+    for (const auto &b: bridges)
+        std::cout << " - " << b.first << " " << b.second << "\n";
     return bridges;
 }
 
-std::list<std::list<int>> GraphUtils::displayConnectedComponents(const Graph &graph, bool strong) {
-    std::vector<Node> node_list = graph.getNodeList();
-    std::list<std::list<int>> res;
+std::list<std::list<std::string>> GraphUtils::displayConnectedComponents(const Graph *graph, bool strong) {
+    auto nodes = graph->nodeList();
+    std::list<std::list<std::string>> result;
     if (strong)
-        res = stronglyConnectedComponents(graph);
+        result = stronglyConnectedComponents(graph);
     else
-        res = weaklyConnectedComponents(graph);
-
-    std::cout << "Number of " << (strong ? "strongly" : "weakly") << " connected components: " << res.size() << "\n";
-
-    for (const auto &ri: res) {
-        std::cout << " - ";
-        for (auto si: ri)
-            std::cout << node_list[si].getName() << " ";
+        result = weaklyConnectedComponents(graph);
+    std::cout << "Number of " << (strong ? "strongly" : "weakly") << " connected components: " << result.size() << "\n";
+    for (const auto &ri: result) {
+        for (const auto &si: ri)
+            std::cout << si << " ";
         std::cout << "\n";
     }
-    return res;
+    return result;
 }
 
-bool isSafe(const Graph &graph, int v,
-            std::vector<int> &path, int pos) {
-    if (!graph.hasThisArc(path[pos - 1], v))
+bool isSafe(const Graph *graph, const std::string &vname,
+            std::vector<std::string> &path, int pos) {
+    if (!graph->hasArc(path[pos - 1], vname))
         return false;
     for (int i = 0; i < pos; i++)
-        if (path[i] == v)
+        if (path[i] == vname)
             return false;
     return true;
 }
 
-bool hamCycleUtil(const Graph &graph, std::vector<int> &path, int pos) {
-    int V = graph.getNodeNum();
-    if (pos == V)
-        return graph.hasThisArc(path[pos - 1], path[0]);
+bool hamCycleUtil(const Graph *graph, std::vector<std::string> &path, int pos) {
+    int n = graph->countNodes();
+    if (pos == n)
+        return graph->hasArc(path[pos - 1], path[0]);
 
-    for (int v = 0; v < V; v++) {
-        if (v != path[0] && isSafe(graph, v, path, pos)) {
-            path[pos] = v;
+    for (auto &v: graph->nodeList()) {
+        if (v->name() != path[0] && isSafe(graph, v->name(), path, pos)) {
+            path[pos] = v->name();
             if (hamCycleUtil(graph, path, pos + 1))
                 return true;
-            path[pos] = -1;
+            path[pos] = "";
         }
     }
     return false;
 }
 
-std::list<int> GraphUtils::getHamiltonianCycle(const Graph &graph, int source) {
-
-    std::vector<int> path(graph.getNodeNum(), -1);
-    std::list<int> res;
+std::list<std::string> GraphUtils::getHamiltonianCycle(const Graph *graph, std::string source) {
+    auto nodes = graph->nodeList();
+    if (source.empty())
+        source = nodes.front()->name();
+    std::vector<std::string> path(graph->countNodes(), "");
+    std::list<std::string> result;
     path[0] = source;
     if (!hamCycleUtil(graph, path, 1))
-        return res;
-
-    for (int i = 0; i < graph.getNodeNum(); i++)
-        res.push_back(path[i]);
-    res.push_back(path[0]);
-    return res;
+        return result;
+    for (int i = 0; i < graph->countNodes(); i++)
+        result.push_back(path[i]);
+    result.push_back(path[0]);
+    return result;
 }
 
-std::list<std::list<int>> GraphUtils::displayHamiltonianCycle(const Graph &graph) {
+std::list<std::list<std::string>> GraphUtils::displayHamiltonianCycle(const Graph *graph) {
 
-    std::list<std::list<int>> res;
-    if (graph.getNodeNum() < 3) {
+    std::list<std::list<std::string>> result;
+    if (graph->countNodes() < 3) {
         std::cout << "Hamiltonian Cycle not found: ";
-        std::cout << "|V| = " << graph.getNodeNum() << " < 3\n";
-        return res;
+        std::cout << "|V| = " << graph->countNodes() << " < 3\n";
+        return result;
     }
-    for (Node &node: graph.getNodeList())
-        if (node.getDeg() < graph.getNodeNum() / 2) {
+    auto nodes = graph->nodeList();
+    for (auto &node: nodes)
+        if (node->degree() < graph->countNodes() / 2) {
             std::cout << "Hamiltonian Cycle not found: ";
-            std::cout << "deg(" << node.getName() << ") = " << node.getDeg() << " < " << graph.getNodeNum() << "/2\n";
-            return res;
+            std::cout << "deg(" << node->name() << ") = " << node->degree() << " < " << graph->countNodes()
+                      << "/2\n";
+            return result;
         }
 
-    for (int source = 0; source < graph.getNodeNum(); source++) {
-        std::cout << "Hamiltonian Cycle (source = " << graph.getNodeName(source) << "): ";
-        std::list<int> cycle = getHamiltonianCycle(graph, source);
+    for (auto &source: nodes) {
+        std::cout << "Hamiltonian Cycle (source = " << source->name() << "): ";
+        auto cycle = getHamiltonianCycle(graph, source->name());
         if (cycle.empty())
             std::cout << "not found!";
         else
-            res.push_back(cycle);
+            result.push_back(cycle);
 
-        for (auto i: cycle)
-            std::cout << graph.getNodeName(i) << " ";
+        for (auto &node: cycle)
+            std::cout << node << " ";
         std::cout << "\n";
     }
-    return res;
+    return result;
 }
 
-std::list<int> GraphUtils::getEulerianCircuit(Graph graph, int source) {
-    std::list<int> cycle;
-    std::stack<int> s;
+std::list<std::string> GraphUtils::getEulerianCircuit(const Graph *_graph, std::string source) {
+    auto graph = *_graph;
+    auto nodes = graph.nodeList();
+    if (source.empty())
+        source = nodes.front()->name();
+    std::list<std::string> cycle;
+    std::stack<std::string> s;
     s.push(source);
     while (!s.empty()) {
-        int v = s.top();
-        const Node *node_v = graph.getNode(v);
-        if (node_v->getDeg() > 0) {
-            for (int adj = 0; adj < graph.getNodeNum(); adj++) {
-                if (graph.hasThisArc(v, adj)) {
-                    s.push(adj);
-                    graph.removeArc(v, adj);
+        auto v = s.top();
+        if (graph.node(v)->degree() > 0) {
+            for (auto &adj: graph.nodeList()) {
+                if (graph.hasArc(v, adj->name())) {
+                    s.push(adj->name());
+                    graph.removeArc(v, adj->name());
                     break;
                 }
             }
@@ -539,110 +563,116 @@ std::list<int> GraphUtils::getEulerianCircuit(Graph graph, int source) {
     return cycle;
 }
 
-std::list<std::list<int>> GraphUtils::displayEulerianCircuit(const Graph &graph) {
-    std::list<std::list<int>> res;
+std::list<std::list<std::string>> GraphUtils::displayEulerianCircuit(const Graph *graph) {
+    std::list<std::list<std::string>> result;
     if (!isAllStronglyConnected(graph)) {
         std::cout << "Eulerian Circuit not found because the graph is not strongly connected\n";
-        return res;
+        return result;
     }
-    for (const Node &node: graph.getNodeList()) {
-        if (node.getNegativeDeg() != node.getPositiveDeg()) {
-            std::cout << "Eulerian Circuit not found because Node " << node.getName() << " has deg+ != deg-\n";
-            return res;
+    auto nodes = graph->nodeList();
+    for (auto &node: nodes) {
+        if (node->negativeDegree() != node->positiveDegree()) {
+            std::cout << "Eulerian Circuit not found because Node " << node->name() << " has deg+ != deg-\n";
+            return result;
         }
     }
 
-    for (int source = 0; source < graph.getNodeNum(); source++) {
-        std::list<int> cycle = getEulerianCircuit(graph, source);
-        std::cout << "Euler Circuit (source = " << graph.getNodeName(source) << "): ";
+    for (auto &node: nodes) {
+        std::list<std::string> cycle = getEulerianCircuit(graph, node->name());
+        std::cout << "Euler Circuit (source = " << node->name() << "): ";
         if (cycle.empty())
             std::cout << "not found!\n";
         else
-            res.push_back(cycle);
-        for (auto i: cycle)
-            std::cout << graph.getNodeName(i) << " ";
+            result.push_back(cycle);
+        for (auto &v: cycle)
+            std::cout << v << " ";
         std::cout << "\n";
     }
-    return res;
+    return result;
 }
 
-void topoSortUtil(const Graph &graph, int v, std::vector<bool> &visited, std::stack<int> &stack) {
-    visited[v] = true;
-    for (int i = 0; i < graph.getNodeNum(); i++)
-        if (graph.hasThisArc(v, i) && !visited[i])
-            topoSortUtil(graph, i, visited, stack);
-    stack.push(v);
+void topoSortUtil(const Graph *graph, const std::string &vname, std::unordered_map<std::string, bool> &visited,
+                  std::stack<std::string> &stack) {
+    visited[vname] = true;
+    for (auto &node: graph->nodeList())
+        if (graph->hasArc(vname, node->name()) && !visited[node->name()])
+            topoSortUtil(graph, node->name(), visited, stack);
+    stack.push(vname);
 }
 
-std::list<int> GraphUtils::getTopoSortResult(const Graph &graph) {
+std::list<std::string> GraphUtils::getTopoSortResult(const Graph *graph) {
     if (!isAllWeaklyConnected(graph)) {
-        std::cout << "The graph is not weakly connected\n";
-        return std::list<int>();
+        std::cout << "The is not weakly connected\n";
+        return std::list<std::string>();
     }
-    std::vector<bool> visited(graph.getNodeNum(), false);
-    std::stack<int> stack;
-    for (int i = 0; i < graph.getNodeNum(); i++)
-        if (!visited[i])
-            topoSortUtil(graph, i, visited, stack);
+    std::unordered_map<std::string, bool> visited;
+    std::stack<std::string> stack;
+    for (auto &node: graph->nodeList())
+        if (!visited[node->name()])
+            topoSortUtil(graph, node->name(), visited, stack);
 
-    std::list<int> res;
+    std::list<std::string> result;
     while (!stack.empty()) {
-        res.push_back(stack.top());
+        result.push_back(stack.top());
         stack.pop();
     }
-    return res;
+    return result;
 }
 
-std::list<int> GraphUtils::displayTopoSort(const Graph& graph) {
-    std::list<int> topo_sorted = getTopoSortResult(graph);
+std::list<std::string> GraphUtils::displayTopoSort(const Graph *graph) {
+    std::list<std::string> topo_sorted = getTopoSortResult(graph);
     std::cout << "Topo sorted: ";
     if (topo_sorted.empty()) {
         std::cout << "not found!\n";
         return topo_sorted;
     }
-    for (auto v: topo_sorted)
-        std::cout << graph.getNodeName(v) << " ";
+    for (const auto &v: topo_sorted)
+        std::cout << v << " ";
     std::cout << "\n";
     return topo_sorted;
 }
 
-std::list<int> GraphUtils::getColoringResult(const Graph& graph, int source) {
-    std::vector<bool> available(graph.getNodeNum(), false);
-    std::vector<int> res(graph.getNodeNum(), -1);
-    res[source] = source;
-    for (int v = 1; v < graph.getNodeNum(); v++) {
-        for (int adj = 0; adj < graph.getNodeNum(); adj++) {
-            if (graph.hasThisArc(v, adj)) {
-                if (res[adj] != -1)
-                    available[res[adj]] = true;
+std::list<std::pair<std::string, int>> GraphUtils::getColoringResult(const Graph *graph, std::string source) {
+    auto nodes = graph->nodeList();
+    if (source.empty())
+        source = nodes.front()->name();
+    std::unordered_map<int, bool> available; // available colors
+    std::unordered_map<std::string, int> result; // result: map of pairs { nodeName : _color }
+    std::list<std::pair<std::string, int>> res_list;
+    /*result[source] = 0;
+    for (int i = 1; i < nodes.size(); i++) {
+        auto v = nodes.front();
+        for (int j = 0; j < nodes.size(); j++) {
+            auto adj = nodes.front();
+            if (_graph->hasArc(v->name(), adj->name())) {
+                if (result[adj->name()])
+                    available[result[adj->name()]] = true;
             }
         }
-
         int cr;
-        for (cr = 0; cr < graph.getNodeNum(); cr++)
-            if (available[cr] == false)
+        for (cr = 0; cr < _graph->countNodes(); cr++)
+            if (!available[cr])
                 break;
-
-        res[v] = cr;
-        for (int adj = 0; adj < graph.getNodeNum(); adj++) {
-            if (graph.hasThisArc(v, adj)) {
-                if (res[adj] != -1)
-                    available[res[adj]] = false;
+        result[v->name()] = cr;
+        for (auto &adj: nodes) {
+            if (_graph->hasArc(v->name(), adj->name())) {
+                if (result[adj->name()] != -1)
+                    available[result[adj->name()]] = false;
             }
         }
     }
-    std::list<int> res_list;
-    std::copy(res.begin(), res.end(), std::back_inserter(res_list));
+    for (auto &node: nodes) // using for loop because it requires ordering from _node 0th to _node 0th and result map is unordered
+        res_list.emplace_back(std::make_pair(
+                node->name(),
+                result[node->name()]));*/
     return res_list;
 }
 
-std::list<int> GraphUtils::displayColoring(const Graph& graph, int source) {
-    std::list<int> res = getColoringResult(graph, source);
+std::list<std::pair<std::string, int>> GraphUtils::displayColoring(const Graph *graph, std::string source) {
+    auto result = getColoringResult(graph, std::move(source));
     std::cout << "Coloring of the graph: " << std::endl;
-    int v = 0;
-    for (auto color: res) {
-        std::cout << "Node " << graph.getNodeName(v) << " ---> Color " << color << std::endl;
-        v++;
+    for (auto &it: result) {
+        std::cout << "Node " << it.first << " ---> Color " << it.second << std::endl;
     }
-    return res;
+    return result;
 }

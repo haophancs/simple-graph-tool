@@ -9,29 +9,30 @@
 class GraphMatrixTable : public QTableWidget {
 Q_OBJECT
 private:
-    Graph *myGraph{};
+    Graph *_graph{};
+    AdjMatrix _adj;
     int sectionSize;
 
 public:
-    explicit GraphMatrixTable(Graph *myGraph, int sectionSize = 80);
+    explicit GraphMatrixTable(Graph *graph, int sectionSize = 80);
 
     void defaultSetting();
 
     void setGraph(Graph *myGraph);
 
-    Graph *getGraph() const;
+    Graph *graph() const;
 
 signals:
 
     void graphChanged();
 
-    void selectedArc(int u, int v);
+    void arcSelected(std::string uname, std::string vname);
 
 public slots:
 
     void adjustCell(int row, int column);
 
-    void reloadData();
+    void reload();
 };
 
 #endif // GRAPHMATRIXTABLE_H

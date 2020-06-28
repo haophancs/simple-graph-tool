@@ -2,54 +2,62 @@
 #define NODE_H
 
 #include <iostream>
-#include <QPoint>
 #include <utility>
+#include <QPointF>
 
 class Node {
 
 private:
-    int id;
-    int degPos;
-    int degNeg;
-    std::string name;
-    QPointF euclidePos;
+    int _degPos;
+    int _degNeg;
+    std::string _name;
+    QPointF _euclidePos;
 
-    void setId(int newId) { this->id = newId; }
+    void incPositiveDeg() { this->_degPos++; }
 
-    void incPositiveDeg() { this->degPos++; }
+    void incNegativeDeg() { this->_degNeg++; }
 
-    void incNegativeDeg() { this->degNeg++; }
+    void decPositiveDeg() { if (this->_degPos > 0) this->_degPos--; }
 
-    void decPositiveDeg() { if (this->degPos > 0) this->degPos--; }
+    void decNegativeDeg() { if (this->_degNeg > 0) this->_degNeg--; }
 
-    void decNegativeDeg() { if (this->degNeg > 0) this->degNeg--; }
-
-    void isolate() { this->degNeg = this->degPos = 0; }
-
-    void setName(std::string newName) { this->name = std::move(newName); }
+    void setName(std::string newName) { this->_name = std::move(newName); }
 
     friend class Graph;
+    Node() {
+        this->_degPos = this->_degNeg = 0;
+    }
 
 public:
-    explicit Node(std::string name, int id);
 
     explicit Node(std::string name);
 
-    explicit Node(std::string name, QPointF pos);
+    explicit Node(std::string name, QPointF);
 
-    QPointF getEuclidePos() const { return this->euclidePos; }
+    int negativeDegree() const { return this->_degNeg; }
 
-    void setEuclidePos(QPointF pos) { this->euclidePos = pos; }
+    int positiveDegree() const { return this->_degPos; }
 
-    int getNegativeDeg() const { return this->degNeg; }
+    int degree() const { return this->_degPos + this->_degNeg; }
 
-    int getPositiveDeg() const { return this->degPos; }
+    QPointF euclidePos() const { return this->_euclidePos; }
 
-    int getDeg() const { return this->degPos + this->degNeg; }
+    void setEuclidePos(const QPointF &pos) { this->_euclidePos = pos; }
 
-    int getId() const { return this->id; }
+    std::string name() const { return this->_name; }
 
-    std::string getName() const { return this->name; }
+    bool operator==(const Node &other) const { return (this->_name == other._name); }
+
 };
+
+namespace std {
+    template<>
+    struct hash<Node> {
+        size_t
+        operator()(const Node &obj) const {
+            return hash<std::string>()(obj.name());
+        }
+    };
+}
 
 #endif

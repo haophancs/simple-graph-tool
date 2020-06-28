@@ -9,9 +9,7 @@ class GraphGraphicsScene;
 class NodeGraphicsItem : public QObject, public QGraphicsItem {
 Q_OBJECT
 public:
-    NodeGraphicsItem(GraphGraphicsScene *scene, const Node *node, QColor color = colorTable()[0]);
-
-    static int radius;
+    NodeGraphicsItem(GraphGraphicsScene *scene, Node *node, QColor color = colorTable()[0]);
 
     static const QList<QColor> &colorTable();
 
@@ -25,17 +23,19 @@ public:
 
     int type() const override { return Type; }
 
-    void setNode(const Node *newNode);
+    void setNode(Node *_node);
 
-    Node *getNode() const;
+    Node *node() const;
+
+    int radius() const { return this->_radius; }
 
     QColor onSelectedColor() const;
 
-    QColor getColor() const;
+    QColor color() const;
 
-    void setColor(const QColor &newColor) { this->color = newColor; }
+    void setColor(const QColor &newColor) { this->_color = newColor; }
 
-    void setOnSelectedColor(const QColor &newColor) { this->selectedColor = newColor; }
+    void setOnSelectedColor(const QColor &newColor) { this->_selectedColor = newColor; }
 
     QRectF boundingRect() const override;
 
@@ -45,10 +45,11 @@ signals:
     void positionChanged();
 
 private:
-    Node *node{};
-    QColor color;
-    QColor selectedColor;
-    GraphGraphicsScene *myScene;
+    int _radius;
+    Node *_node{};
+    QColor _color;
+    QColor _selectedColor;
+    GraphGraphicsScene *_gscene;
     bool isMoving;
 
 protected:

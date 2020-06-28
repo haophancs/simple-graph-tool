@@ -9,19 +9,19 @@
 ArcGraphicsItem::ArcGraphicsItem(GraphGraphicsScene *scene, NodeGraphicsItem *startItem, NodeGraphicsItem *endItem,
                                  QColor baseColor, QGraphicsItem *parent)
         : QGraphicsLineItem(parent) {
-    this->startItem = startItem;
-    this->endItem = endItem;
-    this->myScene = scene;
-    this->color = std::move(baseColor);
+    this->_startItem = startItem;
+    this->_endItem = endItem;
+    this->_gscene = scene;
+    this->_color = std::move(baseColor);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setAcceptHoverEvents(true);
-    setPen(QPen(this->color, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    this->onSelectedColor = colorTable()[1];
+    setPen(QPen(this->_color, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+    this->_onSelectedColor = colorTable()[1];
 
     updatePosition();
     connect(startItem, SIGNAL(positionChanged()), SLOT(updatePosition()));
     connect(endItem, SIGNAL(positionChanged()), SLOT(updatePosition()));
-    emit myScene->needRedraw();
+    emit _gscene->needRedraw();
 }
 
 const QList<QColor> &ArcGraphicsItem::colorTable() {
@@ -49,37 +49,36 @@ QRectF ArcGraphicsItem::boundingRect() const {
 }
 
 QPainterPath ArcGraphicsItem::shape() const {
-    return this->path;
+    return this->_path;
 }
 
-std::pair<int, int> ArcGraphicsItem::arc() const {
-    return std::make_pair(startItem->getNode()->getId(),
-                          endItem->getNode()->getId());
+std::pair<std::string, std::string> ArcGraphicsItem::arc() const {
+    return std::make_pair(_startItem->node()->name(),
+                          _endItem->node()->name());
 }
 
 int ArcGraphicsItem::weight() const {
-    return myScene->getGraph()->getArcWeight(arc().first, arc().second);
+    return _gscene->graph()->weight(arc().first, arc().second);
 }
 
 void ArcGraphicsItem::updatePosition() {
-
-    qreal p = startItem->pos().x();
-    qreal q = startItem->pos().y();
-    qreal r = endItem->pos().x();
-    qreal s = endItem->pos().y();
+    qreal p = _startItem->pos().x();
+    qreal q = _startItem->pos().y();
+    qreal r = _endItem->pos().x();
+    qreal s = _endItem->pos().y();
     qreal length_x = qFabs(p - r);
     qreal length_y = qFabs(q - s);
     qreal length = qSqrt(length_x * length_x + length_y * length_y);
-    qreal tx1 = 1 - (NodeGraphicsItem::radius / 2.) / length_x;
-    qreal ty1 = 1 - (NodeGraphicsItem::radius / 2.) / length_y;
+    qreal tx1 = 1 - (_endItem->radius() / 2.) / length_x;
+    qreal ty1 = 1 - (_endItem->radius() / 2.) / length_y;
 
     QPointF centerPos = QPoint(
             static_cast<int>((p + r) / 2),
             static_cast<int>((q + s) / 2));
 
-    QLineF centerLine(mapFromItem(startItem, 0, 0), mapFromItem(endItem, 0, 0));
+    QLineF centerLine(mapFromItem(_startItem, 0, 0), mapFromItem(_endItem, 0, 0));
     setLine(centerLine);
-    this->path = QGraphicsLineItem::shape();
+    this->_path = QGraphicsLineItem::shape();
 
     QPointF arcHeadPoint((1 - tx1) * p + tx1 * r, (1 - tx1) * q + tx1 * s);
     qreal arcHeadSize = 15;
@@ -107,7 +106,7 @@ void ArcGraphicsItem::updatePosition() {
         tempPath.cubicTo(centerPos, centerPos, line().p2());
         QPainterPathStroker pathStroke;
         QPainterPath outline = pathStroke.createStroke(tempPath);
-        this->path = outline;
+        this->_path = outline;
     }
 
     QPointF arcP1 = arcHeadPoint + QPointF(sin(angle + M_PI / 3) * arcHeadSize,
@@ -117,42 +116,42 @@ void ArcGraphicsItem::updatePosition() {
 
     QPolygonF arcHead;
     arcHead << arcHeadPoint << arcP2 << arcP1;
-    this->path.addPolygon(arcHead);
+    this->_path.addPolygon(arcHead);
 
     QFont font;
     font.setPointSize(13);
     auto textPos = centerPos;
-    this->path.addText(textPos, font, QString::number(this->weight()));
-    emit myScene->needRedraw();
+    this->_path.addText(textPos, font, QString::number(this->weight()));
+    emit _gscene->needRedraw();
 }
 
 void ArcGraphicsItem::setOnSelectedColor(QColor newColor) {
-    this->onSelectedColor = std::move(newColor);
+    this->_onSelectedColor = std::move(newColor);
 }
 
 bool ArcGraphicsItem::inversionAvailable() const {
 
-    return myScene->getGraph()->hasThisArc(arc().second, arc().first);
+    return _gscene->graph()->hasArc(arc().second, arc().first);
 }
 
 void ArcGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                             QWidget *widget) {
     Q_UNUSED(option);
     Q_UNUSED(widget);
-    if (startItem->collidesWithItem(endItem))
+    if (_startItem->collidesWithItem(_endItem))
         return;
 
     painter->setTransform(transform(), true);
     //updatePosition();
     if (isSelected())
-        color = getOnSelectedColor();
+        _color = onSelectedColor();
     else
-        color = defaultColor();
+        _color = defaultColor();
 
     QPen myPen = pen();
-    myPen.setColor(color);
+    myPen.setColor(_color);
     myPen.setWidth(4);
-    painter->setBrush(color);
+    painter->setBrush(_color);
     painter->setPen(myPen);
     painter->drawPath(this->shape());
 }

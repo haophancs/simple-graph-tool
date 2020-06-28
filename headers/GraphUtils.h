@@ -9,57 +9,60 @@
 class GraphUtils {
 
 private:
-    static void DFSUtil(const Graph &graph, int v, std::vector<bool> &visited, std::list<int> &steps);
+    GraphUtils() = default;
+
+    static void DFSUtil(const Graph *graph, const std::string &vname, std::unordered_map<std::string, bool> &visited,
+                        std::list<std::string> &steps);
 
 public:
 
-    static std::list<int> BFS(const Graph &graph, int source = 0);
+    static std::list<std::string> BFS(const Graph *graph, std::string source = "");
 
-    static std::list<int> DFS(const Graph &graph, int source = 0);
+    static std::list<std::string> DFS(const Graph *graph, std::string source = "");
 
-    static std::list<std::pair<int, int>> BfsToDemo(const Graph &graph, int source);
+    static std::list<std::pair<std::string, std::string>> BFSToDemo(const Graph *graph, const std::string &source);
 
-    static std::list<std::pair<int, int>> DfsToDemo(const Graph &graph, int source);
+    static std::list<std::pair<std::string, std::string>> DFSToDemo(const Graph *graph, const std::string &source);
 
-    static std::list<int> Dijkstra(const Graph &graph, int start, int goal);
+    static std::list<std::string> Dijkstra(const Graph *graph, const std::string &start, const std::string &goal);
 
-    static std::list<std::pair<int, int>> Prim(const Graph &graph, int source = 0);
+    static std::list<std::pair<std::string, std::string>> Prim(const Graph *graph, std::string source = "");
 
-    static std::list<std::list<int>> stronglyConnectedComponents(const Graph &graph);
+    static std::list<std::list<std::string>> stronglyConnectedComponents(const Graph *graph);
 
-    static std::list<std::list<int>> weaklyConnectedComponents(const Graph &graph);
+    static std::list<std::list<std::string>> weaklyConnectedComponents(const Graph *graph);
 
-    static std::list<std::list<int>> displayConnectedComponents(const Graph &graph, bool strong = true);
+    static std::list<std::list<std::string>> displayConnectedComponents(const Graph *graph, bool strong = true);
 
-    static std::list<std::pair<int, int>> getBridges(const Graph &graph);
+    static std::list<std::pair<std::string, std::string>> getBridges(const Graph *graph);
 
-    static std::list<std::pair<int, int>> displayBridges(const Graph &graph);
+    static std::list<std::pair<std::string, std::string>> displayBridges(const Graph *graph);
 
-    static bool isConnectedFromUtoV(const Graph &graph, int u, int v);
+    static bool isConnectedFromUtoV(const Graph *graph, const std::string &uname, const std::string &vname);
 
-    static bool isAllStronglyConnected(const Graph &graph);
+    static bool isAllStronglyConnected(const Graph *graph);
 
-    static bool isAllWeaklyConnected(const Graph &graph);
+    static bool isAllWeaklyConnected(const Graph *graph);
 
-    static std::list<int> getArticulationNodes(const Graph &graph);
+    static std::list<std::string> getArticulationNodes(const Graph *graph);
 
-    static std::list<int> displayArticulationNodes(const Graph &graph);
+    static std::list<std::string> displayArticulationNodes(const Graph *graph);
 
-    static std::list<int> getHamiltonianCycle(const Graph &graph, int source = 0);
+    static std::list<std::string> getHamiltonianCycle(const Graph *graph, std::string source = "");
 
-    static std::list<int> getEulerianCircuit(Graph graph, int source = 0);
+    static std::list<std::string> getEulerianCircuit(const Graph *graph, std::string source = "");
 
-    static std::list<std::list<int>> displayHamiltonianCycle(const Graph &graph);
+    static std::list<std::list<std::string>> displayHamiltonianCycle(const Graph *graph);
 
-    static std::list<std::list<int>> displayEulerianCircuit(const Graph &graph);
+    static std::list<std::list<std::string>> displayEulerianCircuit(const Graph *graph);
 
-    static std::list<int> getTopoSortResult(const Graph &graph);
+    static std::list<std::string> getTopoSortResult(const Graph *graph);
 
-    static std::list<int> displayTopoSort(const Graph& graph);
+    static std::list<std::string> displayTopoSort(const Graph *graph);
 
-    static std::list<int> getColoringResult(const Graph& graph, int source = 0);
+    static std::list<std::pair<std::string, int>> getColoringResult(const Graph *graph, std::string source = "");
 
-    static std::list<int> displayColoring(const Graph& graph, int source = 0);
+    static std::list<std::pair<std::string, int>> displayColoring(const Graph *graph, std::string source = "");
 };
 
 #endif

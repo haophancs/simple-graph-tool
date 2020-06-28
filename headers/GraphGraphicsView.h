@@ -38,29 +38,29 @@ protected:
 
 signals:
 
-    void unSelect();
+    void unSelected();
 
-    void selectedNode(int id);
+    void nodeSelected(std::string node_name);
 
-    void selectedArc(int u, int v);
+    void nodeAdded(QPointF pos);
 
-    void addNewNode(QPointF newNodePos);
+    void nodeRemoved(std::string node_name);
 
-    void removeNode(int id);
+    void nodeEdited(std::string node_name);
 
-    void editNode(int id);
+    void nodeIsolated(std::string node_name);
 
-    void isolateNode(int id);
+    void arcAddedFrom(std::string node_name);
 
-    void addArcFrom(int id);
+    void startAlgorithm(QString algo, std::string source_name);
 
-    void startAlgorithm(QString algo, int id);
+    void arcSelected(std::string uname, std::string vname);
 
-    void removeArc(int u, int v);
+    void arcRemoved(std::string uname, std::string vname);
 
-    void addNewArc();
+    void arcAdded();
 
-    void setArc(int u, int v);
+    void arcSet(std::string uname, std::string vname);
 
     void needRefresh();
 };

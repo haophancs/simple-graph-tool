@@ -103,24 +103,24 @@ signals:
 
     void graphChanged();
 
-    void startDemoAlgorithm(std::list<std::pair<int, int>> listOfPair, GraphDemoFlag flag);
+    void startDemoAlgorithm(std::list<std::pair<std::string, std::string>> listOfPair, GraphDemoFlag flag);
 
-    void startDemoAlgorithm(std::list<int> listOfNum, GraphDemoFlag flag);
+    void startDemoAlgorithm(std::list<std::string> listOfNum, GraphDemoFlag flag);
 
-    void startDemoAlgorithm(std::list<std::list<int>> listOfList, GraphDemoFlag flag);
+    void startDemoAlgorithm(std::list<std::list<std::string>> listOfList, GraphDemoFlag flag);
 
 protected:
     void closeEvent(QCloseEvent *event) override;
 
 private:
-    QString workingFileName;
-    Ui::MainWindow *ui;
-    GraphGraphicsScene *scene;
-    GraphGraphicsView *view;
-    GraphMatrixTable *matrix;
-    ElementPropertiesTable *propertiesTable;
-    Graph *graph;
-    bool dataNeedSaving;
+    QString _workingFilename;
+    Ui::MainWindow *_ui;
+    GraphGraphicsScene *_scene;
+    GraphGraphicsView *_view;
+    GraphMatrixTable *_matrix;
+    ElementPropertiesTable *_propertiesTable;
+    Graph *_graph;
+    bool _dataNeedSaving;
 
     QString showOpenFileDialog();
 
@@ -130,7 +130,7 @@ private:
 
     void setWorkspaceEnabled(bool ready);
 
-    void initWorkspace(const QString &filename, bool newFile = false);
+    void initWorkspace(const QString &filename, bool new_file = false);
 };
 
 #endif // MAINWINDOW_H

@@ -10,200 +10,199 @@ GraphGraphicsScene::GraphGraphicsScene(Graph *graph) {
     setGraph(graph);
 }
 
-Graph *GraphGraphicsScene::getGraph() const {
-    return this->myGraph;
+Graph *GraphGraphicsScene::graph() const {
+    return this->_graph;
 }
 
 void GraphGraphicsScene::setGraph(Graph *graph) {
-    this->myGraph = graph;
-    reloadData();
+    this->_graph = graph;
+    reload();
 }
 
-void GraphGraphicsScene::reloadData() {
-
-    NodeGraphicsItem::radius = 50;
-    this->clear();
-
-    this->nodeItems = std::vector<NodeGraphicsItem *>(myGraph->getNodeNum());
-    std::vector<std::pair<int, int>> arcList = myGraph->getArcList();
-    this->arcItems = std::vector<ArcGraphicsItem *>(arcList.size());
-
-    for (int i = 0; i < myGraph->getNodeNum(); i++) {
-        nodeItems[i] = new NodeGraphicsItem(this, myGraph->getNode(i));
+void GraphGraphicsScene::reload() {
+    this->clearAll();
+    for (const auto &node: graph()->nodeList())
+        _nodeItems[node->name()] = new NodeGraphicsItem(this, node);
+    for (const auto &arc: graph()->arcList()) {
+        _arcItems.insert({ std::make_pair(arc.start()->name(), arc.end()->name()),
+                           new ArcGraphicsItem(this,
+                                   _nodeItems[arc.start()->name()],
+                                   _nodeItems[arc.end()->name()])
+        });
     }
-    for (int i = 0; i < (int) arcList.size(); i++) {
-        arcItems[i] = new ArcGraphicsItem(this,
-                                          nodeItems[arcList[i].first],
-                                          nodeItems[arcList[i].second]);
-        this->addItem(arcItems[i]);
-    }
-    for (int i = 0; i < myGraph->getNodeNum(); i++)
-        this->addItem(nodeItems[i]);
+    for (const auto &item: _arcItems)
+        this->addItem(item.second);
+    for (const auto &item: _nodeItems)
+        this->addItem(item.second);
     this->update();
 }
 
-void GraphGraphicsScene::demoAlgorithm(std::list<std::pair<int, int> > listOfPairToDemo, GraphDemoFlag flag) {
+void GraphGraphicsScene::demoAlgorithm(const std::list<std::pair<std::string, std::string>>& listOfPairToDemo, GraphDemoFlag flag) {
     resetAfterDemoAlgo();
-    this->listOfPair = std::move(listOfPairToDemo);
-    unique_timer = std::make_unique<QTimer>();
-    connect(unique_timer.get(), &QTimer::timeout, this, [this, flag]() {
-        if (!this->listOfPair.empty()) {
-            std::pair<int, int> pii = this->listOfPair.front();
-            int arcId = this->getArcId(pii.first, pii.second);
+    _listOfPair = listOfPairToDemo;
+    _uniqueTimer = std::make_unique<QTimer>();
+    connect(_uniqueTimer.get(), &QTimer::timeout, this, [this, flag]() {
+        if (!this->_listOfPair.empty()) {
+            auto startItem = this->nodeItem(this->_listOfPair.front().first);
+            auto endItem = this->nodeItem(this->_listOfPair.front().second);
+            auto arcItem = this->arcItem(this->_listOfPair.front().first, this->_listOfPair.front().second);
 
             if (flag == GraphDemoFlag::ArcAndNode) {
-                if (pii.first > -1)
-                    this->nodeItems[pii.first]->setSelected(true);
-                if (arcId > -1)
-                    this->arcItems[arcId]->setSelected(true);
-                if (pii.second > -1)
-                    this->nodeItems[pii.second]->setSelected(true);
+                if (startItem != nullptr)
+                    startItem->setSelected(true);
+                if (arcItem != nullptr)
+                    arcItem->setSelected(true);
+                if (endItem != nullptr)
+                    endItem->setSelected(true);
             } else if (flag == GraphDemoFlag::OnlyArc) {
-                if (arcId > -1)
-                    this->arcItems[arcId]->setSelected(true);
+                if (arcItem != nullptr)
+                    arcItem->setSelected(true);
             } else if (flag == GraphDemoFlag::OnlyNode) {
-                if (pii.first > -1)
-                    this->nodeItems[pii.first]->setSelected(true);
-                if (pii.second > -1)
-                    this->nodeItems[pii.second]->setSelected(true);
+                if (startItem != nullptr)
+                    startItem->setSelected(true);
+                if (endItem != nullptr)
+                    endItem->setSelected(true);
             }
             this->update();
-            this->listOfPair.pop_front();
+            this->_listOfPair.pop_front();
         } else {
-            unique_timer->stop();
+            _uniqueTimer->stop();
         }
     });
-    unique_timer->start(600);
+    _uniqueTimer->start(600);
 }
 
-void GraphGraphicsScene::demoAlgorithm(const std::list<int> &listOfNumToDemo, GraphDemoFlag flag) {
+void GraphGraphicsScene::demoAlgorithm(const std::list<std::string> &listOfNodeToDemo, GraphDemoFlag flag) {
     resetAfterDemoAlgo();
-    this->listOfNum = listOfNumToDemo;
-    unique_timer = std::make_unique<QTimer>();
+    this->_listOfNode = listOfNodeToDemo;
+    _uniqueTimer = std::make_unique<QTimer>();
 
     if (flag != GraphDemoFlag::Coloring) {
-        connect(unique_timer.get(), &QTimer::timeout, this, [this, flag]() {
-            if (!this->listOfNum.empty()) {
-                int fromId = this->listOfNum.front();
-                this->listOfNum.pop_front();
-                int toId = !this->listOfNum.empty() ? this->listOfNum.front() : -1;
-                int arcId = this->getArcId(fromId, toId);
+        connect(_uniqueTimer.get(), &QTimer::timeout, this, [this, flag]() {
+            if (!this->_listOfNode.empty()) {
+                auto start_name = this->_listOfNode.front();
+                this->_listOfNode.pop_front();
+                auto end_name = !this->_listOfNode.empty() ? this->_listOfNode.front() : "";
+
+                auto startItem = this->nodeItem(start_name);
+                auto endItem = this->nodeItem(end_name);
+                auto arcItem = this->arcItem(start_name, end_name);
                 if (flag == GraphDemoFlag::ArcAndNode) {
-                    if (fromId > -1)
-                        this->nodeItems[fromId]->setSelected(true);
-                    if (arcId > -1)
-                        this->arcItems[arcId]->setSelected(true);
-                    if (toId > -1)
-                        this->nodeItems[toId]->setSelected(true);
+                    if (startItem != nullptr)
+                        startItem->setSelected(true);
+                    if (arcItem != nullptr)
+                        arcItem->setSelected(true);
+                    if (endItem != nullptr)
+                        endItem->setSelected(true);
                 } else if (flag == GraphDemoFlag::OnlyNode) {
-                    if (fromId > -1)
-                        this->nodeItems[fromId]->setSelected(true);
+                    if (startItem != nullptr)
+                        startItem->setSelected(true);
                 }
                 this->update();
             } else {
-                unique_timer->stop();
+                this->_uniqueTimer->stop();
             }
         });
     } else {
-        std::map<int, QColor> colorMap;
+        std::map<std::string, QColor> colorMap;
         auto random = Random();
-        for (int color_i: listOfNumToDemo)
-            colorMap[color_i] = QColor(random.drawNumber(0, 255), random.drawNumber(0, 255), random.drawNumber(0, 255));
-        const int org_size = listOfNumToDemo.size();
-        connect(unique_timer.get(), &QTimer::timeout, this, [this, colorMap, org_size]() {
-            if (!this->listOfNum.empty()) {
-                int id = static_cast<int>(org_size - this->listOfNum.size());
-                int currColor = this->listOfNum.front();
-                this->listOfNum.pop_front();
-                if (id > -1) {
-                    auto pos = colorMap.find(currColor);
-                    this->nodeItems[id]->setOnSelectedColor(pos->second);
-                    this->nodeItems[id]->setSelected(true);
+        for (auto &node: listOfNodeToDemo)
+            colorMap[node] = QColor(random.drawNumber(0, 255), random.drawNumber(0, 255), random.drawNumber(0, 255));
+        connect(_uniqueTimer.get(), &QTimer::timeout, this, [this, colorMap]() {
+            if (!this->_listOfNode.empty()) {
+                auto nodeItem = this->nodeItem(this->_listOfNode.front());
+                auto currColor = this->_listOfNode.front();
+                this->_listOfNode.pop_front();
+                if (nodeItem != nullptr) {
+                    //auto color = colorMap.find(currColor)->second;
+                    //this->_nodeItems[id]->setOnSelectedColor(color);
+                    //this->_nodeItems[id]->setSelected(true);
                 }
                 this->update();
             } else {
-                unique_timer->stop();
+                _uniqueTimer->stop();
             }
         });
     }
-    unique_timer->start(600);
+    _uniqueTimer->start(600);
 }
 
-void GraphGraphicsScene::demoAlgorithm(const std::list<std::list<int> > &listOfListToDemo, GraphDemoFlag flag) {
+void GraphGraphicsScene::demoAlgorithm(const std::list<std::list<std::string> > &listOfListToDemo, GraphDemoFlag flag) {
     resetAfterDemoAlgo();
-    this->listOfList = listOfListToDemo;
-    unique_timer = std::make_unique<QTimer>();
+    this->_listOfList = listOfListToDemo;
+    _uniqueTimer = std::make_unique<QTimer>();
 
     if (flag == GraphDemoFlag::Component) {
         std::vector<QColor> colorTable;
-        for (int i = 0; i < this->listOfList.size(); i++) {
-            if (i < 14)
-                colorTable.emplace_back(NodeGraphicsItem::colorTable()[i + 2]);
-            else {
-                auto random = Random();
-                colorTable.emplace_back(QColor(random.drawNumber(0, 255), random.drawNumber(0, 255),
+        for (int i = 0; i < this->_listOfList.size(); i++) {
+            auto random = Random();
+            colorTable.emplace_back(QColor(random.drawNumber(0, 255), random.drawNumber(0, 255),
                                                random.drawNumber(0, 255)));
-            }
         }
-        int org_size = this->listOfList.size();
-        connect(unique_timer.get(), &QTimer::timeout, this, [this, colorTable, org_size]() {
-            if (!this->listOfList.empty()) {
-                QColor currColor = colorTable[org_size - this->listOfList.size()];
-                std::list<int> currList = this->listOfList.front();
-                this->listOfList.pop_front();
-                for (int i: currList) {
-                    for (int j: currList) {
-                        int arcId = getArcId(i, j);
-                        if (arcId > -1) {
-                            this->arcItems[arcId]->setOnSelectedColor(currColor);
-                            this->arcItems[arcId]->setSelected(true);
+        int org_size = this->_listOfList.size();
+        connect(_uniqueTimer.get(), &QTimer::timeout, this, [this, colorTable, org_size]() {
+            if (!this->_listOfList.empty()) {
+                QColor currColor = colorTable[org_size - this->_listOfList.size()];
+                std::list<std::string> currList = this->_listOfList.front();
+                this->_listOfList.pop_front();
+                for (const auto& start_name: currList) {
+                    for (const auto& end_name: currList) {
+                        if (start_name != end_name) {
+                            auto arcItem = this->arcItem(start_name, end_name);
+                            if (arcItem != nullptr) {
+                                arcItem->setOnSelectedColor(currColor);
+                                arcItem->setSelected(true);
+                            }
                         }
                     }
-                    if (i > -1) {
-                        this->nodeItems[i]->setOnSelectedColor(currColor);
-                        this->nodeItems[i]->setSelected(true);
+                    auto startItem = this->nodeItem(start_name);
+                    if (startItem != nullptr) {
+                        startItem->setOnSelectedColor(currColor);
+                        startItem->setSelected(true);
                     }
                 }
                 this->update();
             } else {
-                unique_timer->stop();
+                _uniqueTimer->stop();
             }
         });
-        unique_timer->start(600);
+        _uniqueTimer->start(600);
     } else if (flag == GraphDemoFlag::ArcAndNode) {
-        connect(unique_timer.get(), &QTimer::timeout, this, [this]() {
-            if (!this->listOfList.empty() || !this->listOfNum.empty()) {
+        connect(_uniqueTimer.get(), &QTimer::timeout, this, [this]() {
+            if (!this->_listOfList.empty() || !this->_listOfNode.empty()) {
                 bool theLast;
-                if (this->listOfNum.empty()) {
-                    this->listOfNum = this->listOfList.front();
-                    unique_timer->setInterval(700);
-                    this->listOfList.pop_front();
+                if (this->_listOfNode.empty()) {
+                    this->_listOfNode = this->_listOfList.front();
+                    _uniqueTimer->setInterval(700);
+                    this->_listOfList.pop_front();
                 }
-                theLast = this->listOfList.empty();
+                theLast = this->_listOfList.empty();
 
-                int fromId = this->listOfNum.front();
-                this->listOfNum.pop_front();
-                int toId = !this->listOfNum.empty() ? this->listOfNum.front() : -1;
-                int arcId = this->getArcId(fromId, toId);
-                if (fromId > -1 && fromId < this->nodeItems.size())
-                    this->nodeItems[fromId]->setSelected(true);
-                if (arcId > -1 && arcId < this->arcItems.size())
-                    this->arcItems[arcId]->setSelected(true);
-                if (toId > -1 && toId < this->nodeItems.size())
-                    this->nodeItems[toId]->setSelected(true);
+                auto start_name = this->_listOfNode.front();
+                this->_listOfNode.pop_front();
+                auto end_name = !this->_listOfNode.empty() ? this->_listOfNode.front() : "";
+                auto startItem = this->nodeItem(start_name);
+                auto endItem = this->nodeItem(end_name);
+                auto arcItem = this->arcItem(start_name, end_name);
+                if (startItem != nullptr)
+                    startItem->setSelected(true);
+                if (endItem != nullptr)
+                    endItem->setSelected(true);
+                if (arcItem != nullptr)
+                    arcItem->setSelected(true);
 
                 this->update();
-                if (this->listOfNum.empty() && !theLast) {
+                if (this->_listOfNode.empty() && !theLast) {
                     for (auto gi: this->selectedItems())
-                        if (gi)
+                        if (gi != nullptr)
                             gi->setSelected(false);
-                    unique_timer->setInterval(1500);
+                    _uniqueTimer->setInterval(1500);
                 }
             } else {
-                unique_timer->stop();
+                _uniqueTimer->stop();
             }
         });
-        unique_timer->start(600);
+        _uniqueTimer->start(600);
     }
 }
 
@@ -217,16 +216,29 @@ void GraphGraphicsScene::resetAfterDemoAlgo() {
             gi->setSelected(false);
         }
     }
-    this->listOfList.clear();
-    this->listOfNum.clear();
-    this->listOfPair.clear();
+    this->_listOfList.clear();
+    this->_listOfNode.clear();
+    this->_listOfPair.clear();
 }
 
-int GraphGraphicsScene::getArcId(int u, int v) {
-    if (u < 0 || v < 0 || u > arcItems.size() - 1 || v > arcItems.size() - 1)
-        return -1;
-    for (int i = 0; i < arcItems.size(); i++)
-        if (arcItems[i]->arc() == std::make_pair(u, v))
-            return i;
-    return -1;
+ArcGraphicsItem *GraphGraphicsScene::arcItem(const std::string& uname, const std::string& vname) {
+    if (_arcItems.find(std::make_pair(uname, vname)) != _arcItems.end())
+       return _arcItems.find(std::make_pair(uname, vname))->second;
+    return nullptr;
+}
+
+NodeGraphicsItem *GraphGraphicsScene::nodeItem(const std::string &name) {
+    if (_nodeItems.find(name) != _nodeItems.end())
+        return _nodeItems[name];
+    return nullptr;
+}
+
+void GraphGraphicsScene::clearAll() {
+    this->clear();
+    this->_nodeItems.clear();
+    this->_arcItems.clear();
+}
+
+GraphGraphicsScene::~GraphGraphicsScene() {
+    this->clearAll();
 }

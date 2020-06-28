@@ -38,7 +38,7 @@ public:
 
     QPainterPath shape() const override;
 
-    std::pair<int, int> arc() const;
+    std::pair<std::string, std::string> arc() const;
 
     bool inversionAvailable() const;
 
@@ -46,7 +46,7 @@ public:
 
     void setOnSelectedColor(QColor color);
 
-    QColor getOnSelectedColor() const { return this->onSelectedColor; }
+    QColor onSelectedColor() const { return this->_onSelectedColor; }
 
 public slots:
     void updatePosition();
@@ -57,12 +57,12 @@ protected:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
 
 private:
-    GraphGraphicsScene *myScene;
-    NodeGraphicsItem *startItem;
-    NodeGraphicsItem *endItem;
-    QColor color;
-    QColor onSelectedColor;
-    QPainterPath path;
+    GraphGraphicsScene *_gscene;
+    NodeGraphicsItem *_startItem;
+    NodeGraphicsItem *_endItem;
+    QColor _color;
+    QColor _onSelectedColor;
+    QPainterPath _path;
 };
 
 #endif // ARCGRAPHICSITEM_H

@@ -16,14 +16,13 @@ void GraphMatrixTable::defaultSetting() {
 
 void GraphMatrixTable::setGraph(Graph *graph) {
 
-    this->myGraph = graph;
-    if (myGraph == nullptr) return;
-    reloadData();
+    this->_graph = graph;
+    if (graph == nullptr) return;
+    reload();
 }
 
-Graph *GraphMatrixTable::getGraph() const {
-
-    return this->myGraph;
+Graph *GraphMatrixTable::graph() const {
+    return this->_graph;
 }
 
 void GraphMatrixTable::adjustCell(int row, int column) {
@@ -55,17 +54,17 @@ void GraphMatrixTable::adjustCell(int row, int column) {
         msgWarning.setWindowTitle("Error");
         msgWarning.exec();
         this->item(row, column)->setText(
-                (myGraph->getArcWeight(row, column) != INT_MAX) ?
-                QString::number(myGraph->getArcWeight(row, column))
-                                                                : "inf");
+                (_graph->weight(_adj.nodes[row], _adj.nodes[column]) != INT_MAX) ?
+                QString::number(_graph->weight(_adj.nodes[row], _adj.nodes[column]))
+                                                         : "inf");
     } else {
         if (data == "inf") {
-            myGraph->removeArc(row, column);
+            _graph->removeArc(_adj.nodes[row], _adj.nodes[column]);
             this->item(row, column)->setText(data);
         }
-        myGraph->setArc(row, column, data.toInt());
+        _graph->setArc(_adj.nodes[row], _adj.nodes[column], data.toInt());
         emit graphChanged();
-        emit selectedArc(row, column);
+        emit arcSelected(_adj.nodes[row]->name(), _adj.nodes[column]->name());
     }
 }
 
@@ -78,44 +77,41 @@ GraphMatrixTable::GraphMatrixTable(Graph *myGraph, int sectionSize) : sectionSiz
         for (QTableWidgetItem *item : this->selectedItems())
             adjustCell(item->row(), item->column());
     });
-    connect(this, &GraphMatrixTable::currentCellChanged, this, [this](int u, int v) {
+    connect(this, &GraphMatrixTable::currentCellChanged, this, [this](int row, int col) {
         try {
-            emit selectedArc(u, v);
+            emit arcSelected(_adj.nodes[row]->name(), _adj.nodes[col]->name());
         } catch (...) {}
     });
 }
 
-void GraphMatrixTable::reloadData() {
+void GraphMatrixTable::reload() {
 
     disconnect(this, SIGNAL(cellChanged(int, int)), this, SLOT(adjustCell(int, int)));
-
-    this->clear();
-    this->setRowCount(myGraph->getNodeNum());
-    this->setColumnCount(myGraph->getNodeNum());
+    //this->clear();
+    this->_adj = _graph->adjMatrix();
+    this->setRowCount(_graph->countNodes());
+    this->setColumnCount(_graph->countNodes());
     QStringList table_header;
-    for (const Node &node: myGraph->getNodeList()) {
-        table_header << QString::fromStdString(node.getName());
-    }
+    for (const auto &node: _adj.nodes)
+        table_header << QString::fromStdString(node->name());
     this->setHorizontalHeaderLabels(table_header);
     this->setVerticalHeaderLabels(table_header);
 
-    std::vector<std::vector<int>> adj_mat = myGraph->getAdjMatrix();
-    for (int i = 0; i < myGraph->getNodeNum(); i++) {
-        for (int j = 0; j < myGraph->getNodeNum(); j++) {
+    for (int i = 0; i < _adj.matrix.size(); i++) {
+        for (int j = 0; j < _adj.matrix.size(); j++) {
 
             this->setItem(i, j, new QTableWidgetItem);
-            if (adj_mat[i][j] != INT_MAX) {
-
-                this->item(i, j)->setText(QString::fromStdString(std::to_string(adj_mat[i][j])));
+            if (_adj.matrix[i][j] != INT_MAX) {
+                this->item(i, j)->setText(QString::fromStdString(std::to_string(_adj.matrix[i][j])));
                 if (i != j)
                     this->item(i, j)->setToolTip("Weight of the arc from node " +
-                                                 QString::fromStdString(myGraph->getNode(i)->getName()) + " to node " +
-                                                 QString::fromStdString(myGraph->getNode(j)->getName()));
+                                                 QString::fromStdString(_adj.nodes[i]->name()) + " to node " +
+                                                 QString::fromStdString(_adj.nodes[j]->name()));
             } else {
                 this->item(i, j)->setText("inf");
                 this->item(i, j)->setToolTip("No arc from node " +
-                                             QString::fromStdString(myGraph->getNode(i)->getName()) + " to node " +
-                                             QString::fromStdString(myGraph->getNode(j)->getName()));
+                                             QString::fromStdString(_adj.nodes[i]->name())+ " to node " +
+                                             QString::fromStdString(_adj.nodes[j]->name()));
             }
             this->item(i, j)->setTextAlignment(Qt::AlignCenter);
         }
