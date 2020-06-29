@@ -78,16 +78,15 @@ GraphMatrixTable::GraphMatrixTable(Graph *myGraph, int sectionSize) : sectionSiz
             adjustCell(item->row(), item->column());
     });
     connect(this, &GraphMatrixTable::currentCellChanged, this, [this](int row, int col) {
-        try {
+        if (row >= 0 && col >= 0 && row < _adj.nodes.size() && col < _adj.nodes.size())
             emit arcSelected(_adj.nodes[row]->name(), _adj.nodes[col]->name());
-        } catch (...) {}
     });
 }
 
 void GraphMatrixTable::reload() {
 
     disconnect(this, SIGNAL(cellChanged(int, int)), this, SLOT(adjustCell(int, int)));
-    //this->clear();
+    this->clear();
     this->_adj = _graph->adjMatrix();
     this->setRowCount(_graph->countNodes());
     this->setColumnCount(_graph->countNodes());

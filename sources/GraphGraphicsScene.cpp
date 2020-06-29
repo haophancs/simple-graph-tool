@@ -41,34 +41,60 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<std::pair<std::string, st
     resetAfterDemoAlgo();
     _listOfPair = listOfPairToDemo;
     _uniqueTimer = std::make_unique<QTimer>();
-    connect(_uniqueTimer.get(), &QTimer::timeout, this, [this, flag]() {
-        if (!this->_listOfPair.empty()) {
-            auto startItem = this->nodeItem(this->_listOfPair.front().first);
-            auto endItem = this->nodeItem(this->_listOfPair.front().second);
-            auto arcItem = this->arcItem(this->_listOfPair.front().first, this->_listOfPair.front().second);
-
-            if (flag == GraphDemoFlag::ArcAndNode) {
-                if (startItem != nullptr)
-                    startItem->setSelected(true);
-                if (arcItem != nullptr)
-                    arcItem->setSelected(true);
-                if (endItem != nullptr)
-                    endItem->setSelected(true);
-            } else if (flag == GraphDemoFlag::OnlyArc) {
-                if (arcItem != nullptr)
-                    arcItem->setSelected(true);
-            } else if (flag == GraphDemoFlag::OnlyNode) {
-                if (startItem != nullptr)
-                    startItem->setSelected(true);
-                if (endItem != nullptr)
-                    endItem->setSelected(true);
+    if (flag == GraphDemoFlag::Coloring) {
+        std::map<std::string, QColor> colorMap;
+        std::set<std::string> colorCodes;
+        auto random = Random();
+        for (auto &it: _listOfPair)
+            colorCodes.insert(it.second);
+        for (auto &code: colorCodes)
+            colorMap[code] = QColor(random.drawNumber(0, 255), random.drawNumber(0, 255), random.drawNumber(0, 255));
+        connect(_uniqueTimer.get(), &QTimer::timeout, this, [this, colorMap]() {
+            if (!this->_listOfPair.empty()) {
+                auto nodeItem = this->nodeItem(this->_listOfPair.front().first);
+                auto color_code = this->_listOfPair.front().second;
+                this->_listOfPair.pop_front();
+                if (nodeItem != nullptr) {
+                    auto color = colorMap.find(color_code)->second;
+                    nodeItem->setOnSelectedColor(color);
+                    nodeItem->setSelected(true);
+                }
+                this->update();
+            } else {
+                _uniqueTimer->stop();
             }
-            this->update();
-            this->_listOfPair.pop_front();
-        } else {
-            _uniqueTimer->stop();
-        }
-    });
+        });
+    }
+    else {
+        connect(_uniqueTimer.get(), &QTimer::timeout, this, [this, flag]() {
+            if (!this->_listOfPair.empty()) {
+                auto startItem = this->nodeItem(this->_listOfPair.front().first);
+                auto endItem = this->nodeItem(this->_listOfPair.front().second);
+                auto arcItem = this->arcItem(this->_listOfPair.front().first, this->_listOfPair.front().second);
+
+                if (flag == GraphDemoFlag::ArcAndNode) {
+                    if (startItem != nullptr)
+                        startItem->setSelected(true);
+                    if (arcItem != nullptr)
+                        arcItem->setSelected(true);
+                    if (endItem != nullptr)
+                        endItem->setSelected(true);
+                } else if (flag == GraphDemoFlag::OnlyArc) {
+                    if (arcItem != nullptr)
+                        arcItem->setSelected(true);
+                } else if (flag == GraphDemoFlag::OnlyNode) {
+                    if (startItem != nullptr)
+                        startItem->setSelected(true);
+                    if (endItem != nullptr)
+                        endItem->setSelected(true);
+                }
+                this->update();
+                this->_listOfPair.pop_front();
+            } else {
+                _uniqueTimer->stop();
+            }
+        });
+    }
     _uniqueTimer->start(600);
 }
 
@@ -76,8 +102,6 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<std::string> &listOfNodeT
     resetAfterDemoAlgo();
     this->_listOfNode = listOfNodeToDemo;
     _uniqueTimer = std::make_unique<QTimer>();
-
-    if (flag != GraphDemoFlag::Coloring) {
         connect(_uniqueTimer.get(), &QTimer::timeout, this, [this, flag]() {
             if (!this->_listOfNode.empty()) {
                 auto start_name = this->_listOfNode.front();
@@ -103,27 +127,6 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<std::string> &listOfNodeT
                 this->_uniqueTimer->stop();
             }
         });
-    } else {
-        std::map<std::string, QColor> colorMap;
-        auto random = Random();
-        for (auto &node: listOfNodeToDemo)
-            colorMap[node] = QColor(random.drawNumber(0, 255), random.drawNumber(0, 255), random.drawNumber(0, 255));
-        connect(_uniqueTimer.get(), &QTimer::timeout, this, [this, colorMap]() {
-            if (!this->_listOfNode.empty()) {
-                auto nodeItem = this->nodeItem(this->_listOfNode.front());
-                auto currColor = this->_listOfNode.front();
-                this->_listOfNode.pop_front();
-                if (nodeItem != nullptr) {
-                    //auto color = colorMap.find(currColor)->second;
-                    //this->_nodeItems[id]->setOnSelectedColor(color);
-                    //this->_nodeItems[id]->setSelected(true);
-                }
-                this->update();
-            } else {
-                _uniqueTimer->stop();
-            }
-        });
-    }
     _uniqueTimer->start(600);
 }
 

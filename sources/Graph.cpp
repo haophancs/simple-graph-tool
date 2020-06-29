@@ -13,6 +13,14 @@ void Graph::init(int nodeNum) {
         this->addNode();
 }
 
+Graph::Graph(const Graph &obj) {
+    this->clear();
+    for (auto &node: obj.nodeList())
+        this->addNode(node->name());
+    for (auto &arc: obj.arcList())
+        this->setArc(arc.start()->name(), arc.end()->name(), arc.weight());
+}
+
 void Graph::clear() {
     this->_nodeSet.clear();
     this->_arcSet.clear();
@@ -27,7 +35,7 @@ void Graph::readFromFile(const std::string &file) {
     int countNodes;
     in >> countNodes;
     if (countNodes <= 0) throw "number of nodes <= 0";
-    std::string w, name;
+    std::string name;
     qreal x, y;
     for (int i = 0; i < countNodes; i++) {
         if (in.eof()) throw "eof";
@@ -38,15 +46,18 @@ void Graph::readFromFile(const std::string &file) {
     if (countArcs > 0) {
         std::string start, end;
         int weight;
-        if (in.eof()) throw "eof";
-        in >> start >> end >> weight;
-        setArc(start, end, weight);
+        for (int i = 0; i < countArcs; i++) {
+            if (in.eof()) throw "eof";
+            in >> start >> end >> weight;
+            setArc(start, end, weight);
+        }
     }
     in.close();
 }
 
 void Graph::writeToFile(const std::string &file) const {
-    std::ofstream out(file);
+    std::ofstream out;
+    out.open(file, std::ofstream::out | std::ofstream::trunc);
     out << countNodes() << "\n";
     for (const auto &node: nodeList())
         out << node->name() << " " << node->euclidePos().x() << " " << node->euclidePos().y() << "\n";
@@ -102,14 +113,18 @@ Node *Graph::node(const std::string &node_name) const {
 
 bool Graph::addNode(const Node &_node) {
     if (hasNode(_node.name())) return false;
-    max_size++;
     _nodeSet.insert(_node);
     _cachedNodeList.emplace_back(node(_node.name()));
     return true;
 }
 
 std::string Graph::nextNodeName() const {
-    return std::string(1, 'a' + (max_size % 26)) + std::to_string(int(max_size / 26));
+    for (int i = 0; i < countNodes(); i++) {
+        auto name = std::string(1, 'a' + (i % 26)) + std::to_string(int(i / 26));
+        if (!hasNode(name))
+            return name;
+    }
+    return std::string(1, 'a' + (countNodes() % 26)) + std::to_string(int(countNodes() / 26));
 }
 
 bool Graph::addNode(std::string node_name) {
@@ -134,9 +149,9 @@ bool Graph::removeNode(const std::string &name) {
 bool Graph::isolateNode(Node *node) {
     if (!hasNode(node))
         return false;
-    for (auto &arc : arcList()) {
-        if (arc.start() == node || arc.end() == node)
-            removeArc(arc.start(), arc.end());
+    for (auto &it: _arcSet) {
+        if (it.first.first == node || it.first.second == node)
+            removeArc(it.first.first, it.first.second);
     }
     return true;
 }
@@ -145,14 +160,29 @@ bool Graph::isolateNode(const std::string &name) {
     return isolateNode(node(name));
 }
 
-bool Graph::setNodeName(Node *node, const std::string &node_name) const {
-    if (!hasNode(node) || hasNode(node_name) || node->name() == node_name)
+bool Graph::setNodeName(Node *node, const std::string &new_name) {
+    if (!hasNode(node) || hasNode(new_name) || node->name() == new_name)
         return false;
-    node->setName(node_name);
+    std::list<Arc> cachedArcs;
+    for (auto &it: _arcSet) {
+        if (it.first.first == node || it.first.second == node) {
+            cachedArcs.emplace_back(Arc(it.first.first, it.first.second, it.second));
+            //removeArc(it.first.first, it.first.second);
+        }
+    }
+    addNode(Node(new_name, node->euclidePos()));
+    for (auto &arc: cachedArcs) {
+        if (arc.start()->name() == node->name())
+            setArc(new_name, arc.end()->name(), arc.weight());
+        else if (arc.end()->name() == node->name())
+            setArc(arc.start()->name(), new_name, arc.weight());
+        removeArc(arc.start()->name(), arc.end()->name());
+    }
+    removeNode(node);
     return true;
 }
 
-bool Graph::setNodeName(const std::string &old_name, const std::string &new_name) const {
+bool Graph::setNodeName(const std::string &old_name, const std::string &new_name) {
     return setNodeName(node(old_name), new_name);
 }
 
@@ -200,11 +230,12 @@ bool Graph::removeArc(const std::string &uname, const std::string &vname) {
 }
 
 Graph Graph::transpose() const {
-    Graph graph(*this);
-    graph.clearArcs();
-    for (const auto &it : _arcSet)
-        graph.setArc(it.first.second->name(), it.first.first->name(), it.second);
-    return graph;
+    Graph transposed_graph;
+    for (const auto &node: this->nodeList())
+        transposed_graph.addNode(node->name());
+    for (const auto &it: this->_arcSet)
+        transposed_graph.setArc(it.first.second->name(), it.first.first->name(), it.second);
+    return transposed_graph;
 }
 
 std::ostream &operator<<(std::ostream &os, const Graph &graph) {
@@ -247,4 +278,5 @@ bool Graph::hasNode(Node *node) const {
     if (!node) return false;
     return _nodeSet.find(*node) != _nodeSet.end();
 }
+
 

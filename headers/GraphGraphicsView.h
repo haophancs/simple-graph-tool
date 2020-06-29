@@ -9,14 +9,14 @@
 class GraphGraphicsView : public QGraphicsView {
 Q_OBJECT
 private:
-    GraphGraphicsScene *myScene{};
-    QMenu *contextMenu{};
-    bool moving;
-    bool selectTargetNode;
-    bool isRunningAlgoDemo;
-    NodeGraphicsItem *itemFrom{};
-    qreal currentScale;
-    const qreal scaleMax = 1.5;
+    GraphGraphicsScene *_gcene{};
+    QMenu *_contextMenu{};
+    bool _moving;
+    bool _selectTargetNode;
+    bool _isRunningAlgoDemo;
+    NodeGraphicsItem *_startItem{};
+    qreal _currentScale;
+    const qreal _scaleMax = 1.5;
 
 public:
     GraphGraphicsView();

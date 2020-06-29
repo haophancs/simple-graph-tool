@@ -12,14 +12,14 @@ NodeGraphicsItem::NodeGraphicsItem(GraphGraphicsScene *scene, Node *node, QColor
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setAcceptHoverEvents(true);
     setNode(node);
-    isMoving = false;
+    _isMoving = false;
     _selectedColor = defaultOnSelectedColor();
 }
 
 void NodeGraphicsItem::setNode(Node *node) {
     this->_node = node;
     this->setPos(_node->euclidePos());
-    _radius = std::max(_radius, 25 + (int) this->_node->name().length() * 10);
+    _radius = std::max(_radius, _fontSize * (int) this->_node->name().length() / 2 + _fontSize);
 }
 
 Node *NodeGraphicsItem::node() const {
@@ -75,7 +75,7 @@ void NodeGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     font.setPixelSize(25);
     painter->setFont(font);
     QString txt = QString::fromStdString(this->node()->name());
-    painter->drawText(-8 * txt.length(), 10, txt);
+    painter->drawText(- _fontSize * txt.length() / 4 - _fontSize / 4, _fontSize / 2, txt);
 }
 
 void NodeGraphicsItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
@@ -83,7 +83,7 @@ void NodeGraphicsItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
                 .length() < QApplication::startDragDistance()) {
         return;
     }
-    isMoving = true;
+    _isMoving = true;
     setCursor(Qt::ClosedHandCursor);
     setPos(event->scenePos());
     this->node()->setEuclidePos(this->pos());
@@ -94,9 +94,9 @@ void NodeGraphicsItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
 
 void NodeGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
     QGraphicsItem::mouseReleaseEvent(event);
-    if (isMoving) {
+    if (_isMoving) {
         setSelected(false);
-        isMoving = false;
+        _isMoving = false;
     }
     emit this->_gscene->graphChanged();
     setCursor(Qt::OpenHandCursor);

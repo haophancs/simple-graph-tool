@@ -1,6 +1,8 @@
 #include "headers/GraphUtils.h"
 #include <unordered_map>
 #include <utility>
+#include <QDebug>
+#include <QString>
 
 std::list<std::pair<std::string, std::string>> GraphUtils::BFSToDemo(const Graph *graph, const std::string &source) {
     std::list<std::pair<std::string, std::string>> result;
@@ -546,17 +548,17 @@ std::list<std::string> GraphUtils::getEulerianCircuit(const Graph *_graph, std::
     std::stack<std::string> s;
     s.push(source);
     while (!s.empty()) {
-        auto v = s.top();
-        if (graph.node(v)->degree() > 0) {
+        auto vname = s.top();
+        if (graph.node(vname)->degree() > 0) {
             for (auto &adj: graph.nodeList()) {
-                if (graph.hasArc(v, adj->name())) {
+                if (graph.hasArc(vname, adj->name())) {
                     s.push(adj->name());
-                    graph.removeArc(v, adj->name());
+                    graph.removeArc(vname, adj->name());
                     break;
                 }
             }
         } else {
-            cycle.push_front(v);
+            cycle.push_front(vname);
             s.pop();
         }
     }
@@ -639,40 +641,42 @@ std::list<std::pair<std::string, int>> GraphUtils::getColoringResult(const Graph
     std::unordered_map<int, bool> available; // available colors
     std::unordered_map<std::string, int> result; // result: map of pairs { nodeName : _color }
     std::list<std::pair<std::string, int>> res_list;
-    /*result[source] = 0;
+    result[source] = 0;
     for (int i = 1; i < nodes.size(); i++) {
         auto v = nodes.front();
         for (int j = 0; j < nodes.size(); j++) {
             auto adj = nodes.front();
-            if (_graph->hasArc(v->name(), adj->name())) {
+            if (graph->hasArc(v->name(), adj->name())) {
                 if (result[adj->name()])
                     available[result[adj->name()]] = true;
             }
         }
         int cr;
-        for (cr = 0; cr < _graph->countNodes(); cr++)
+        for (cr = 0; cr < graph->countNodes(); cr++)
             if (!available[cr])
                 break;
         result[v->name()] = cr;
         for (auto &adj: nodes) {
-            if (_graph->hasArc(v->name(), adj->name())) {
+            if (graph->hasArc(v->name(), adj->name())) {
                 if (result[adj->name()] != -1)
                     available[result[adj->name()]] = false;
             }
         }
     }
-    for (auto &node: nodes) // using for loop because it requires ordering from _node 0th to _node 0th and result map is unordered
+    for (auto &node: nodes) // using for loop because it requires ordering from node 0th to node 0th and result map is unordered
         res_list.emplace_back(std::make_pair(
                 node->name(),
-                result[node->name()]));*/
+                result[node->name()]));
     return res_list;
 }
 
-std::list<std::pair<std::string, int>> GraphUtils::displayColoring(const Graph *graph, std::string source) {
+std::list<std::pair<std::string, std::string>> GraphUtils::displayColoring(const Graph *graph, std::string source) {
     auto result = getColoringResult(graph, std::move(source));
+    std::list<std::pair<std::string, std::string>> resultToSent;
     std::cout << "Coloring of the graph: " << std::endl;
     for (auto &it: result) {
         std::cout << "Node " << it.first << " ---> Color " << it.second << std::endl;
+        resultToSent.emplace_back(it.first, std::to_string(it.second));
     }
-    return result;
+    return resultToSent;
 }

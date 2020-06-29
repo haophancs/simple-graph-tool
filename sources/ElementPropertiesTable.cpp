@@ -1,11 +1,10 @@
 #include "headers/ElementPropertiesTable.h"
 
 ElementPropertiesTable::ElementPropertiesTable(Graph *graph, int sectionSize) {
-    this->graph = graph;
+    this->_graph = graph;
     this->setSizeAdjustPolicy(QTableWidget::AdjustToContents);
     this->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
     this->verticalHeader()->setDefaultSectionSize(sectionSize);
-    this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     this->verticalHeader()->setCascadingSectionResizes(false);
     this->horizontalHeader()->setStretchLastSection(true);
     this->horizontalHeader()->hide();
@@ -41,12 +40,12 @@ void ElementPropertiesTable::onNodeSelected(const std::string& node_name) {
 
     this->setItem(1, 0, new QTableWidgetItem());
     this->item(1, 0)->setTextAlignment(Qt::AlignCenter);
-    this->item(1, 0)->setText(QString::number(this->graph->node(node_name)->positiveDegree()));
+    this->item(1, 0)->setText(QString::number(this->_graph->node(node_name)->positiveDegree()));
     this->item(1, 0)->setFlags(Qt::ItemIsEnabled);
 
     this->setItem(2, 0, new QTableWidgetItem());
     this->item(2, 0)->setTextAlignment(Qt::AlignCenter);
-    this->item(2, 0)->setText(QString::number(this->graph->node(node_name)->negativeDegree()));
+    this->item(2, 0)->setText(QString::number(this->_graph->node(node_name)->negativeDegree()));
     this->item(2, 0)->setFlags(Qt::ItemIsEnabled);
 }
 
@@ -70,8 +69,8 @@ void ElementPropertiesTable::onArcSelected(const std::string& uname, const std::
 
     this->setItem(2, 0, new QTableWidgetItem());
     this->item(2, 0)->setTextAlignment(Qt::AlignCenter);
-    this->item(2, 0)->setText((this->graph->weight(uname, vname) != INT_MAX) ?
-                              QString::number(this->graph->weight(uname, vname))
-                              : "inf");
+    this->item(2, 0)->setText((this->_graph->weight(uname, vname) != INT_MAX) ?
+                              QString::number(this->_graph->weight(uname, vname))
+                                                                              : "inf");
     this->item(2, 0)->setFlags(Qt::ItemIsEnabled);
 }

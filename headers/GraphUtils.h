@@ -62,7 +62,7 @@ public:
 
     static std::list<std::pair<std::string, int>> getColoringResult(const Graph *graph, std::string source = "");
 
-    static std::list<std::pair<std::string, int>> displayColoring(const Graph *graph, std::string source = "");
+    static std::list<std::pair<std::string, std::string>> displayColoring(const Graph *graph, std::string source = "");
 };
 
 #endif

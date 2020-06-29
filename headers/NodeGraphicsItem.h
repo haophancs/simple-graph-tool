@@ -50,7 +50,8 @@ private:
     QColor _color;
     QColor _selectedColor;
     GraphGraphicsScene *_gscene;
-    bool isMoving;
+    bool _isMoving;
+    int _fontSize = 25;
 
 protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;

@@ -14,7 +14,7 @@ public:
     explicit ElementPropertiesTable(Graph *graph);
 
 private:
-    Graph *graph;
+    Graph *_graph;
 
     void clearTable();
 

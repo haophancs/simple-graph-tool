@@ -54,12 +54,13 @@ private:
     std::unordered_map<std::pair<Node *, Node *>, int> _arcSet;
     std::unordered_set<Node> _nodeSet;
     std::list<Node *> _cachedNodeList;
-    int max_size = 0;
 
 public:
     Graph() = default;
 
     explicit Graph(int nodeNum);
+
+    Graph(const Graph &obj);
 
     void init(int nodeNum);
 
@@ -95,9 +96,9 @@ public:
 
     bool isolateNode(const std::string &name);
 
-    bool setNodeName(Node *node, const std::string &node_name) const;
+    bool setNodeName(Node *node, const std::string &new_name);
 
-    bool setNodeName(const std::string &old_name, const std::string &new_name) const;
+    bool setNodeName(const std::string &old_name, const std::string &new_name);
 
     inline int countArcs() const { return this->_arcSet.size(); }
 

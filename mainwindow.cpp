@@ -14,7 +14,6 @@ MainWindow::MainWindow(QWidget *parent) :
     _ui->setupUi(this);
     _ui->statusBar->setStyleSheet("color: darkgrey");
     _ui->consoleText->setReadOnly(true);
-    //_ui->horizontalSplitter->setCollapsible(1, false);
     _ui->verticalSplitter->setCollapsible(1, false);
     _ui->verticalSplitter->setStretchFactor(0, 1);
     this->_dataNeedSaving = false;
@@ -36,7 +35,8 @@ MainWindow::MainWindow(QWidget *parent) :
     this->_scene = new GraphGraphicsScene(_graph);
     this->_view = new GraphGraphicsView();
     this->_matrix = new GraphMatrixTable(_graph);
-    this->_propertiesTable = new ElementPropertiesTable(_graph);
+    this->_elementPropertiesTable = new ElementPropertiesTable(_graph);
+    this->_graphPropertiesTable = new GraphPropertiesTable(_graph);
 
     connect(_matrix, SIGNAL(graphChanged()), _scene, SLOT(reload()));
     connect(_scene, SIGNAL(graphChanged()), _matrix, SLOT(reload()));
@@ -47,11 +47,12 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(_matrix, SIGNAL(graphChanged()), this, SLOT(onGraphChanged()));
     connect(_scene, SIGNAL(graphChanged()), this, SLOT(onGraphChanged()));
 
-    connect(_view, SIGNAL(unSelected()), _propertiesTable, SLOT(onUnSelected()));
-    connect(this, SIGNAL(graphChanged()), _propertiesTable, SLOT(onGraphChanged()));
-    connect(_view, &GraphGraphicsView::nodeSelected, _propertiesTable, &ElementPropertiesTable::onNodeSelected);
-    connect(_view, &GraphGraphicsView::arcSelected, _propertiesTable, &ElementPropertiesTable::onArcSelected);
-    connect(_matrix, &GraphMatrixTable::arcSelected, _propertiesTable, &ElementPropertiesTable::onArcSelected);
+    connect(_view, SIGNAL(unSelected()), _elementPropertiesTable, SLOT(onUnSelected()));
+    connect(this, SIGNAL(graphChanged()), _elementPropertiesTable, SLOT(onGraphChanged()));
+    connect(this, SIGNAL(graphChanged()), _graphPropertiesTable, SLOT(onGraphChanged()));
+    connect(_view, &GraphGraphicsView::nodeSelected, _elementPropertiesTable, &ElementPropertiesTable::onNodeSelected);
+    connect(_view, &GraphGraphicsView::arcSelected, _elementPropertiesTable, &ElementPropertiesTable::onArcSelected);
+    connect(_matrix, &GraphMatrixTable::arcSelected, _elementPropertiesTable, &ElementPropertiesTable::onArcSelected);
 
     connect(this, SIGNAL(startDemoAlgorithm(std::list<std::list<std::string> >, GraphDemoFlag)), _scene,
             SLOT(demoAlgorithm(std::list<std::list<std::string> >, GraphDemoFlag)));
@@ -117,13 +118,13 @@ MainWindow::MainWindow(QWidget *parent) :
     });
     connect(_view, &GraphGraphicsView::nodeEdited, this, [this](const std::string& node_name) {
         bool ok;
-        QRegExp re("[a-zA-Z0-9]{1,3}");
+        QRegExp re("[a-zA-Z0-9]{1,20}");
         auto new_name = QInputDialog::getText(this, "Add new node", "Name: ", QLineEdit::Normal, QString(), &ok);
         if (ok) {
             if (!re.exactMatch(new_name)) {
                 QMessageBox::critical(this, "Error",
                                       tr("Node's name contains only alphabetical or numeric characters\n")
-                                      + tr("Length of the name mustn't be greater than 3 or smaller than 1"));
+                                      + tr("Length of the name mustn't be greater than 20 or smaller than 1"));
                 return;
             }
             if (this->_graph->hasNode(new_name.toStdString()))
@@ -136,7 +137,15 @@ MainWindow::MainWindow(QWidget *parent) :
     });
 
     _ui->matrixLayout->addWidget(this->_matrix, 0, Qt::AlignCenter);
-    _ui->propertiesLayout->addWidget(this->_propertiesTable, 0, Qt::AlignTop);
+    auto gLabel = new QLabel(this);
+    gLabel->setText("Graph properties");
+    _ui->propertiesLayout->addWidget(gLabel);
+    _ui->propertiesLayout->addWidget(this->_graphPropertiesTable, 0, Qt::AlignTop);
+    auto eLabel = new QLabel(this);
+    eLabel->setText("Selected element properties");
+    eLabel->setContentsMargins(0, 12, 0, 0);
+    _ui->propertiesLayout->addWidget(eLabel);
+    _ui->propertiesLayout->addWidget(this->_elementPropertiesTable, 0, Qt::AlignTop);
     this->_view->setScene(this->_scene);
     _ui->visualLayout->addWidget(this->_view);
     this->_view->show();
@@ -180,7 +189,7 @@ MainWindow::~MainWindow() {
     delete _graph;
     delete _scene;
     delete _view;
-    delete _propertiesTable;
+    delete _elementPropertiesTable;
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
@@ -398,7 +407,7 @@ void MainWindow::on_coloringBtn_clicked() {
     _ui->consoleText->clear();
     QDebugStream qout(std::cout, _ui->consoleText);
     auto result = GraphUtils::displayColoring(_graph);
-//    emit startDemoAlgorithm(res, GraphDemoFlag::Coloring);
+    emit startDemoAlgorithm(result, GraphDemoFlag::Coloring);
 }
 
 void MainWindow::on_weaklyConnectedBtn_clicked() {

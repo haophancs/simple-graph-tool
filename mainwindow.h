@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <headers/GraphPropertiesTable.h>
 
 #include "headers/Graph.h"
 #include "headers/GraphGraphicsScene.h"
@@ -118,7 +119,8 @@ private:
     GraphGraphicsScene *_scene;
     GraphGraphicsView *_view;
     GraphMatrixTable *_matrix;
-    ElementPropertiesTable *_propertiesTable;
+    ElementPropertiesTable *_elementPropertiesTable;
+    GraphPropertiesTable *_graphPropertiesTable;
     Graph *_graph;
     bool _dataNeedSaving;
 

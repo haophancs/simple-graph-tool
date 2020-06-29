@@ -3,22 +3,22 @@
 
 GraphGraphicsView::GraphGraphicsView() {
     setDragMode(ScrollHandDrag);
-    moving = false;
-    selectTargetNode = false;
-    isRunningAlgoDemo = false;
-    currentScale = 1.;
+    _moving = false;
+    _selectTargetNode = false;
+    _isRunningAlgoDemo = false;
+    _currentScale = 1.;
 }
 
 void GraphGraphicsView::wheelEvent(QWheelEvent *event) {
     QGraphicsView::wheelEvent(event);
     setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-    double scaleFactor = 1.1;
-    if (event->delta() > 0 && currentScale <= scaleMax) {
+    double scaleFactor = 1.05;
+    if (event->delta() > 0 && _currentScale < _scaleMax) {
         scale(scaleFactor, scaleFactor);
-        currentScale *= scaleFactor;
+        _currentScale *= scaleFactor;
     } else {
         scale(1 / scaleFactor, 1 / scaleFactor);
-        currentScale /= scaleFactor;
+        _currentScale /= scaleFactor;
     }
 }
 
@@ -55,8 +55,8 @@ void GraphGraphicsView::contextMenuEvent(QContextMenuEvent *event) {
                 if (act->text() == "Re&name")
                         emit nodeEdited(node_name);
                 if (act->text().contains("&Set arc to")) {
-                    selectTargetNode = true;
-                    this->itemFrom = nodeItem;
+                    _selectTargetNode = true;
+                    this->_startItem = nodeItem;
                 }
                 if (act->text().contains("BFS"))
                         emit startAlgorithm("BFS", node_name);
@@ -114,20 +114,20 @@ void GraphGraphicsView::mousePressEvent(QMouseEvent *event) {
     }
     graphScene->resetAfterDemoAlgo();
 
-    if (!selectTargetNode)
+    if (!_selectTargetNode)
         QGraphicsView::mousePressEvent(event);
-    if (selectTargetNode) {
+    if (_selectTargetNode) {
         QList<QGraphicsItem *> itemsTo = items(event->pos());
         if (!itemsTo.empty()) {
             auto *castedItemTo = dynamic_cast<NodeGraphicsItem *>(itemsTo[0]);
-            if (itemFrom && castedItemTo && itemFrom != castedItemTo) {
+            if (_startItem && castedItemTo && _startItem != castedItemTo) {
                 castedItemTo->setSelected(false);
-                emit arcSet(itemFrom->node()->name(), castedItemTo->node()->name());
+                emit arcSet(_startItem->node()->name(), castedItemTo->node()->name());
             }
         }
     }
-    selectTargetNode = false;
-    this->itemFrom = nullptr;
+    _selectTargetNode = false;
+    this->_startItem = nullptr;
     scene()->update();
     viewport()->update();
 }
