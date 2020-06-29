@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
     btnFont.setPixelSize(32);
     _ui->createGraphButton->setFont(btnFont);
     _ui->openGraphButton->setFont(btnFont);
+    _ui->coloringBtn->setVisible(false);
 
     this->_graph = new Graph();
     this->_scene = new GraphGraphicsScene(_graph);
@@ -50,6 +51,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(_view, SIGNAL(unSelected()), _elementPropertiesTable, SLOT(onUnSelected()));
     connect(this, SIGNAL(graphChanged()), _elementPropertiesTable, SLOT(onGraphChanged()));
     connect(this, SIGNAL(graphChanged()), _graphPropertiesTable, SLOT(onGraphChanged()));
+    connect(_matrix, SIGNAL(graphChanged()), _graphPropertiesTable, SLOT(onGraphChanged()));
+    connect(_scene, SIGNAL(graphChanged()), _graphPropertiesTable, SLOT(onGraphChanged()));
     connect(_view, &GraphGraphicsView::nodeSelected, _elementPropertiesTable, &ElementPropertiesTable::onNodeSelected);
     connect(_view, &GraphGraphicsView::arcSelected, _elementPropertiesTable, &ElementPropertiesTable::onArcSelected);
     connect(_matrix, &GraphMatrixTable::arcSelected, _elementPropertiesTable, &ElementPropertiesTable::onArcSelected);
@@ -118,13 +121,13 @@ MainWindow::MainWindow(QWidget *parent) :
     });
     connect(_view, &GraphGraphicsView::nodeEdited, this, [this](const std::string& node_name) {
         bool ok;
-        QRegExp re("[a-zA-Z0-9]{1,20}");
-        auto new_name = QInputDialog::getText(this, "Add new node", "Name: ", QLineEdit::Normal, QString(), &ok);
+        QRegExp re("[a-zA-Z0-9]{1,30}");
+        auto new_name = QInputDialog::getText(this, "Rename node", "Name: ", QLineEdit::Normal, QString(), &ok);
         if (ok) {
             if (!re.exactMatch(new_name)) {
                 QMessageBox::critical(this, "Error",
                                       tr("Node's name contains only alphabetical or numeric characters\n")
-                                      + tr("Length of the name mustn't be greater than 20 or smaller than 1"));
+                                      + tr("Length of the name mustn't be greater than 30 or smaller than 1"));
                 return;
             }
             if (this->_graph->hasNode(new_name.toStdString()))
@@ -162,8 +165,8 @@ void MainWindow::initWorkspace(const QString &filename, bool new_file) {
             this->_dataNeedSaving = true;
             bool ok_pressed = false;
             int n = QInputDialog::getInt(this, "Initialize graph with nodes",
-                                         "Maximum 26 nodes that can be automatically generated",
-                                         0, 0, 26, 1, &ok_pressed);
+                                         "No limit",
+                                         0, 0, INT_MAX, 1, &ok_pressed);
             if (!ok_pressed) return;
             _graph->init(n);
         }
@@ -404,10 +407,10 @@ void MainWindow::on_bridgesBtn_clicked() {
 }
 
 void MainWindow::on_coloringBtn_clicked() {
-    _ui->consoleText->clear();
-    QDebugStream qout(std::cout, _ui->consoleText);
-    auto result = GraphUtils::displayColoring(_graph);
-    emit startDemoAlgorithm(result, GraphDemoFlag::Coloring);
+//    _ui->consoleText->clear();
+//    QDebugStream qout(std::cout, _ui->consoleText);
+//    auto result = GraphUtils::displayColoring(_graph);
+//    emit startDemoAlgorithm(result, GraphDemoFlag::Coloring);
 }
 
 void MainWindow::on_weaklyConnectedBtn_clicked() {

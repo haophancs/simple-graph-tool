@@ -1,16 +1,22 @@
 #include "headers/Graph.h"
 #include <iomanip>
+#include <cmath>
 #include <algorithm>
+#include "headers/random.h"
 
 Graph::Graph(int nodeNum) {
     init(nodeNum);
 }
 
-void Graph::init(int nodeNum) {
+void Graph::init(int node_num) {
     this->clear();
-    if (nodeNum <= 0) return;
-    for (int i = 0; i < nodeNum; i++)
-        this->addNode();
+    if (node_num <= 0) return;
+    Random random;
+    for (int i = 0; i < node_num; i++) {
+        QPointF point((1 - sin((i * 6.28) / node_num)) * node_num * 80 / 2.,
+            (1 - cos((i * 6.28) / node_num)) * node_num * 80 / 2.);
+        addNode(Node(nextNodeName(), point));
+    }
 }
 
 Graph::Graph(const Graph &obj) {
@@ -149,10 +155,13 @@ bool Graph::removeNode(const std::string &name) {
 bool Graph::isolateNode(Node *node) {
     if (!hasNode(node))
         return false;
+    std::list<Arc> cachedArcs;
     for (auto &it: _arcSet) {
         if (it.first.first == node || it.first.second == node)
-            removeArc(it.first.first, it.first.second);
+            cachedArcs.emplace_back(Arc(it.first.first, it.first.second, it.second));
     }
+    for (auto &arc: cachedArcs)
+        removeArc(arc.start()->name(), arc.end()->name());
     return true;
 }
 

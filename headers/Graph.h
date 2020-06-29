@@ -62,7 +62,7 @@ public:
 
     Graph(const Graph &obj);
 
-    void init(int nodeNum);
+    void init(int node_num);
 
     void clear();
 

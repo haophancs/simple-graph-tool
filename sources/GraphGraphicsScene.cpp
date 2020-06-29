@@ -95,7 +95,7 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<std::pair<std::string, st
             }
         });
     }
-    _uniqueTimer->start(600);
+    _uniqueTimer->start(350);
 }
 
 void GraphGraphicsScene::demoAlgorithm(const std::list<std::string> &listOfNodeToDemo, GraphDemoFlag flag) {
@@ -127,7 +127,7 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<std::string> &listOfNodeT
                 this->_uniqueTimer->stop();
             }
         });
-    _uniqueTimer->start(600);
+    _uniqueTimer->start(350);
 }
 
 void GraphGraphicsScene::demoAlgorithm(const std::list<std::list<std::string> > &listOfListToDemo, GraphDemoFlag flag) {
@@ -169,14 +169,14 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<std::list<std::string> > 
                 _uniqueTimer->stop();
             }
         });
-        _uniqueTimer->start(600);
+        _uniqueTimer->start(50);
     } else if (flag == GraphDemoFlag::ArcAndNode) {
         connect(_uniqueTimer.get(), &QTimer::timeout, this, [this]() {
             if (!this->_listOfList.empty() || !this->_listOfNode.empty()) {
                 bool theLast;
                 if (this->_listOfNode.empty()) {
                     this->_listOfNode = this->_listOfList.front();
-                    _uniqueTimer->setInterval(700);
+                    _uniqueTimer->setInterval(400);
                     this->_listOfList.pop_front();
                 }
                 theLast = this->_listOfList.empty();
@@ -199,13 +199,13 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<std::list<std::string> > 
                     for (auto gi: this->selectedItems())
                         if (gi != nullptr)
                             gi->setSelected(false);
-                    _uniqueTimer->setInterval(1500);
+                    _uniqueTimer->setInterval(600);
                 }
             } else {
                 _uniqueTimer->stop();
             }
         });
-        _uniqueTimer->start(600);
+        _uniqueTimer->start(350);
     }
 }
 

@@ -215,6 +215,7 @@ std::list<std::string> GraphUtils::Dijkstra(const Graph *graph, const std::strin
     }
     for (auto &nodeName: path)
         std::cout << nodeName << " ";
+    std::cout << " ------------ cost = " << dist[goal];
     return path;
 }
 
@@ -640,6 +641,8 @@ std::list<std::pair<std::string, int>> GraphUtils::getColoringResult(const Graph
         source = nodes.front()->name();
     std::unordered_map<int, bool> available; // available colors
     std::unordered_map<std::string, int> result; // result: map of pairs { nodeName : _color }
+    for (auto &node: nodes)
+        result[node->name()] = -1;
     std::list<std::pair<std::string, int>> res_list;
     result[source] = 0;
     for (int i = 1; i < nodes.size(); i++) {

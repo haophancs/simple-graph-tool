@@ -34,7 +34,7 @@ public slots:
 
     void demoAlgorithm(const std::list<std::pair<std::string, std::string>>& listOfPairToDemo, GraphDemoFlag flag);
 
-    void demoAlgorithm(const std::list<std::string> &listOfNodeToDemo, GraphDemoFlag flag);
+   void demoAlgorithm(const std::list<std::string> &listOfNodeToDemo, GraphDemoFlag flag);
 
     void demoAlgorithm(const std::list<std::list<std::string>> &listOfListToDemo, GraphDemoFlag flag);
 
