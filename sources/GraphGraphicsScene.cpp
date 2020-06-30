@@ -6,15 +6,15 @@
 
 GraphGraphicsScene::GraphGraphicsScene() = default;
 
-GraphGraphicsScene::GraphGraphicsScene(Graph *graph) {
+GraphGraphicsScene::GraphGraphicsScene(GraphType::Graph *graph) {
     setGraph(graph);
 }
 
-Graph *GraphGraphicsScene::graph() const {
+GraphType::Graph *GraphGraphicsScene::graph() const {
     return this->_graph;
 }
 
-void GraphGraphicsScene::setGraph(Graph *graph) {
+void GraphGraphicsScene::setGraph(GraphType::Graph *graph) {
     this->_graph = graph;
     reload();
 }
@@ -23,11 +23,12 @@ void GraphGraphicsScene::reload() {
     this->clearAll();
     for (const auto &node: graph()->nodeList())
         _nodeItems[node->name()] = new NodeGraphicsItem(this, node);
-    for (const auto &arc: graph()->arcList()) {
-        _arcItems.insert({ std::make_pair(arc.start()->name(), arc.end()->name()),
+    for (auto it = graph()->arcSet().begin(); it != graph()->arcSet().end(); ++it) {
+        auto arc = GraphType::Arc(it);
+        _arcItems.insert({ std::make_pair(arc.u()->name(), arc.v()->name()),
                            new ArcGraphicsItem(this,
-                                   _nodeItems[arc.start()->name()],
-                                   _nodeItems[arc.end()->name()])
+                                   _nodeItems[arc.u()->name()],
+                                   _nodeItems[arc.v()->name()])
         });
     }
     for (const auto &item: _arcItems)

@@ -6,6 +6,8 @@
 #include <stack>
 #include <list>
 
+using namespace GraphType;
+
 class GraphUtils {
 
 private:

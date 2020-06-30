@@ -9,12 +9,12 @@ class ElementPropertiesTable : public QTableWidget {
 Q_OBJECT
 
 public:
-    explicit ElementPropertiesTable(Graph *graph, int sectionSize);
+    explicit ElementPropertiesTable(GraphType::Graph *graph, int sectionSize);
 
-    explicit ElementPropertiesTable(Graph *graph);
+    explicit ElementPropertiesTable(GraphType::Graph *graph);
 
 private:
-    Graph *_graph;
+    GraphType::Graph *_graph;
 
     void clearTable();
 

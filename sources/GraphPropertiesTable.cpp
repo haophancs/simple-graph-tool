@@ -4,7 +4,7 @@
 
 #include "headers/GraphPropertiesTable.h"
 
-GraphPropertiesTable::GraphPropertiesTable(Graph *graph, int sectionSize) {
+GraphPropertiesTable::GraphPropertiesTable(GraphType::Graph *graph, int sectionSize) {
     this->_graph = graph;
     this->setSizeAdjustPolicy(QTableWidget::AdjustToContents);
     this->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
@@ -13,8 +13,8 @@ GraphPropertiesTable::GraphPropertiesTable(Graph *graph, int sectionSize) {
     this->horizontalHeader()->setStretchLastSection(true);
     this->horizontalHeader()->hide();
     QStringList tableHeader;
-    tableHeader << tr("Total nodes") << tr("Total arcs") << tr("Type");
-    this->setRowCount(3);
+    tableHeader << tr("Total nodes") << tr("Total arcs") << tr("Weighted") << tr("Directed") ;
+    this->setRowCount(4);
     this->setColumnCount(1);
     this->setVerticalHeaderLabels(tableHeader);
 
@@ -24,10 +24,11 @@ GraphPropertiesTable::GraphPropertiesTable(Graph *graph, int sectionSize) {
         this->item(i, 0)->setFlags(Qt::ItemIsEnabled);
     }
 
-    this->item(2, 0)->setText("Directed");
+    this->item(2, 0)->setText("True");
+    this->item(3, 0)->setText("True");
 }
 
-GraphPropertiesTable::GraphPropertiesTable(Graph *graph) : GraphPropertiesTable(graph, 48) {}
+GraphPropertiesTable::GraphPropertiesTable(GraphType::Graph *graph) : GraphPropertiesTable(graph, 48) {}
 
 void GraphPropertiesTable::onGraphChanged() {
     this->item(0, 0)->setText(QString::number(this->_graph->countNodes()));

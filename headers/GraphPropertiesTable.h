@@ -8,12 +8,12 @@ class GraphPropertiesTable : public QTableWidget {
     Q_OBJECT
 
 public:
-    explicit GraphPropertiesTable(Graph *graph, int sectionSize);
+    explicit GraphPropertiesTable(GraphType::Graph *graph, int sectionSize);
 
-    explicit GraphPropertiesTable(Graph *graph);
+    explicit GraphPropertiesTable(GraphType::Graph *graph);
 
 private:
-    Graph *_graph;
+    GraphType::Graph *_graph;
 
 public slots:
 

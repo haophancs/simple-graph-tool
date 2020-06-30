@@ -121,7 +121,7 @@ private:
     GraphMatrixTable *_matrix;
     ElementPropertiesTable *_elementPropertiesTable;
     GraphPropertiesTable *_graphPropertiesTable;
-    Graph *_graph;
+    GraphType::Graph *_graph;
     bool _dataNeedSaving;
 
     QString showOpenFileDialog();

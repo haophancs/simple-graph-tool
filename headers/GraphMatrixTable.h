@@ -9,18 +9,18 @@
 class GraphMatrixTable : public QTableWidget {
 Q_OBJECT
 private:
-    Graph *_graph{};
-    AdjMatrix _adj;
+    GraphType::Graph *_graph{};
+    GraphType::AdjacencyMatrix* _adj{};
     int sectionSize;
 
 public:
-    explicit GraphMatrixTable(Graph *graph, int sectionSize = 80);
+    explicit GraphMatrixTable(GraphType::Graph *graph, int sectionSize = 80);
 
     void defaultSetting();
 
-    void setGraph(Graph *myGraph);
+    void setGraph(GraphType::Graph *myGraph);
 
-    Graph *graph() const;
+    GraphType::Graph *graph() const;
 
 signals:
 

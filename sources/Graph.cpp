@@ -4,6 +4,8 @@
 #include <algorithm>
 #include "headers/random.h"
 
+using namespace GraphType;
+
 Graph::Graph(int nodeNum) {
     init(nodeNum);
 }
@@ -23,8 +25,9 @@ Graph::Graph(const Graph &obj) {
     this->clear();
     for (auto &node: obj.nodeList())
         this->addNode(node->name());
-    for (auto &arc: obj.arcList())
-        this->setArc(arc.start()->name(), arc.end()->name(), arc.weight());
+    for (auto it = obj.arcSet().begin(); it != obj.arcSet().end(); ++it) {
+        this->setArc(Arc(it).u()->name(), Arc(it).v()->name(), Arc(it).weight());
+    }
 }
 
 void Graph::clear() {
@@ -68,48 +71,11 @@ void Graph::writeToFile(const std::string &file) const {
     for (const auto &node: nodeList())
         out << node->name() << " " << node->euclidePos().x() << " " << node->euclidePos().y() << "\n";
     out << countArcs() << "\n";
-    for (const auto &arc: arcList())
-        out << arc.start()->name() << " " << arc.end()->name() << " " << arc.weight() << "\n";
+    for (auto it = arcSet().begin(); it != arcSet().end(); ++it) {
+        out << Arc(it).u()->name() << " " << Arc(it).v()->name() << " " << Arc(it).weight() << "\n";
+    }
     out.close();
 }
-
-AdjMatrix Graph::adjMatrix() const {
-    AdjMatrix adj;
-    adj.matrix = std::vector<std::vector<int>>(countNodes(), std::vector<int>(countNodes(), INT_MAX));
-    auto nodes = nodeList();
-    adj.nodes.assign(nodes.begin(), nodes.end());
-    std::unordered_map<std::string, int> nameToIndex;
-    auto it = adj.nodes.begin();
-    for (int i = 0; i < countNodes(); ++i, ++it) {
-        nameToIndex[(*it)->name()] = i;
-        adj.matrix[i][i] = 0;
-    }
-    for (auto &arc: arcList())
-        adj.matrix[nameToIndex[arc.start()->name()]][nameToIndex[arc.end()->name()]] = arc.weight();
-    return adj;
-}
-
-std::list<Arc> Graph::arcList() const {
-    std::list<Arc> arcList;
-    for (auto &it: _arcSet) {
-        arcList.emplace_back(Arc(it.first.first, it.first.second, it.second));
-    }
-    return arcList;
-}
-
-/*std::list<const Node *> Graph::nodeList() const {
-    std::list<const Node *> nodeList;
-    for (auto it = _nodeSet.begin(); it != _nodeSet.end(); ++it)
-        nodeList.emplace_back(&(*it));
-    std::sort(nodeList.begin(), nodeList.end(), [](const Node *&u, const Node *&v) -> bool {
-        auto uname = u->getName();
-        auto vname = v->getName();
-        if (uname.substr(1, uname.length()) == vname.substr(1, vname.length()))
-            return uname[0] < vname[0];
-        return uname.substr(1, uname.length()) < vname.substr(1, vname.length());
-    });
-    return nodeList;
-}*/
 
 Node *Graph::node(const std::string &node_name) const {
     if (!hasNode(node_name))
@@ -156,12 +122,12 @@ bool Graph::isolateNode(Node *node) {
     if (!hasNode(node))
         return false;
     std::list<Arc> cachedArcs;
-    for (auto &it: _arcSet) {
-        if (it.first.first == node || it.first.second == node)
-            cachedArcs.emplace_back(Arc(it.first.first, it.first.second, it.second));
+    for (auto it = arcSet().begin(); it != arcSet().end(); ++it) {
+        if (Arc(it).u() == node || Arc(it).v() == node)
+            cachedArcs.emplace_back(Arc(it));
     }
     for (auto &arc: cachedArcs)
-        removeArc(arc.start()->name(), arc.end()->name());
+        removeArc(arc.u(), arc.v());
     return true;
 }
 
@@ -173,19 +139,18 @@ bool Graph::setNodeName(Node *node, const std::string &new_name) {
     if (!hasNode(node) || hasNode(new_name) || node->name() == new_name)
         return false;
     std::list<Arc> cachedArcs;
-    for (auto &it: _arcSet) {
-        if (it.first.first == node || it.first.second == node) {
-            cachedArcs.emplace_back(Arc(it.first.first, it.first.second, it.second));
-            //removeArc(it.first.first, it.first.second);
-        }
+    for (auto it = arcSet().begin(); it != arcSet().end(); ++it) {
+        auto arc = Arc(it);
+        if (arc.u() == node || arc.v() == node)
+            cachedArcs.emplace_back(arc);
     }
     addNode(Node(new_name, node->euclidePos()));
-    for (auto &arc: cachedArcs) {
-        if (arc.start()->name() == node->name())
-            setArc(new_name, arc.end()->name(), arc.weight());
-        else if (arc.end()->name() == node->name())
-            setArc(arc.start()->name(), new_name, arc.weight());
-        removeArc(arc.start()->name(), arc.end()->name());
+    for (auto it = arcSet().begin(); it != arcSet().end(); ++it) {
+        auto arc = Arc(it);
+        if (arc.u()->name() == node->name())
+            setArc(new_name, arc.v()->name(), arc.weight());
+        else if (arc.v()->name() == node->name())
+            setArc(arc.u()->name(), new_name, arc.weight());
     }
     removeNode(node);
     return true;
@@ -198,7 +163,7 @@ bool Graph::setNodeName(const std::string &old_name, const std::string &new_name
 int Graph::weight(Node *u, Node *v) const {
     if (!hasArc(u, v))
         return INT_MAX;
-    return _arcSet.at(std::make_pair(u, v));
+    return _arcSet.at({u, v});
 }
 
 int Graph::weight(const std::string &uname, const std::string &vname) const {
@@ -242,15 +207,15 @@ Graph Graph::transpose() const {
     Graph transposed_graph;
     for (const auto &node: this->nodeList())
         transposed_graph.addNode(node->name());
-    for (const auto &it: this->_arcSet)
-        transposed_graph.setArc(it.first.second->name(), it.first.first->name(), it.second);
+    for (auto it = arcSet().begin(); it != arcSet().end(); ++it)
+        transposed_graph.setArc(Arc(it).v()->name(), Arc(it).u()->name(), Arc(it).weight());
     return transposed_graph;
 }
 
 std::ostream &operator<<(std::ostream &os, const Graph &graph) {
-    if (graph._nodeSet.empty()) {
-        if (!graph._arcSet.empty())
-            throw "Error in clearing _graph: _nodeSet is empty but _arcSet";
+    if (graph.nodeList().empty()) {
+        if (!graph.nodeList().empty())
+            throw "Error in clearing graph: nodeSet is empty but arcSet";
         else {
             os << "";
             return os;
@@ -258,23 +223,23 @@ std::ostream &operator<<(std::ostream &os, const Graph &graph) {
     }
     os << "\n";
     auto adj = graph.adjMatrix();
-    auto nodeNum = adj.nodes.size();
+    auto nodeNum = adj.nodes().size();
     auto maxLength = 3;
 
-    for (auto &node: adj.nodes)
+    for (auto &node: adj.nodes())
         maxLength = std::max(maxLength, (int) node->name().length());
-    for (auto &arc: graph.arcList())
-        maxLength = std::max(maxLength, (int) std::to_string(arc.weight()).length());
+    for (auto it = graph.arcSet().begin(); it != graph.arcSet().end(); ++it)
+        maxLength = std::max(maxLength, (int) std::to_string(Arc(it).weight()).length());
 
     os << std::string(maxLength + 1, ' ');
-    for (auto &node: adj.nodes)
+    for (auto &node: adj.nodes())
         os << std::left << std::setw(maxLength) << node->name() << " ";
     os << "\n";
     for (int i = 0; i < nodeNum; i++) {
-        os << std::left << std::setw(maxLength) << adj.nodes[i]->name() << " ";
+        os << std::left << std::setw(maxLength) << adj.node(i)->name() << " ";
         for (int j = 0; j < nodeNum; j++) {
-            if (adj.matrix[i][j] != INT_MAX)
-                os << std::left << std::setw(maxLength) << adj.matrix[i][j] << " ";
+            if (adj.weight(i, j) != INT_MAX)
+                os << std::left << std::setw(maxLength) << adj.weight(i, j) << " ";
             else
                 os << std::left << std::setw(maxLength) << "INF" << " ";
         }
@@ -287,5 +252,4 @@ bool Graph::hasNode(Node *node) const {
     if (!node) return false;
     return _nodeSet.find(*node) != _nodeSet.end();
 }
-
 

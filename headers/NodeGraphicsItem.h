@@ -9,7 +9,7 @@ class GraphGraphicsScene;
 class NodeGraphicsItem : public QObject, public QGraphicsItem {
 Q_OBJECT
 public:
-    NodeGraphicsItem(GraphGraphicsScene *scene, Node *node, QColor color = colorTable()[0]);
+    NodeGraphicsItem(GraphGraphicsScene *scene, GraphType::Node *node, QColor color = colorTable()[0]);
 
     static const QList<QColor> &colorTable();
 
@@ -23,9 +23,9 @@ public:
 
     int type() const override { return Type; }
 
-    void setNode(Node *_node);
+    void setNode(GraphType::Node *_node);
 
-    Node *node() const;
+    GraphType::Node *node() const;
 
     int radius() const { return this->_radius; }
 
@@ -46,7 +46,7 @@ signals:
 
 private:
     int _radius;
-    Node *_node{};
+    GraphType::Node *_node{};
     QColor _color;
     QColor _selectedColor;
     GraphGraphicsScene *_gscene;

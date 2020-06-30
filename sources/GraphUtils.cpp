@@ -1,7 +1,6 @@
 #include "headers/GraphUtils.h"
 #include <unordered_map>
 #include <utility>
-#include <QDebug>
 #include <QString>
 
 std::list<std::pair<std::string, std::string>> GraphUtils::BFSToDemo(const Graph *graph, const std::string &source) {
@@ -19,6 +18,7 @@ std::list<std::pair<std::string, std::string>> GraphUtils::BFSToDemo(const Graph
 
     while (!q.empty()) {
         auto vname = q.front();
+        visited[vname] = true;
         steps.push_back(vname);
         std::cout << vname << " ";
         result.emplace_back(parent[steps.back()], steps.back());
@@ -26,7 +26,6 @@ std::list<std::pair<std::string, std::string>> GraphUtils::BFSToDemo(const Graph
 
         for (auto &adj : nodes) {
             if (graph->hasArc(vname, adj->name()) && !visited[adj->name()]) {
-                visited[adj->name()] = true;
                 q.push(adj->name());
                 parent[adj->name()] = vname;
             }
@@ -35,7 +34,7 @@ std::list<std::pair<std::string, std::string>> GraphUtils::BFSToDemo(const Graph
     std::cout << "\n";
     return result;
 }
-
+#include <QDebug>
 std::list<std::pair<std::string, std::string>> GraphUtils::DFSToDemo(const Graph *graph, const std::string &source) {
     std::list<std::pair<std::string, std::string>> result;
     if (!graph->hasNode(source)) return result;
@@ -51,14 +50,14 @@ std::list<std::pair<std::string, std::string>> GraphUtils::DFSToDemo(const Graph
     std::cout << "DFS (source = " << graph->node(source)->name() << "): ";
     while (!s.empty()) {
         auto vname = s.top();
-        std::cout << graph->node(vname)->name() << " ";
+        visited[vname] = true;
+        std::cout << vname << " ";
         steps.push_back(vname);
         result.emplace_back(parent[steps.back()], steps.back());
         s.pop();
 
         for (auto &adj: nodes) {
             if (graph->hasArc(vname, adj->name()) && !visited[adj->name()]) {
-                visited[adj->name()] = true;
                 s.push(adj->name());
                 parent[adj->name()] = vname;
             }

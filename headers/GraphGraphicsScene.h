@@ -16,11 +16,11 @@ Q_OBJECT
 public:
     GraphGraphicsScene();
 
-    explicit GraphGraphicsScene(Graph *graph);
+    explicit GraphGraphicsScene(GraphType::Graph *graph);
 
-    Graph *graph() const;
+    GraphType::Graph *graph() const;
 
-    void setGraph(Graph *graph);
+    void setGraph(GraphType::Graph *graph);
 
     void clearAll();
 
@@ -48,7 +48,7 @@ private:
 
     using QGraphicsScene::clear;
 
-    Graph *_graph{};
+    GraphType::Graph *_graph{};
     std::unordered_map<std::string, NodeGraphicsItem *> _nodeItems;
     std::unordered_map<std::pair<std::string, std::string>, ArcGraphicsItem *> _arcItems;
 

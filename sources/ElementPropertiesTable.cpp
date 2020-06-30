@@ -1,6 +1,6 @@
 #include "headers/ElementPropertiesTable.h"
 
-ElementPropertiesTable::ElementPropertiesTable(Graph *graph, int sectionSize) {
+ElementPropertiesTable::ElementPropertiesTable(GraphType::Graph *graph, int sectionSize) {
     this->_graph = graph;
     this->setSizeAdjustPolicy(QTableWidget::AdjustToContents);
     this->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
@@ -10,7 +10,7 @@ ElementPropertiesTable::ElementPropertiesTable(Graph *graph, int sectionSize) {
     this->horizontalHeader()->hide();
 }
 
-ElementPropertiesTable::ElementPropertiesTable(Graph *graph) : ElementPropertiesTable(graph, 48) {}
+ElementPropertiesTable::ElementPropertiesTable(GraphType::Graph *graph) : ElementPropertiesTable(graph, 48) {}
 
 void ElementPropertiesTable::clearTable() {
     this->setRowCount(0);

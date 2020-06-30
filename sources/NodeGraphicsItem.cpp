@@ -5,7 +5,7 @@
 #include <utility>
 
 
-NodeGraphicsItem::NodeGraphicsItem(GraphGraphicsScene *scene, Node *node, QColor color) {
+NodeGraphicsItem::NodeGraphicsItem(GraphGraphicsScene *scene, GraphType::Node *node, QColor color) {
     this->_gscene = scene;
     this->_color = std::move(color);
     this->_radius = 80;
@@ -16,13 +16,13 @@ NodeGraphicsItem::NodeGraphicsItem(GraphGraphicsScene *scene, Node *node, QColor
     _selectedColor = defaultOnSelectedColor();
 }
 
-void NodeGraphicsItem::setNode(Node *node) {
+void NodeGraphicsItem::setNode(GraphType::Node *node) {
     this->_node = node;
     this->setPos(_node->euclidePos());
     _radius = std::max(_radius, _fontSize * (int) this->_node->name().length() / 2 + _fontSize);
 }
 
-Node *NodeGraphicsItem::node() const {
+GraphType::Node *NodeGraphicsItem::node() const {
     return this->_node;
 }
 
@@ -75,7 +75,7 @@ void NodeGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     font.setPixelSize(25);
     painter->setFont(font);
     QString txt = QString::fromStdString(this->node()->name());
-    painter->drawText(- _fontSize * txt.length() / 4 - _fontSize / 8, _fontSize / 2, txt);
+    painter->drawText(- _fontSize * txt.length() / 4 + _fontSize / 8, _fontSize / 3, txt);
 }
 
 void NodeGraphicsItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {

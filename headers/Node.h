@@ -5,59 +5,61 @@
 #include <utility>
 #include <QPointF>
 
-class Node {
+namespace GraphType {
+    class Node {
 
-private:
-    int _degPos;
-    int _degNeg;
-    std::string _name;
-    QPointF _euclidePos;
+    private:
+        int _degPos;
+        int _degNeg;
+        std::string _name;
+        QPointF _euclidePos;
 
-    void incPositiveDeg() { this->_degPos++; }
+        void incPositiveDeg() { this->_degPos++; }
 
-    void incNegativeDeg() { this->_degNeg++; }
+        void incNegativeDeg() { this->_degNeg++; }
 
-    void decPositiveDeg() { if (this->_degPos > 0) this->_degPos--; }
+        void decPositiveDeg() { if (this->_degPos > 0) this->_degPos--; }
 
-    void decNegativeDeg() { if (this->_degNeg > 0) this->_degNeg--; }
+        void decNegativeDeg() { if (this->_degNeg > 0) this->_degNeg--; }
 
-    void setName(std::string newName) { this->_name = std::move(newName); }
+        void setName(std::string newName) { this->_name = std::move(newName); }
 
-    friend class Graph;
-    Node() {
-        this->_degPos = this->_degNeg = 0;
-    }
+        friend class Graph;
 
-public:
+        Node() {
+            this->_degPos = this->_degNeg = 0;
+        }
 
-    explicit Node(std::string name);
+    public:
 
-    explicit Node(std::string name, QPointF);
+        explicit Node(std::string name);
 
-    int negativeDegree() const { return this->_degNeg; }
+        explicit Node(std::string name, QPointF);
 
-    int positiveDegree() const { return this->_degPos; }
+        int negativeDegree() const { return this->_degNeg; }
 
-    int degree() const { return this->_degPos + this->_degNeg; }
+        int positiveDegree() const { return this->_degPos; }
 
-    QPointF euclidePos() const { return this->_euclidePos; }
+        int degree() const { return this->_degPos + this->_degNeg; }
 
-    void setEuclidePos(const QPointF &pos) { this->_euclidePos = pos; }
+        QPointF euclidePos() const { return this->_euclidePos; }
 
-    std::string name() const { return this->_name; }
+        void setEuclidePos(const QPointF &pos) { this->_euclidePos = pos; }
 
-    bool operator==(const Node &other) const { return (this->_name == other._name); }
+        std::string name() const { return this->_name; }
 
-};
+        bool operator==(const Node &other) const { return (this->_name == other._name); }
+
+    };
+}
 
 namespace std {
     template<>
-    struct hash<Node> {
+    struct hash<GraphType::Node> {
         size_t
-        operator()(const Node &obj) const {
+        operator()(const GraphType::Node &obj) const {
             return hash<std::string>()(obj.name());
         }
     };
 }
-
 #endif

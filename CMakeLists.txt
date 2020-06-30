@@ -41,7 +41,7 @@ add_executable(simple_graph_tool
         headers/qdebugstream.h
         headers/random.h
         sources/ElementPropertiesTable.cpp
-        headers/ElementPropertiesTable.h sources/GraphPropertiesTable.cpp headers/GraphPropertiesTable.h)
+        headers/ElementPropertiesTable.h sources/GraphPropertiesTable.cpp headers/GraphPropertiesTable.h headers/Matrix.h headers/Arc.h sources/UndirectedGraph.cpp headers/UndirectedGraph.h) #sources/Arc.cpp headers/Arc.h)
 
 target_link_libraries(simple_graph_tool Qt5::Core)
 target_link_libraries(simple_graph_tool Qt5::Widgets)
