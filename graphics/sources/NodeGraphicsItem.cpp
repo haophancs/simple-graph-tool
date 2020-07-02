@@ -1,5 +1,5 @@
-#include "headers/NodeGraphicsItem.h"
-#include "headers/GraphGraphicsScene.h"
+#include "graphics/headers/NodeGraphicsItem.h"
+#include "graphics/headers/GraphGraphicsScene.h"
 #include <QtWidgets>
 #include <QDebug>
 #include <utility>

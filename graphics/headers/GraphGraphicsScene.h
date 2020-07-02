@@ -1,14 +1,14 @@
 #ifndef GRAPHGRAPHICSSCENE_H
 #define GRAPHGRAPHICSSCENE_H
 
-#include "Graph.h"
+#include "basis/headers/Graph.h"
 #include "NodeGraphicsItem.h"
-#include "ArcGraphicsItem.h"
+#include "EdgeGraphicsItem.h"
 #include <QGraphicsScene>
 #include <QtWidgets>
 
 enum GraphDemoFlag {
-    OnlyNode, OnlyArc, ArcAndNode, Component, Coloring
+    OnlyNode, OnlyEdge, EdgeAndNode, Component, Coloring
 };
 
 class GraphGraphicsScene : public QGraphicsScene {
@@ -50,9 +50,9 @@ private:
 
     GraphType::Graph *_graph{};
     std::unordered_map<std::string, NodeGraphicsItem *> _nodeItems;
-    std::unordered_map<std::pair<std::string, std::string>, ArcGraphicsItem *> _arcItems;
+    std::unordered_map<std::pair<std::string, std::string>, EdgeGraphicsItem *> _edgeItems;
 
-    ArcGraphicsItem *arcItem(const std::string& uname, const std::string& vname);
+    EdgeGraphicsItem *edgeItem(const std::string& uname, const std::string& vname);
     NodeGraphicsItem *nodeItem(const std::string &name);
 
     std::unique_ptr<QTimer> _uniqueTimer;

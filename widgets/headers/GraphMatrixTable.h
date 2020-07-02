@@ -1,7 +1,7 @@
 #ifndef GRAPHTABLE_H
 #define GRAPHTABLE_H
 
-#include "Graph.h"
+#include "basis/headers/Graph.h"
 #include <QTableWidget>
 #include <QHeaderView>
 #include <QKeyEvent>
@@ -26,7 +26,7 @@ signals:
 
     void graphChanged();
 
-    void arcSelected(std::string uname, std::string vname);
+    void edgeSelected(std::string uname, std::string vname);
 
 public slots:
 

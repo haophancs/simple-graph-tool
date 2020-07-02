@@ -1,4 +1,4 @@
-#include "headers/InputDialog.h"
+#include "widgets/headers/InputDialog.h"
 
 #include <QLabel>
 #include <QLineEdit>

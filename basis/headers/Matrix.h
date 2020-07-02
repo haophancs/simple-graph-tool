@@ -9,7 +9,7 @@
 #include <list>
 #include <climits>
 #include "Node.h"
-#include "Arc.h"
+#include "Edge.h"
 
 namespace GraphType {
     class Matrix {
@@ -19,7 +19,7 @@ namespace GraphType {
         bool _isWeighted = true;
         bool _isDirected = true;
 
-        explicit Matrix(const std::list<Node *> &node_list, const ArcSet &arc_set, bool is_weighted = true, bool is_directed = true) {
+        explicit Matrix(const std::list<Node *> &node_list, const EdgeSet &edge_set, bool is_weighted = true, bool is_directed = true) {
             this->_isDirected = is_directed;
             this->_isWeighted = is_weighted;
             this->_nodes = std::vector<Node *>{ std::begin(node_list), std::end(node_list) };
@@ -35,25 +35,25 @@ namespace GraphType {
 
     class AdjacencyMatrix : public Matrix {
     public:
-        AdjacencyMatrix(const std::list<Node*>& node_list, const ArcSet& arc_set, bool is_weighted = true, bool is_directed = true)
-            : Matrix(node_list, arc_set, is_weighted, is_directed) {
+        AdjacencyMatrix(const std::list<Node*>& node_list, const EdgeSet& edge_set, bool is_weighted = true, bool is_directed = true)
+            : Matrix(node_list, edge_set, is_weighted, is_directed) {
             auto default_w = is_directed ? INT_MAX : 0;
 
             this->_mat = std::vector<std::vector<int>>(node_list.size(), std::vector<int>(node_list.size(), default_w));
             std::unordered_map<std::string, int> name_index;
             for (int i = 0; i < _nodes.size(); ++i)
                 name_index[_nodes[i]->name()] = i;
-            for (auto it = arc_set.begin(); it != arc_set.end(); ++it) {
-                auto arc = Arc(it);
-                _mat[name_index[arc.u()->name()]][name_index[arc.v()->name()]] = arc.weight();
+            for (auto it = edge_set.begin(); it != edge_set.end(); ++it) {
+                auto edge = Edge(it);
+                _mat[name_index[edge.u()->name()]][name_index[edge.v()->name()]] = edge.weight();
             }
         }
     };
 
     class IncidenceMatrix : public Matrix {
     public:
-        IncidenceMatrix(const std::list<Node *>& node_list, const ArcSet& arc_set) : Matrix(node_list, arc_set, true,
-                                                                                            true) {
+        IncidenceMatrix(const std::list<Node *>& node_list, const EdgeSet& edge_set) : Matrix(node_list, edge_set, true,
+                                                                                             true) {
 
         }
     };

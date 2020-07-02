@@ -1,5 +1,5 @@
-#ifndef ARC_H
-#define ARC_H
+#ifndef EDGE_H
+#define EDGE_H
 
 #include <unordered_map>
 #include "Node.h"
@@ -18,14 +18,14 @@ namespace std {
 
 namespace GraphType {
     typedef std::pair<Node *, Node *> NodePair;
-    typedef std::unordered_map<NodePair, int> ArcSet;
+    typedef std::unordered_map<NodePair, int> EdgeSet;
 
-    struct Arc {
-        Arc(NodePair &pair, int &w) : _nodePair(pair), _weight(w) {}
+    struct Edge {
+        Edge(NodePair &pair, int &w) : _nodePair(pair), _weight(w) {}
 
-        explicit Arc(ArcSet::iterator &it) : _nodePair(it->first), _weight(it->second) {}
+        explicit Edge(EdgeSet::iterator &it) : _nodePair(it->first), _weight(it->second) {}
 
-        explicit Arc(ArcSet::const_iterator &it) : _nodePair(it->first), _weight(it->second) {}
+        explicit Edge(EdgeSet::const_iterator &it) : _nodePair(it->first), _weight(it->second) {}
 
         Node *u() const { return _nodePair.first; }
 

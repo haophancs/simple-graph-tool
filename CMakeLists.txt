@@ -17,31 +17,31 @@ find_package(Qt5Widgets REQUIRED)
 include_directories(.)
 
 add_executable(simple_graph_tool
-        sources/ArcGraphicsItem.cpp
-        headers/ArcGraphicsItem.h
-        sources/Graph.cpp
-        headers/Graph.h
-        sources/GraphGraphicsScene.cpp
-        headers/GraphGraphicsScene.h
-        sources/GraphGraphicsView.cpp
-        headers/GraphGraphicsView.h
-        sources/GraphMatrixTable.cpp
-        headers/GraphMatrixTable.h
-        sources/GraphUtils.cpp
-        headers/GraphUtils.h
-        sources/InputDialog.cpp
-        headers/InputDialog.h
+        graphics/sources/EdgeGraphicsItem.cpp
+        graphics/headers/EdgeGraphicsItem.h
+        basis/sources/Graph.cpp
+        basis/headers/Graph.h
+        graphics/sources/GraphGraphicsScene.cpp
+        graphics/headers/GraphGraphicsScene.h
+        graphics/sources/GraphGraphicsView.cpp
+        graphics/headers/GraphGraphicsView.h
+        widgets/sources/GraphMatrixTable.cpp
+        widgets/headers/GraphMatrixTable.h
+        basis/sources/GraphUtils.cpp
+        basis/headers/GraphUtils.h
+        widgets/sources/InputDialog.cpp
+        widgets/headers/InputDialog.h
         main.cpp
         mainwindow.cpp
         mainwindow.h
-        sources/Node.cpp
-        headers/Node.h
-        sources/NodeGraphicsItem.cpp
-        headers/NodeGraphicsItem.h
-        headers/qdebugstream.h
-        headers/random.h
-        sources/ElementPropertiesTable.cpp
-        headers/ElementPropertiesTable.h sources/GraphPropertiesTable.cpp headers/GraphPropertiesTable.h headers/Matrix.h headers/Arc.h sources/UndirectedGraph.cpp headers/UndirectedGraph.h) #sources/Arc.cpp headers/Arc.h)
+        basis/sources/Node.cpp
+        basis/headers/Node.h
+        graphics/sources/NodeGraphicsItem.cpp
+        graphics/headers/NodeGraphicsItem.h
+        utils/qdebugstream.h
+        utils/random.h
+        widgets/sources/ElementPropertiesTable.cpp
+        widgets/headers/ElementPropertiesTable.h widgets/sources/GraphPropertiesTable.cpp widgets/headers/GraphPropertiesTable.h basis/headers/Matrix.h basis/headers/Edge.h basis/sources/UndirectedGraph.cpp basis/headers/UndirectedGraph.h basis/sources/DirectedGraph.cpp basis/headers/DirectedGraph.h) #sources/Edge.cpp utils/Edge.h)
 
 target_link_libraries(simple_graph_tool Qt5::Core)
 target_link_libraries(simple_graph_tool Qt5::Widgets)

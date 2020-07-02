@@ -50,17 +50,17 @@ signals:
 
     void nodeIsolated(std::string node_name);
 
-    void arcAddedFrom(std::string node_name);
+    void edgeAddedFrom(std::string node_name);
 
     void startAlgorithm(QString algo, std::string source_name);
 
-    void arcSelected(std::string uname, std::string vname);
+    void edgeSelected(std::string uname, std::string vname);
 
-    void arcRemoved(std::string uname, std::string vname);
+    void edgeRemoved(std::string uname, std::string vname);
 
-    void arcAdded();
+    void edgeAdded();
 
-    void arcSet(std::string uname, std::string vname);
+    void edgeSet(std::string uname, std::string vname);
 
     void needRefresh();
 };

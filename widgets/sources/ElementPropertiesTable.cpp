@@ -1,4 +1,4 @@
-#include "headers/ElementPropertiesTable.h"
+#include "widgets/headers/ElementPropertiesTable.h"
 
 ElementPropertiesTable::ElementPropertiesTable(GraphType::Graph *graph, int sectionSize) {
     this->_graph = graph;
@@ -49,7 +49,7 @@ void ElementPropertiesTable::onNodeSelected(const std::string& node_name) {
     this->item(2, 0)->setFlags(Qt::ItemIsEnabled);
 }
 
-void ElementPropertiesTable::onArcSelected(const std::string& uname, const std::string& vname) {
+void ElementPropertiesTable::onEdgeSelected(const std::string& uname, const std::string& vname) {
     clearTable();
     QStringList tableHeader;
     tableHeader << tr("From node") << tr("To node") << tr("Weight");

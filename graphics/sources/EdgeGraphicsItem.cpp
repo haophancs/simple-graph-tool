@@ -1,13 +1,13 @@
-#include "headers/ArcGraphicsItem.h"
+#include "graphics/headers/EdgeGraphicsItem.h"
 #include <qmath.h>
 #include <QPen>
 #include <QList>
 #include <QPainter>
 #include <utility>
-#include "headers/GraphGraphicsScene.h"
+#include "graphics/headers/GraphGraphicsScene.h"
 
-ArcGraphicsItem::ArcGraphicsItem(GraphGraphicsScene *scene, NodeGraphicsItem *startItem, NodeGraphicsItem *endItem,
-                                 QColor baseColor, QGraphicsItem *parent)
+EdgeGraphicsItem::EdgeGraphicsItem(GraphGraphicsScene *scene, NodeGraphicsItem *startItem, NodeGraphicsItem *endItem,
+                                   QColor baseColor, QGraphicsItem *parent)
         : QGraphicsLineItem(parent) {
     this->_startItem = startItem;
     this->_endItem = endItem;
@@ -24,7 +24,7 @@ ArcGraphicsItem::ArcGraphicsItem(GraphGraphicsScene *scene, NodeGraphicsItem *st
     emit _gscene->needRedraw();
 }
 
-const QList<QColor> &ArcGraphicsItem::colorTable() {
+const QList<QColor> &EdgeGraphicsItem::colorTable() {
     static QList<QColor> colorTable;
     colorTable.append(QColor(57, 89, 119));
     colorTable.append(QColor(205, 92, 92));
@@ -36,11 +36,11 @@ const QList<QColor> &ArcGraphicsItem::colorTable() {
     return colorTable;
 };
 
-QColor ArcGraphicsItem::defaultColor() { return colorTable()[0]; };
+QColor EdgeGraphicsItem::defaultColor() { return colorTable()[0]; };
 
-QColor ArcGraphicsItem::defaultOnSelectedColor() { return colorTable()[1]; };
+QColor EdgeGraphicsItem::defaultOnSelectedColor() { return colorTable()[1]; };
 
-QRectF ArcGraphicsItem::boundingRect() const {
+QRectF EdgeGraphicsItem::boundingRect() const {
     qreal extra = (pen().width() + 30) / 2.0;
     return QRectF(line().p1(), QSizeF(line().p2().x() - line().p1().x(),
                                       line().p2().y() - line().p1().y()))
@@ -48,20 +48,20 @@ QRectF ArcGraphicsItem::boundingRect() const {
             .adjusted(-extra, -extra, extra, extra);
 }
 
-QPainterPath ArcGraphicsItem::shape() const {
+QPainterPath EdgeGraphicsItem::shape() const {
     return this->_path;
 }
 
-std::pair<std::string, std::string> ArcGraphicsItem::arc() const {
+std::pair<std::string, std::string> EdgeGraphicsItem::edge() const {
     return std::make_pair(_startItem->node()->name(),
                           _endItem->node()->name());
 }
 
-int ArcGraphicsItem::weight() const {
-    return _gscene->graph()->weight(arc().first, arc().second);
+int EdgeGraphicsItem::weight() const {
+    return _gscene->graph()->weight(edge().first, edge().second);
 }
 
-void ArcGraphicsItem::updatePosition() {
+void EdgeGraphicsItem::updatePosition() {
     qreal p = _startItem->pos().x();
     qreal q = _startItem->pos().y();
     qreal r = _endItem->pos().x();
@@ -80,26 +80,26 @@ void ArcGraphicsItem::updatePosition() {
     setLine(centerLine);
     this->_path = QGraphicsLineItem::shape();
 
-    QPointF arcHeadPoint((1 - tx1) * p + tx1 * r, (1 - tx1) * q + tx1 * s);
-    qreal arcHeadSize = 15;
+    QPointF arrowHeadPoint((1 - tx1) * p + tx1 * r, (1 - tx1) * q + tx1 * s);
+    qreal arrowHeadSize = 15;
     qreal angle = std::atan2(line().dy(), -line().dx());
     if (std::abs(angle * 180 / M_PI) >= 45 && std::abs(angle * 180 / M_PI) <= 135) {
-        arcHeadPoint = QPointF(
+        arrowHeadPoint = QPointF(
                 (1 - ty1) * p + ty1 * r,
                 (1 - ty1) * q + ty1 * s);
     }
     if (inversionAvailable()) {
         angle = std::atan2(line().dy(), -line().dx());
-        qreal offset = arcHeadSize / 2;
+        qreal offset = arrowHeadSize / 2;
         qreal foo = qMax(5., qMin(25., length / 6));
-        if (arc().first < arc().second) {
+        if (edge().first < edge().second) {
             centerPos += QPointF(-foo, -foo);
             setLine(QLineF(line().p1(), line().p2() + QPointF(-4, -4)));
-            arcHeadPoint += QPointF(-offset, -offset);
+            arrowHeadPoint += QPointF(-offset, -offset);
         } else {
             centerPos += QPointF(foo, foo);
             setLine(QLineF(line().p1(), line().p2() + QPointF(4, 4)));
-            arcHeadPoint += QPointF(offset, offset);
+            arrowHeadPoint += QPointF(offset, offset);
         }
 
         QPainterPath tempPath(line().p1());
@@ -109,14 +109,14 @@ void ArcGraphicsItem::updatePosition() {
         this->_path = outline;
     }
 
-    QPointF arcP1 = arcHeadPoint + QPointF(sin(angle + M_PI / 3) * arcHeadSize,
-                                       cos(angle + M_PI / 3) * arcHeadSize);
-    QPointF arcP2 = arcHeadPoint + QPointF(sin(angle + M_PI - M_PI / 3) * arcHeadSize,
-                                       cos(angle + M_PI - M_PI / 3) * arcHeadSize);
+    QPointF arrowP1 = arrowHeadPoint + QPointF(sin(angle + M_PI / 3) * arrowHeadSize,
+                                       cos(angle + M_PI / 3) * arrowHeadSize);
+    QPointF arrowP2 = arrowHeadPoint + QPointF(sin(angle + M_PI - M_PI / 3) * arrowHeadSize,
+                                       cos(angle + M_PI - M_PI / 3) * arrowHeadSize);
 
-    QPolygonF arcHead;
-    arcHead << arcHeadPoint << arcP2 << arcP1;
-    this->_path.addPolygon(arcHead);
+    QPolygonF arrowHead;
+    arrowHead << arrowHeadPoint << arrowP2 << arrowP1;
+    this->_path.addPolygon(arrowHead);
 
     QFont font;
     font.setPointSize(13);
@@ -125,17 +125,17 @@ void ArcGraphicsItem::updatePosition() {
     emit _gscene->needRedraw();
 }
 
-void ArcGraphicsItem::setOnSelectedColor(QColor newColor) {
+void EdgeGraphicsItem::setOnSelectedColor(QColor newColor) {
     this->_onSelectedColor = std::move(newColor);
 }
 
-bool ArcGraphicsItem::inversionAvailable() const {
+bool EdgeGraphicsItem::inversionAvailable() const {
 
-    return _gscene->graph()->hasArc(arc().second, arc().first);
+    return _gscene->graph()->hasEdge(edge().second, edge().first);
 }
 
-void ArcGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-                            QWidget *widget) {
+void EdgeGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
+                             QWidget *widget) {
     Q_UNUSED(option);
     Q_UNUSED(widget);
     if (_startItem->collidesWithItem(_endItem))
@@ -156,7 +156,7 @@ void ArcGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
     painter->drawPath(this->shape());
 }
 
-void ArcGraphicsItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {
+void EdgeGraphicsItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {
     QGraphicsItem::hoverEnterEvent(event);
     setCursor(Qt::PointingHandCursor);
 }

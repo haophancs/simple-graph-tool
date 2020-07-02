@@ -1,4 +1,4 @@
-#include "headers/GraphGraphicsView.h"
+#include "graphics/headers/GraphGraphicsView.h"
 #include <QDebug>
 
 GraphGraphicsView::GraphGraphicsView() {
@@ -31,7 +31,7 @@ void GraphGraphicsView::contextMenuEvent(QContextMenuEvent *event) {
         auto item = clickedItems[0];
         item->setSelected(true);
 
-        auto *arcItem = dynamic_cast<ArcGraphicsItem *>(item);
+        auto *edgeItem = dynamic_cast<EdgeGraphicsItem *>(item);
         auto *nodeItem = dynamic_cast<NodeGraphicsItem *>(item);
         if (nodeItem) {
             auto node_name = nodeItem->node()->name();
@@ -41,7 +41,7 @@ void GraphGraphicsView::contextMenuEvent(QContextMenuEvent *event) {
             menu.addAction("&Isolate");
             menu.addAction("Re&name");
             menu.addSeparator();
-            menu.addAction("&Set arc to (Select other node by mouse)");
+            menu.addAction("&Set edge to (Select other node by mouse)");
             menu.addSeparator();
             menu.addAction("BFS from here");
             menu.addAction("DFS from here");
@@ -54,8 +54,8 @@ void GraphGraphicsView::contextMenuEvent(QContextMenuEvent *event) {
                         emit nodeIsolated(node_name);
                 if (act->text() == "Re&name")
                         emit nodeEdited(node_name);
-                if (act->text().contains("&Set arc to")) {
-                    _selectTargetNode = true;
+                if (act->text().contains("&Set edge to")) {
+                    this->_selectTargetNode = true;
                     this->_startItem = nodeItem;
                 }
                 if (act->text().contains("BFS"))
@@ -67,17 +67,17 @@ void GraphGraphicsView::contextMenuEvent(QContextMenuEvent *event) {
             } else {
                 item->setSelected(false);
             }
-        } else if (arcItem) {
+        } else if (edgeItem) {
             QMenu menu;
             menu.addAction("&Delete");
             menu.addAction("Adjust &weight");
-            emit arcSelected(arcItem->arc().first, arcItem->arc().second);
+            emit edgeSelected(edgeItem->edge().first, edgeItem->edge().second);
             QAction *act = menu.exec(event->globalPos());
             if (act != nullptr) {
                 if (act->text() == "&Delete")
-                        emit arcRemoved(arcItem->arc().first, arcItem->arc().second);
+                        emit edgeRemoved(edgeItem->edge().first, edgeItem->edge().second);
                 if (act->text() == "Adjust &weight")
-                        emit arcSet(arcItem->arc().first, arcItem->arc().second);
+                        emit edgeSet(edgeItem->edge().first, edgeItem->edge().second);
             }
         }
     } else {
@@ -103,8 +103,8 @@ void GraphGraphicsView::mousePressEvent(QMouseEvent *event) {
         auto ni = dynamic_cast<NodeGraphicsItem *>(si);
         if (ni) ni->setOnSelectedColor(NodeGraphicsItem::defaultOnSelectedColor());
         else {
-            auto ai = dynamic_cast<ArcGraphicsItem *>(si);
-            if (ai) ai->setOnSelectedColor(ArcGraphicsItem::defaultOnSelectedColor());
+            auto ai = dynamic_cast<EdgeGraphicsItem *>(si);
+            if (ai) ai->setOnSelectedColor(EdgeGraphicsItem::defaultOnSelectedColor());
         }
     }
 
@@ -122,7 +122,7 @@ void GraphGraphicsView::mousePressEvent(QMouseEvent *event) {
             auto *castedItemTo = dynamic_cast<NodeGraphicsItem *>(itemsTo[0]);
             if (_startItem && castedItemTo && _startItem != castedItemTo) {
                 castedItemTo->setSelected(false);
-                emit arcSet(_startItem->node()->name(), castedItemTo->node()->name());
+                emit edgeSet(_startItem->node()->name(), castedItemTo->node()->name());
             }
         }
     }
@@ -135,8 +135,8 @@ void GraphGraphicsView::mousePressEvent(QMouseEvent *event) {
 void GraphGraphicsView::mouseReleaseEvent(QMouseEvent *event) {
     if (!scene()->selectedItems().empty()) {
         auto fni = dynamic_cast<NodeGraphicsItem *>(scene()->selectedItems()[0]);
-        auto fai = dynamic_cast<ArcGraphicsItem *>(scene()->selectedItems()[0]);
-        if (fai) emit arcSelected(fai->arc().first, fai->arc().second);
+        auto fai = dynamic_cast<EdgeGraphicsItem *>(scene()->selectedItems()[0]);
+        if (fai) emit edgeSelected(fai->edge().first, fai->edge().second);
         else if (fni) emit nodeSelected(fni->node()->name());
     }
     if (items(event->pos()).empty())

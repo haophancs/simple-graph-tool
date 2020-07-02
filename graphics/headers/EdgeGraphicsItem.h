@@ -15,7 +15,7 @@ class QPainterPath;
 
 class GraphGraphicsScene;
 
-class ArcGraphicsItem : public QObject, public QGraphicsLineItem {
+class EdgeGraphicsItem : public QObject, public QGraphicsLineItem {
 Q_OBJECT
 public:
     enum {
@@ -28,9 +28,9 @@ public:
 
     static QColor defaultOnSelectedColor();
 
-    ArcGraphicsItem(GraphGraphicsScene *scene, NodeGraphicsItem *startItem, NodeGraphicsItem *endItem,
-                    QColor color = defaultColor(),
-                    QGraphicsItem *parent = nullptr);
+    EdgeGraphicsItem(GraphGraphicsScene *scene, NodeGraphicsItem *startItem, NodeGraphicsItem *endItem,
+                     QColor color = defaultColor(),
+                     QGraphicsItem *parent = nullptr);
 
     int type() const override { return Type; }
 
@@ -38,7 +38,7 @@ public:
 
     QPainterPath shape() const override;
 
-    std::pair<std::string, std::string> arc() const;
+    std::pair<std::string, std::string> edge() const;
 
     bool inversionAvailable() const;
 

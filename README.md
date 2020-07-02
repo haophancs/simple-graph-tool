@@ -2,8 +2,8 @@
 ## Introduction 
 **Simple Graph Tool** is a free tool visualizing graph theory and supporting weighted directed graph. Adaptation for undirected graph is currently under development
 ### Features
-- **Visual View**: Provides graphical visualization of the graph, supports manipulation for nodes and arc, animated demo of algorithms, displays properties of each element of the graph
-- **Matrix View**: Adjacent matrix representation of the graph, GUI displays properties of each arc 
+- **Visual View**: Provides graphical visualization of the graph, supports manipulation for nodes and edge, animated demo of algorithms, displays properties of each element of the graph
+- **Matrix View**: Adjacent matrix representation of the graph, GUI displays properties of each edge 
 - Saving graph to file
 ### Common problems supported for demo
 - BFS, DFS

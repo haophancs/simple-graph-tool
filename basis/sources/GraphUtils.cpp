@@ -1,4 +1,4 @@
-#include "headers/GraphUtils.h"
+#include "basis/headers/GraphUtils.h"
 #include <unordered_map>
 #include <utility>
 #include <QString>
@@ -18,14 +18,15 @@ std::list<std::pair<std::string, std::string>> GraphUtils::BFSToDemo(const Graph
 
     while (!q.empty()) {
         auto vname = q.front();
+        if (!visited[vname])
+            std::cout << vname << " ";
         visited[vname] = true;
         steps.push_back(vname);
-        std::cout << vname << " ";
         result.emplace_back(parent[steps.back()], steps.back());
         q.pop();
 
         for (auto &adj : nodes) {
-            if (graph->hasArc(vname, adj->name()) && !visited[adj->name()]) {
+            if (graph->hasEdge(vname, adj->name()) && !visited[adj->name()]) {
                 q.push(adj->name());
                 parent[adj->name()] = vname;
             }
@@ -50,14 +51,15 @@ std::list<std::pair<std::string, std::string>> GraphUtils::DFSToDemo(const Graph
     std::cout << "DFS (source = " << graph->node(source)->name() << "): ";
     while (!s.empty()) {
         auto vname = s.top();
+        if (!visited[vname])
+            std::cout << vname << " ";
         visited[vname] = true;
-        std::cout << vname << " ";
         steps.push_back(vname);
         result.emplace_back(parent[steps.back()], steps.back());
         s.pop();
 
         for (auto &adj: nodes) {
-            if (graph->hasArc(vname, adj->name()) && !visited[adj->name()]) {
+            if (graph->hasEdge(vname, adj->name()) && !visited[adj->name()]) {
                 s.push(adj->name());
                 parent[adj->name()] = vname;
             }
@@ -82,7 +84,7 @@ std::list<std::string> GraphUtils::BFS(const Graph *graph, std::string source) {
         steps.push_back(vname);
         q.pop();
         for (auto &adj: nodes) {
-            if (graph->hasArc(vname, adj->name()) && !visited[adj->name()]) {
+            if (graph->hasEdge(vname, adj->name()) && !visited[adj->name()]) {
                 visited[adj->name()] = true;
                 q.push(adj->name());
             }
@@ -96,7 +98,7 @@ void GraphUtils::DFSUtil(const Graph *graph, const std::string &vname, std::unor
     visited[vname] = true;
     steps.push_back(vname);
     for (auto &adj: graph->nodeList()) {
-        if (graph->hasArc(vname, adj->name()) && !visited[adj->name()])
+        if (graph->hasEdge(vname, adj->name()) && !visited[adj->name()])
             DFSUtil(graph, adj->name(), visited, steps);
     }
 }
@@ -106,7 +108,7 @@ void UndirectedDFSUtil(const Graph *graph, const std::string &vname, std::unorde
     visited[vname] = true;
     steps.push_back(vname);
     for (auto &adj: graph->nodeList()) {
-        if ((graph->hasArc(vname, adj->name()) || graph->hasArc(adj->name(), vname)) && !visited[adj->name()])
+        if ((graph->hasEdge(vname, adj->name()) || graph->hasEdge(adj->name(), vname)) && !visited[adj->name()])
             UndirectedDFSUtil(graph, adj->name(), visited, steps);
     }
 }
@@ -156,7 +158,7 @@ bool GraphUtils::isAllWeaklyConnected(const Graph *graph) {
         q.pop();
 
         for (auto &adj: nodes) {
-            if ((graph->hasArc(vname, adj->name()) || graph->hasArc(adj->name(), vname)) &&
+            if ((graph->hasEdge(vname, adj->name()) || graph->hasEdge(adj->name(), vname)) &&
                 !visited[adj->name()]) {
                 visited[adj->name()] = true;
                 q.push(adj->name());
@@ -194,7 +196,7 @@ std::list<std::string> GraphUtils::Dijkstra(const Graph *graph, const std::strin
         auto uname = minDistance(dist, sptSet);
         sptSet[uname] = true;
         for (auto &v: nodes) {
-            if (!sptSet[v->name()] && graph->hasArc(uname, v->name()) && dist[uname] != INT_MAX &&
+            if (!sptSet[v->name()] && graph->hasEdge(uname, v->name()) && dist[uname] != INT_MAX &&
                 dist[uname] + graph->weight(uname, v->name()) < dist[v->name()]) {
                 dist[v->name()] = dist[uname] + graph->weight(uname, v->name());
                 parent[v->name()] = uname;
@@ -255,7 +257,7 @@ std::list<std::pair<std::string, std::string>> GraphUtils::Prim(const Graph *gra
         for (auto &node: nodes) {
             auto v = node->name();
             if (!mstSet[v]
-                && graph->hasArc(u, v)
+                && graph->hasEdge(u, v)
                 && graph->weight(u, v) < key[v]) {
                 key[v] = graph->weight(u, v);
                 parent[v] = u;
@@ -264,12 +266,12 @@ std::list<std::pair<std::string, std::string>> GraphUtils::Prim(const Graph *gra
     }
     int cost = 0;
     std::cout << "Minimum panning tree (source = " << source << "): " << std::endl;
-    std::cout << "vertex\tparent\tcost:" << std::endl;
+    std::cout << "vertex \t parent \t cost:" << std::endl;
     for (auto &node: nodes) {
         if (node->name() != source) {
-            if (graph->hasArc(parent[node->name()], node->name())) {
+            if (graph->hasEdge(parent[node->name()], node->name())) {
                 result.emplace_back(std::make_pair(parent[node->name()], node->name()));
-                std::cout << node->name() << "\t" << parent[node->name()] << "\t"
+                std::cout << node->name() << " \t " << parent[node->name()] << " \t "
                           << graph->weight(parent[node->name()], node->name()) << std::endl;
                 cost += graph->weight(parent[node->name()], node->name());
             }
@@ -288,8 +290,8 @@ void weaklyFillOrder(const Graph *graph, const std::string &vname, std::unordere
     visited[vname] = true;
     auto nodes = graph->nodeList();
     for (auto &node: nodes)
-        if (!visited[node->name()] && (graph->hasArc(vname, node->name()) ||
-                                       graph->hasArc(vname, node->name())))
+        if (!visited[node->name()] && (graph->hasEdge(vname, node->name()) ||
+                                       graph->hasEdge(vname, node->name())))
             weaklyFillOrder(graph, node->name(), visited, stack);
     stack.push(vname);
 }
@@ -299,7 +301,7 @@ void stronglyFillOrder(const Graph *graph, const std::string &vname, std::unorde
     visited[vname] = true;
     auto nodes = graph->nodeList();
     for (auto &node: nodes)
-        if (!visited[node->name()] && graph->hasArc(vname, node->name()))
+        if (!visited[node->name()] && graph->hasEdge(vname, node->name()))
             weaklyFillOrder(graph, node->name(), visited, stack);
     stack.push(vname);
 }
@@ -355,14 +357,14 @@ void bridgeUtil(const Graph *graph, const std::string &uname,
     disc[uname] = low[uname] = ++time;
     auto nodes = graph->nodeList();
     for (auto &v: nodes) {
-        if (!visited[v->name()] && graph->hasArc(uname, v->name())) {
+        if (!visited[v->name()] && graph->hasEdge(uname, v->name())) {
             parent[v->name()] = uname;
             bridgeUtil(graph, v->name(), visited, disc, low, parent, res, time);
             low[uname] = std::min(low[uname], low[v->name()]);
             if (low[v->name()] > disc[uname]) {
                 res.emplace_back(uname, v->name());
             }
-        } else if (v->name() != parent[uname] && graph->hasArc(uname, v->name()))
+        } else if (v->name() != parent[uname] && graph->hasEdge(uname, v->name()))
             low[uname] = std::min(low[uname], disc[v->name()]);
     }
 }
@@ -397,7 +399,7 @@ void APUtil(const Graph *graph, const std::string &uname,
     disc[uname] = low[uname] = ++time;
 
     for (auto &v: graph->nodeList()) {
-        if (graph->hasArc(uname, v->name())) {
+        if (graph->hasEdge(uname, v->name())) {
             if (!visited[v->name()]) {
                 children++;
                 parent[v->name()] = uname;
@@ -468,7 +470,7 @@ std::list<std::list<std::string>> GraphUtils::displayConnectedComponents(const G
 
 bool isSafe(const Graph *graph, const std::string &vname,
             std::vector<std::string> &path, int pos) {
-    if (!graph->hasArc(path[pos - 1], vname))
+    if (!graph->hasEdge(path[pos - 1], vname))
         return false;
     for (int i = 0; i < pos; i++)
         if (path[i] == vname)
@@ -479,7 +481,7 @@ bool isSafe(const Graph *graph, const std::string &vname,
 bool hamCycleUtil(const Graph *graph, std::vector<std::string> &path, int pos) {
     int n = graph->countNodes();
     if (pos == n)
-        return graph->hasArc(path[pos - 1], path[0]);
+        return graph->hasEdge(path[pos - 1], path[0]);
 
     for (auto &v: graph->nodeList()) {
         if (v->name() != path[0] && isSafe(graph, v->name(), path, pos)) {
@@ -551,9 +553,9 @@ std::list<std::string> GraphUtils::getEulerianCircuit(const Graph *_graph, std::
         auto vname = s.top();
         if (graph.node(vname)->degree() > 0) {
             for (auto &adj: graph.nodeList()) {
-                if (graph.hasArc(vname, adj->name())) {
+                if (graph.hasEdge(vname, adj->name())) {
                     s.push(adj->name());
-                    graph.removeArc(vname, adj->name());
+                    graph.removeEdge(vname, adj->name());
                     break;
                 }
             }
@@ -597,7 +599,7 @@ void topoSortUtil(const Graph *graph, const std::string &vname, std::unordered_m
                   std::stack<std::string> &stack) {
     visited[vname] = true;
     for (auto &node: graph->nodeList())
-        if (graph->hasArc(vname, node->name()) && !visited[node->name()])
+        if (graph->hasEdge(vname, node->name()) && !visited[node->name()])
             topoSortUtil(graph, node->name(), visited, stack);
     stack.push(vname);
 }
@@ -648,7 +650,7 @@ std::list<std::pair<std::string, int>> GraphUtils::getColoringResult(const Graph
         auto v = nodes.front();
         for (int j = 0; j < nodes.size(); j++) {
             auto adj = nodes.front();
-            if (graph->hasArc(v->name(), adj->name())) {
+            if (graph->hasEdge(v->name(), adj->name())) {
                 if (result[adj->name()])
                     available[result[adj->name()]] = true;
             }
@@ -659,7 +661,7 @@ std::list<std::pair<std::string, int>> GraphUtils::getColoringResult(const Graph
                 break;
         result[v->name()] = cr;
         for (auto &adj: nodes) {
-            if (graph->hasArc(v->name(), adj->name())) {
+            if (graph->hasEdge(v->name(), adj->name())) {
                 if (result[adj->name()] != -1)
                     available[result[adj->name()]] = false;
             }

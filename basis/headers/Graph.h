@@ -2,7 +2,7 @@
 #define GRAPH_H
 
 #include "Node.h"
-#include "Arc.h"
+#include "Edge.h"
 #include "Matrix.h"
 #include <utility>
 #include <vector>
@@ -18,15 +18,17 @@ namespace GraphType {
 
     class Graph {
 
-    private:
-        ArcSet _arcSet;
+    protected:
+        EdgeSet _edgeSet;
         std::unordered_set<Node> _nodeSet;
         std::list<Node *> _cachedNodeList;
+        bool _directed{};
+        bool _weighted{};
 
     public:
         Graph() = default;
 
-        explicit Graph(int nodeNum);
+        explicit Graph(int node_num);
 
         Graph(const Graph &obj);
 
@@ -38,9 +40,9 @@ namespace GraphType {
 
         void writeToFile(const std::string &file) const;
 
-        AdjacencyMatrix adjMatrix() const { return AdjacencyMatrix(_cachedNodeList, _arcSet); }
+        AdjacencyMatrix adjMatrix() const { return AdjacencyMatrix(_cachedNodeList, _edgeSet); }
 
-        const ArcSet& arcSet() const { return this->_arcSet; }
+        const EdgeSet& edgeSet() const { return this->_edgeSet; }
 
         std::list<Node *> nodeList() const { return this->_cachedNodeList; }
 
@@ -70,32 +72,32 @@ namespace GraphType {
 
         bool setNodeName(const std::string &old_name, const std::string &new_name);
 
-        inline int countArcs() const { return this->_arcSet.size(); }
+        inline int countEdges() const { return this->_edgeSet.size(); }
 
-        Arc arc(const std::string& uname, const std::string& vname) const {
-            auto it = _arcSet.find({ node(uname), node(vname) });
-            return Arc(it);
+        Edge edge(const std::string& uname, const std::string& vname) const {
+            auto it = _edgeSet.find({node(uname), node(vname) });
+            return Edge(it);
         }
 
-        bool setArc(Node *u, Node *v, int w = 1);
+        bool setEdge(Node *u, Node *v, int w);
 
-        bool setArc(const std::string &uname, const std::string &vname, int w = 1);
+        bool setEdge(const std::string &uname, const std::string &vname, int w);
 
-        bool removeArc(Node *u, Node *v);
+        bool removeEdge(Node *u, Node *v);
 
-        bool removeArc(const std::string &uname, const std::string &vname);
+        bool removeEdge(const std::string &uname, const std::string &vname);
 
-        inline bool hasArc(Node *u, Node *v) const { return _arcSet.find(std::make_pair(u, v)) != _arcSet.end(); }
+        inline bool hasEdge(Node *u, Node *v) const { return _edgeSet.find(std::make_pair(u, v)) != _edgeSet.end(); }
 
-        inline bool hasArc(const std::string &uname, const std::string &vname) const {
-            return hasArc(node(uname), node(vname));
+        inline bool hasEdge(const std::string &uname, const std::string &vname) const {
+            return hasEdge(node(uname), node(vname));
         }
 
         int weight(Node *u, Node *v) const;
 
         int weight(const std::string &uname, const std::string &vname) const;
 
-        void clearArcs() { this->_arcSet.clear(); }
+        void clearEdges() { this->_edgeSet.clear(); }
 
         Graph transpose() const;
 

@@ -2,13 +2,13 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <headers/GraphPropertiesTable.h>
+#include <widgets/headers/GraphPropertiesTable.h>
 
-#include "headers/Graph.h"
-#include "headers/GraphGraphicsScene.h"
-#include "headers/GraphMatrixTable.h"
-#include "headers/GraphGraphicsView.h"
-#include "headers/ElementPropertiesTable.h"
+#include "basis/headers/Graph.h"
+#include "graphics/headers/GraphGraphicsScene.h"
+#include "widgets/headers/GraphMatrixTable.h"
+#include "graphics/headers/GraphGraphicsView.h"
+#include "widgets/headers/ElementPropertiesTable.h"
 
 namespace Ui {
     class MainWindow;
@@ -44,13 +44,13 @@ private slots:
 
     void on_actionAddNode_triggered();
 
-    void on_actionAddArc_triggered();
+    void on_actionAddEdge_triggered();
 
-    void on_actionEditArc_triggered();
+    void on_actionEditEdge_triggered();
 
     void on_actionDelNode_triggered();
 
-    void on_actionDelArc_triggered();
+    void on_actionDelEdge_triggered();
 
     void on_articulationNodeBtn_clicked();
 

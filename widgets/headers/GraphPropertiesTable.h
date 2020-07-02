@@ -2,7 +2,7 @@
 #define GRAPHPROPERTIESTABLE_H
 #include <QTableWidget>
 #include <QHeaderView>
-#include "Graph.h"
+#include "basis/headers/Graph.h"
 
 class GraphPropertiesTable : public QTableWidget {
     Q_OBJECT

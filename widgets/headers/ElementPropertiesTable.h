@@ -3,7 +3,7 @@
 
 #include <QTableWidget>
 #include <QHeaderView>
-#include "Graph.h"
+#include "basis/headers/Graph.h"
 
 class ElementPropertiesTable : public QTableWidget {
 Q_OBJECT
@@ -24,7 +24,7 @@ public slots:
 
     void onNodeSelected(const std::string& node_name);
 
-    void onArcSelected(const std::string& uname, const std::string& vname);
+    void onEdgeSelected(const std::string& uname, const std::string& vname);
 
     void onUnSelected();
 };

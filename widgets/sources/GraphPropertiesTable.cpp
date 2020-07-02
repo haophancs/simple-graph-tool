@@ -1,8 +1,4 @@
-//
-// Created by haophancs on 29.06.2020.
-//
-
-#include "headers/GraphPropertiesTable.h"
+#include "widgets/headers/GraphPropertiesTable.h"
 
 GraphPropertiesTable::GraphPropertiesTable(GraphType::Graph *graph, int sectionSize) {
     this->_graph = graph;
@@ -13,7 +9,7 @@ GraphPropertiesTable::GraphPropertiesTable(GraphType::Graph *graph, int sectionS
     this->horizontalHeader()->setStretchLastSection(true);
     this->horizontalHeader()->hide();
     QStringList tableHeader;
-    tableHeader << tr("Total nodes") << tr("Total arcs") << tr("Weighted") << tr("Directed") ;
+    tableHeader << tr("Total node(s)") << tr("Total edge(s)") << tr("Weighted") << tr("Directed") ;
     this->setRowCount(4);
     this->setColumnCount(1);
     this->setVerticalHeaderLabels(tableHeader);
@@ -32,6 +28,6 @@ GraphPropertiesTable::GraphPropertiesTable(GraphType::Graph *graph) : GraphPrope
 
 void GraphPropertiesTable::onGraphChanged() {
     this->item(0, 0)->setText(QString::number(this->_graph->countNodes()));
-    this->item(1, 0)->setText(QString::number(this->_graph->countArcs()));
+    this->item(1, 0)->setText(QString::number(this->_graph->countEdges()));
 }
 

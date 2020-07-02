@@ -1,13 +1,13 @@
-#include "headers/Graph.h"
+#include "basis/headers/Graph.h"
 #include <iomanip>
 #include <cmath>
 #include <algorithm>
-#include "headers/random.h"
+#include "utils/random.h"
 
 using namespace GraphType;
 
-Graph::Graph(int nodeNum) {
-    init(nodeNum);
+Graph::Graph(int node_num) {
+    init(node_num);
 }
 
 void Graph::init(int node_num) {
@@ -25,14 +25,14 @@ Graph::Graph(const Graph &obj) {
     this->clear();
     for (auto &node: obj.nodeList())
         this->addNode(node->name());
-    for (auto it = obj.arcSet().begin(); it != obj.arcSet().end(); ++it) {
-        this->setArc(Arc(it).u()->name(), Arc(it).v()->name(), Arc(it).weight());
+    for (auto it = obj.edgeSet().begin(); it != obj.edgeSet().end(); ++it) {
+        this->setEdge(Edge(it).u()->name(), Edge(it).v()->name(), Edge(it).weight());
     }
 }
 
 void Graph::clear() {
     this->_nodeSet.clear();
-    this->_arcSet.clear();
+    this->_edgeSet.clear();
     this->_cachedNodeList.clear();
 }
 
@@ -50,15 +50,15 @@ void Graph::readFromFile(const std::string &file) {
         if (in.eof()) throw "eof";
         in >> name >> x >> y, addNode(Node(name, QPointF(x, y)));
     }
-    int countArcs;
-    in >> countArcs;
-    if (countArcs > 0) {
+    int countEdges;
+    in >> countEdges;
+    if (countEdges > 0) {
         std::string start, end;
         int weight;
-        for (int i = 0; i < countArcs; i++) {
+        for (int i = 0; i < countEdges; i++) {
             if (in.eof()) throw "eof";
             in >> start >> end >> weight;
-            setArc(start, end, weight);
+            setEdge(start, end, weight);
         }
     }
     in.close();
@@ -71,8 +71,8 @@ void Graph::writeToFile(const std::string &file) const {
     for (const auto &node: nodeList())
         out << node->name() << " " << node->euclidePos().x() << " " << node->euclidePos().y() << "\n";
     out << countArcs() << "\n";
-    for (auto it = arcSet().begin(); it != arcSet().end(); ++it) {
-        out << Arc(it).u()->name() << " " << Arc(it).v()->name() << " " << Arc(it).weight() << "\n";
+    for (auto it = edgeSet().begin(); it != edgeSet().end(); ++it) {
+        out << Edge(it).u()->name() << " " << Edge(it).v()->name() << " " << Edge(it).weight() << "\n";
     }
     out.close();
 }
@@ -121,13 +121,13 @@ bool Graph::removeNode(const std::string &name) {
 bool Graph::isolateNode(Node *node) {
     if (!hasNode(node))
         return false;
-    std::list<Arc> cachedArcs;
-    for (auto it = arcSet().begin(); it != arcSet().end(); ++it) {
-        if (Arc(it).u() == node || Arc(it).v() == node)
-            cachedArcs.emplace_back(Arc(it));
+    std::list<Edge> cachedArcs;
+    for (auto it = edgeSet().begin(); it != edgeSet().end(); ++it) {
+        if (Edge(it).u() == node || Edge(it).v() == node)
+            cachedArcs.emplace_back(Edge(it));
     }
-    for (auto &arc: cachedArcs)
-        removeArc(arc.u(), arc.v());
+    for (auto &edge: cachedArcs)
+        removeEdge(edge.u(), edge.v());
     return true;
 }
 
@@ -138,19 +138,19 @@ bool Graph::isolateNode(const std::string &name) {
 bool Graph::setNodeName(Node *node, const std::string &new_name) {
     if (!hasNode(node) || hasNode(new_name) || node->name() == new_name)
         return false;
-    std::list<Arc> cachedArcs;
-    for (auto it = arcSet().begin(); it != arcSet().end(); ++it) {
-        auto arc = Arc(it);
-        if (arc.u() == node || arc.v() == node)
-            cachedArcs.emplace_back(arc);
+    std::list<Edge> cachedArcs;
+    for (auto it = edgeSet().begin(); it != edgeSet().end(); ++it) {
+        auto edge = Edge(it);
+        if (edge.u() == node || edge.v() == node)
+            cachedArcs.emplace_back(edge);
     }
     addNode(Node(new_name, node->euclidePos()));
-    for (auto it = arcSet().begin(); it != arcSet().end(); ++it) {
-        auto arc = Arc(it);
-        if (arc.u()->name() == node->name())
-            setArc(new_name, arc.v()->name(), arc.weight());
-        else if (arc.v()->name() == node->name())
-            setArc(arc.u()->name(), new_name, arc.weight());
+    for (auto it = edgeSet().begin(); it != edgeSet().end(); ++it) {
+        auto edge = Edge(it);
+        if (edge.u()->name() == node->name())
+            setEdge(new_name, edge.v()->name(), edge.weight());
+        else if (edge.v()->name() == node->name())
+            setEdge(edge.u()->name(), new_name, edge.weight());
     }
     removeNode(node);
     return true;
@@ -161,37 +161,37 @@ bool Graph::setNodeName(const std::string &old_name, const std::string &new_name
 }
 
 int Graph::weight(Node *u, Node *v) const {
-    if (!hasArc(u, v))
+    if (!hasEdge(u, v))
         return INT_MAX;
-    return _arcSet.at({u, v});
+    return _edgeSet.at({u, v});
 }
 
 int Graph::weight(const std::string &uname, const std::string &vname) const {
     return weight(node(uname), node(vname));
 }
 
-bool Graph::setArc(Node *const u, Node *const v, int w) {
+bool Graph::setEdge(Node *u, Node *v, int w) {
     if (u == v || !hasNode(u) || !hasNode(v) || w <= 0 || w >= INT_MAX)
         return false;
-    if (hasArc(u, v))
-        _arcSet.at(std::make_pair(u, v)) = w;
+    if (hasEdge(u, v))
+        _edgeSet.at(std::make_pair(u, v)) = w;
     else {
-        _arcSet.insert({std::make_pair(u, v), w});
+        _edgeSet.insert({std::make_pair(u, v), w});
         u->incPositiveDeg();
         v->incNegativeDeg();
     }
     return true;
 }
 
-bool Graph::setArc(const std::string &uname, const std::string &vname, int w) {
-    return setArc(node(uname), node(vname), w);
+bool Graph::setEdge(const std::string &uname, const std::string &vname, int w) {
+    return setEdge(node(uname), node(vname), w);
 }
 
-bool Graph::removeArc(Node *const u, Node *const v) {
+bool Graph::removeEdge(Node *u, Node *v) {
     if (u == v || !hasNode(u) || !hasNode(v))
         return false;
-    if (hasArc(u, v)) {
-        _arcSet.erase(std::make_pair(u, v));
+    if (hasEdge(u, v)) {
+        _edgeSet.erase(std::make_pair(u, v));
         u->decPositiveDeg();
         v->decNegativeDeg();
         return true;
@@ -199,16 +199,16 @@ bool Graph::removeArc(Node *const u, Node *const v) {
     return false;
 }
 
-bool Graph::removeArc(const std::string &uname, const std::string &vname) {
-    return removeArc(node(uname), node(vname));
+bool Graph::removeEdge(const std::string &uname, const std::string &vname) {
+    return removeEdge(node(uname), node(vname));
 }
 
 Graph Graph::transpose() const {
     Graph transposed_graph;
     for (const auto &node: this->nodeList())
         transposed_graph.addNode(node->name());
-    for (auto it = arcSet().begin(); it != arcSet().end(); ++it)
-        transposed_graph.setArc(Arc(it).v()->name(), Arc(it).u()->name(), Arc(it).weight());
+    for (auto it = edgeSet().begin(); it != edgeSet().end(); ++it)
+        transposed_graph.setEdge(Edge(it).v()->name(), Edge(it).u()->name(), Edge(it).weight());
     return transposed_graph;
 }
 
@@ -228,8 +228,8 @@ std::ostream &operator<<(std::ostream &os, const Graph &graph) {
 
     for (auto &node: adj.nodes())
         maxLength = std::max(maxLength, (int) node->name().length());
-    for (auto it = graph.arcSet().begin(); it != graph.arcSet().end(); ++it)
-        maxLength = std::max(maxLength, (int) std::to_string(Arc(it).weight()).length());
+    for (auto it = graph.edgeSet().begin(); it != graph.edgeSet().end(); ++it)
+        maxLength = std::max(maxLength, (int) std::to_string(Edge(it).weight()).length());
 
     os << std::string(maxLength + 1, ' ');
     for (auto &node: adj.nodes())

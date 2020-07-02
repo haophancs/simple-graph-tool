@@ -1,4 +1,4 @@
-#include "headers/GraphMatrixTable.h"
+#include "widgets/headers/GraphMatrixTable.h"
 #include <QMessageBox>
 #include <QDebug>
 
@@ -46,9 +46,9 @@ void GraphMatrixTable::adjustCell(int row, int column) {
 
     if (invalid) {
         QMessageBox msgWarning;
-        msgWarning.setText("Weight value of the Arc(u, v) with u != v "
+        msgWarning.setText("Weight value of the Edge(u, v) with u != v "
                            "\nmust be a NUMBER that greater than 0!\n"
-                           "\nTo remove the arc, enter \"inf\" "
+                           "\nTo remove the edge, enter \"inf\" "
                            "\nor a number that greater than " + QString::number(INT_MAX));
         msgWarning.setIcon(QMessageBox::Warning);
         msgWarning.setWindowTitle("Error");
@@ -59,12 +59,12 @@ void GraphMatrixTable::adjustCell(int row, int column) {
                                                          : "inf");
     } else {
         if (data == "inf") {
-            _graph->removeArc(_adj->node(row), _adj->node(column));
+            _graph->removeEdge(_adj->node(row), _adj->node(column));
             this->item(row, column)->setText(data);
         }
-        _graph->setArc(_adj->node(row), _adj->node(column), data.toInt());
+        _graph->setEdge(_adj->node(row), _adj->node(column), data.toInt());
         emit graphChanged();
-        emit arcSelected(_adj->node(row)->name(), _adj->node(column)->name());
+        emit edgeSelected(_adj->node(row)->name(), _adj->node(column)->name());
     }
 }
 
@@ -79,7 +79,7 @@ GraphMatrixTable::GraphMatrixTable(GraphType::Graph *graph, int sectionSize) : s
     });
     connect(this, &GraphMatrixTable::currentCellChanged, this, [this](int row, int col) {
         if (row >= 0 && col >= 0 && row < _adj->nodes().size() && col < _adj->nodes().size())
-            emit arcSelected(_adj->node(row)->name(), _adj->node(col)->name());
+            emit edgeSelected(_adj->node(row)->name(), _adj->node(col)->name());
     });
 }
 
@@ -87,6 +87,7 @@ void GraphMatrixTable::reload() {
 
     disconnect(this, SIGNAL(cellChanged(int, int)), this, SLOT(adjustCell(int, int)));
     this->clear();
+    delete this->_adj;
     this->_adj = new GraphType::AdjacencyMatrix(_graph->adjMatrix());
     this->setRowCount(_graph->countNodes());
     this->setColumnCount(_graph->countNodes());
@@ -103,12 +104,12 @@ void GraphMatrixTable::reload() {
             if (_adj->weight(i, j) != INT_MAX) {
                 this->item(i, j)->setText(QString::fromStdString(std::to_string(_adj->weight(i, j))));
                 if (i != j)
-                    this->item(i, j)->setToolTip("Weight of the arc from node " +
+                    this->item(i, j)->setToolTip("Weight of the edge from node " +
                                                  QString::fromStdString(_adj->node(i)->name()) + " to node " +
                                                  QString::fromStdString(_adj->node(i)->name()));
             } else {
                 this->item(i, j)->setText("inf");
-                this->item(i, j)->setToolTip("No arc from node " +
+                this->item(i, j)->setToolTip("No edge from node " +
                                              QString::fromStdString(_adj->node(i)->name())+ " to node " +
                                              QString::fromStdString(_adj->node(i)->name()));
             }

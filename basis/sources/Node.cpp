@@ -1,4 +1,4 @@
-#include "headers/Node.h"
+#include "basis/headers/Node.h"
 #include <utility>
 
 GraphType::Node::Node(std::string name) {

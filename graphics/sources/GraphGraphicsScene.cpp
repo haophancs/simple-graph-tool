@@ -1,5 +1,5 @@
-#include "headers/GraphGraphicsScene.h"
-#include "headers/random.h"
+#include "graphics/headers/GraphGraphicsScene.h"
+#include "utils/random.h"
 #include <QDebug>
 #include <memory>
 #include <utility>
@@ -23,15 +23,15 @@ void GraphGraphicsScene::reload() {
     this->clearAll();
     for (const auto &node: graph()->nodeList())
         _nodeItems[node->name()] = new NodeGraphicsItem(this, node);
-    for (auto it = graph()->arcSet().begin(); it != graph()->arcSet().end(); ++it) {
-        auto arc = GraphType::Arc(it);
-        _arcItems.insert({ std::make_pair(arc.u()->name(), arc.v()->name()),
-                           new ArcGraphicsItem(this,
-                                   _nodeItems[arc.u()->name()],
-                                   _nodeItems[arc.v()->name()])
+    for (auto it = graph()->edgeSet().begin(); it != graph()->edgeSet().end(); ++it) {
+        auto edge = GraphType::Edge(it);
+        _edgeItems.insert({ std::make_pair(edge.u()->name(), edge.v()->name()),
+                           new EdgeGraphicsItem(this,
+                                                _nodeItems[edge.u()->name()],
+                                                _nodeItems[edge.v()->name()])
         });
     }
-    for (const auto &item: _arcItems)
+    for (const auto &item: _edgeItems)
         this->addItem(item.second);
     for (const auto &item: _nodeItems)
         this->addItem(item.second);
@@ -71,18 +71,18 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<std::pair<std::string, st
             if (!this->_listOfPair.empty()) {
                 auto startItem = this->nodeItem(this->_listOfPair.front().first);
                 auto endItem = this->nodeItem(this->_listOfPair.front().second);
-                auto arcItem = this->arcItem(this->_listOfPair.front().first, this->_listOfPair.front().second);
+                auto edgeItem = this->edgeItem(this->_listOfPair.front().first, this->_listOfPair.front().second);
 
-                if (flag == GraphDemoFlag::ArcAndNode) {
+                if (flag == GraphDemoFlag::EdgeAndNode) {
                     if (startItem != nullptr)
                         startItem->setSelected(true);
-                    if (arcItem != nullptr)
-                        arcItem->setSelected(true);
+                    if (edgeItem != nullptr)
+                        edgeItem->setSelected(true);
                     if (endItem != nullptr)
                         endItem->setSelected(true);
-                } else if (flag == GraphDemoFlag::OnlyArc) {
-                    if (arcItem != nullptr)
-                        arcItem->setSelected(true);
+                } else if (flag == GraphDemoFlag::OnlyEdge) {
+                    if (edgeItem != nullptr)
+                        edgeItem->setSelected(true);
                 } else if (flag == GraphDemoFlag::OnlyNode) {
                     if (startItem != nullptr)
                         startItem->setSelected(true);
@@ -111,12 +111,12 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<std::string> &listOfNodeT
 
                 auto startItem = this->nodeItem(start_name);
                 auto endItem = this->nodeItem(end_name);
-                auto arcItem = this->arcItem(start_name, end_name);
-                if (flag == GraphDemoFlag::ArcAndNode) {
+                auto edgeItem = this->edgeItem(start_name, end_name);
+                if (flag == GraphDemoFlag::EdgeAndNode) {
                     if (startItem != nullptr)
                         startItem->setSelected(true);
-                    if (arcItem != nullptr)
-                        arcItem->setSelected(true);
+                    if (edgeItem != nullptr)
+                        edgeItem->setSelected(true);
                     if (endItem != nullptr)
                         endItem->setSelected(true);
                 } else if (flag == GraphDemoFlag::OnlyNode) {
@@ -152,10 +152,10 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<std::list<std::string> > 
                 for (const auto& start_name: currList) {
                     for (const auto& end_name: currList) {
                         if (start_name != end_name) {
-                            auto arcItem = this->arcItem(start_name, end_name);
-                            if (arcItem != nullptr) {
-                                arcItem->setOnSelectedColor(currColor);
-                                arcItem->setSelected(true);
+                            auto edgeItem = this->edgeItem(start_name, end_name);
+                            if (edgeItem != nullptr) {
+                                edgeItem->setOnSelectedColor(currColor);
+                                edgeItem->setSelected(true);
                             }
                         }
                     }
@@ -171,7 +171,7 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<std::list<std::string> > 
             }
         });
         _uniqueTimer->start(50);
-    } else if (flag == GraphDemoFlag::ArcAndNode) {
+    } else if (flag == GraphDemoFlag::EdgeAndNode) {
         connect(_uniqueTimer.get(), &QTimer::timeout, this, [this]() {
             if (!this->_listOfList.empty() || !this->_listOfNode.empty()) {
                 bool theLast;
@@ -187,13 +187,13 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<std::list<std::string> > 
                 auto end_name = !this->_listOfNode.empty() ? this->_listOfNode.front() : "";
                 auto startItem = this->nodeItem(start_name);
                 auto endItem = this->nodeItem(end_name);
-                auto arcItem = this->arcItem(start_name, end_name);
+                auto edgeItem = this->edgeItem(start_name, end_name);
                 if (startItem != nullptr)
                     startItem->setSelected(true);
                 if (endItem != nullptr)
                     endItem->setSelected(true);
-                if (arcItem != nullptr)
-                    arcItem->setSelected(true);
+                if (edgeItem != nullptr)
+                    edgeItem->setSelected(true);
 
                 this->update();
                 if (this->_listOfNode.empty() && !theLast) {
@@ -214,9 +214,9 @@ void GraphGraphicsScene::resetAfterDemoAlgo() {
     for (auto gi: selectedItems()) {
         if (gi) {
             auto ngi = dynamic_cast<NodeGraphicsItem *>(gi);
-            auto agi = dynamic_cast<ArcGraphicsItem *>(gi);
+            auto agi = dynamic_cast<EdgeGraphicsItem *>(gi);
             if (ngi) ngi->setOnSelectedColor(NodeGraphicsItem::defaultOnSelectedColor());
-            if (agi) agi->setOnSelectedColor(ArcGraphicsItem::defaultOnSelectedColor());
+            if (agi) agi->setOnSelectedColor(EdgeGraphicsItem::defaultOnSelectedColor());
             gi->setSelected(false);
         }
     }
@@ -225,9 +225,9 @@ void GraphGraphicsScene::resetAfterDemoAlgo() {
     this->_listOfPair.clear();
 }
 
-ArcGraphicsItem *GraphGraphicsScene::arcItem(const std::string& uname, const std::string& vname) {
-    if (_arcItems.find(std::make_pair(uname, vname)) != _arcItems.end())
-       return _arcItems.find(std::make_pair(uname, vname))->second;
+EdgeGraphicsItem *GraphGraphicsScene::edgeItem(const std::string& uname, const std::string& vname) {
+    if (_edgeItems.find(std::make_pair(uname, vname)) != _edgeItems.end())
+       return _edgeItems.find(std::make_pair(uname, vname))->second;
     return nullptr;
 }
 
@@ -240,7 +240,7 @@ NodeGraphicsItem *GraphGraphicsScene::nodeItem(const std::string &name) {
 void GraphGraphicsScene::clearAll() {
     this->clear();
     this->_nodeItems.clear();
-    this->_arcItems.clear();
+    this->_edgeItems.clear();
 }
 
 GraphGraphicsScene::~GraphGraphicsScene() {

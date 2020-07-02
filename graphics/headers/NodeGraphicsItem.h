@@ -1,7 +1,7 @@
 #ifndef NODEGRAPHICSITEM_H
 #define NODEGRAPHICSITEM_H
 
-#include "Node.h"
+#include "basis/headers/Node.h"
 #include <QGraphicsItem>
 
 class GraphGraphicsScene;
