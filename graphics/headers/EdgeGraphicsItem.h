@@ -1,6 +1,7 @@
 #ifndef ARCITEM_H
 #define ARCITEM_H
 
+#include <basis/headers/Edge.h>
 #include "NodeGraphicsItem.h"
 
 class QGraphicsLineItem;
@@ -38,7 +39,7 @@ public:
 
     QPainterPath shape() const override;
 
-    std::pair<std::string, std::string> edge() const;
+    GraphType::Edge edge() const;
 
     bool inversionAvailable() const;
 

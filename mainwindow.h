@@ -133,6 +133,8 @@ private:
     void setWorkspaceEnabled(bool ready);
 
     void initWorkspace(const QString &filename, bool new_file = false);
+
+    void resetGraph(GraphType::Graph *graph);
 };
 
 #endif // MAINWINDOW_H

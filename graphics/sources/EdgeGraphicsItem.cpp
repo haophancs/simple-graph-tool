@@ -52,13 +52,12 @@ QPainterPath EdgeGraphicsItem::shape() const {
     return this->_path;
 }
 
-std::pair<std::string, std::string> EdgeGraphicsItem::edge() const {
-    return std::make_pair(_startItem->node()->name(),
-                          _endItem->node()->name());
+GraphType::Edge EdgeGraphicsItem::edge() const {
+    return _gscene->graph()->edge(_startItem->node(), _endItem->node());
 }
 
 int EdgeGraphicsItem::weight() const {
-    return _gscene->graph()->weight(edge().first, edge().second);
+    return edge().weight();
 }
 
 void EdgeGraphicsItem::updatePosition() {
@@ -88,11 +87,11 @@ void EdgeGraphicsItem::updatePosition() {
                 (1 - ty1) * p + ty1 * r,
                 (1 - ty1) * q + ty1 * s);
     }
-    if (inversionAvailable()) {
+    if (_gscene->graph()->isDirected() && inversionAvailable()) {
         angle = std::atan2(line().dy(), -line().dx());
         qreal offset = arrowHeadSize / 2;
         qreal foo = qMax(5., qMin(25., length / 6));
-        if (edge().first < edge().second) {
+        if (edge().u()->name() < edge().v()->name()) {
             centerPos += QPointF(-foo, -foo);
             setLine(QLineF(line().p1(), line().p2() + QPointF(-4, -4)));
             arrowHeadPoint += QPointF(-offset, -offset);
@@ -109,19 +108,22 @@ void EdgeGraphicsItem::updatePosition() {
         this->_path = outline;
     }
 
-    QPointF arrowP1 = arrowHeadPoint + QPointF(sin(angle + M_PI / 3) * arrowHeadSize,
-                                       cos(angle + M_PI / 3) * arrowHeadSize);
-    QPointF arrowP2 = arrowHeadPoint + QPointF(sin(angle + M_PI - M_PI / 3) * arrowHeadSize,
-                                       cos(angle + M_PI - M_PI / 3) * arrowHeadSize);
+    if (this->_gscene->graph()->isDirected()) {
+        QPointF arrowP1 = arrowHeadPoint + QPointF(sin(angle + M_PI / 3) * arrowHeadSize,
+                                                   cos(angle + M_PI / 3) * arrowHeadSize);
+        QPointF arrowP2 = arrowHeadPoint + QPointF(sin(angle + M_PI - M_PI / 3) * arrowHeadSize,
+                                                   cos(angle + M_PI - M_PI / 3) * arrowHeadSize);
 
-    QPolygonF arrowHead;
-    arrowHead << arrowHeadPoint << arrowP2 << arrowP1;
-    this->_path.addPolygon(arrowHead);
-
-    QFont font;
-    font.setPointSize(13);
-    auto textPos = centerPos;
-    this->_path.addText(textPos, font, QString::number(this->weight()));
+        QPolygonF arrowHead;
+        arrowHead << arrowHeadPoint << arrowP2 << arrowP1;
+        this->_path.addPolygon(arrowHead);
+    }
+    if (_gscene->graph()->isWeighted()) {
+        QFont font;
+        font.setPointSize(13);
+        auto textPos = centerPos;
+        this->_path.addText(textPos, font, QString::number(this->weight()));
+    }
     emit _gscene->needRedraw();
 }
 
@@ -130,8 +132,7 @@ void EdgeGraphicsItem::setOnSelectedColor(QColor newColor) {
 }
 
 bool EdgeGraphicsItem::inversionAvailable() const {
-
-    return _gscene->graph()->hasEdge(edge().second, edge().first);
+    return _gscene->graph()->hasEdge(edge().v(), edge().u());
 }
 
 void EdgeGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,

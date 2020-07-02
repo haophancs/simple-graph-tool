@@ -51,7 +51,8 @@ private:
     QColor _selectedColor;
     GraphGraphicsScene *_gscene;
     bool _isMoving;
-    int _fontSize = 25;
+    const int _fontSize = 8;
+    const QString _font = "Source Code Pro";
 
 protected:
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;

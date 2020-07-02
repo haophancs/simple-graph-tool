@@ -6,11 +6,15 @@
 
 using namespace GraphType;
 
-Graph::Graph(int node_num) {
-    init(node_num);
+Graph::Graph(int node_num, bool directed, bool weighted) :
+        _directed(directed),
+        _weighted(weighted),
+        _invalidValue(_calcInvalid(directed, weighted)),
+        _weightRange(_calcWeightRange(weighted)) {
+    _init(node_num);
 }
 
-void Graph::init(int node_num) {
+void Graph::_init(int node_num) {
     this->clear();
     if (node_num <= 0) return;
     Random random;
@@ -21,7 +25,11 @@ void Graph::init(int node_num) {
     }
 }
 
-Graph::Graph(const Graph &obj) {
+Graph::Graph(const Graph &obj) :
+        _directed(obj._directed),
+        _weighted(obj._weighted),
+        _invalidValue(obj._invalidValue),
+        _weightRange(obj._weightRange) {
     this->clear();
     for (auto &node: obj.nodeList())
         this->addNode(node->name());
@@ -70,7 +78,7 @@ void Graph::writeToFile(const std::string &file) const {
     out << countNodes() << "\n";
     for (const auto &node: nodeList())
         out << node->name() << " " << node->euclidePos().x() << " " << node->euclidePos().y() << "\n";
-    out << countArcs() << "\n";
+    out << countEdges() << "\n";
     for (auto it = edgeSet().begin(); it != edgeSet().end(); ++it) {
         out << Edge(it).u()->name() << " " << Edge(it).v()->name() << " " << Edge(it).weight() << "\n";
     }
@@ -121,12 +129,12 @@ bool Graph::removeNode(const std::string &name) {
 bool Graph::isolateNode(Node *node) {
     if (!hasNode(node))
         return false;
-    std::list<Edge> cachedArcs;
+    std::list<Edge> cachedEdges;
     for (auto it = edgeSet().begin(); it != edgeSet().end(); ++it) {
         if (Edge(it).u() == node || Edge(it).v() == node)
-            cachedArcs.emplace_back(Edge(it));
+            cachedEdges.emplace_back(Edge(it));
     }
-    for (auto &edge: cachedArcs)
+    for (auto &edge: cachedEdges)
         removeEdge(edge.u(), edge.v());
     return true;
 }
@@ -138,11 +146,11 @@ bool Graph::isolateNode(const std::string &name) {
 bool Graph::setNodeName(Node *node, const std::string &new_name) {
     if (!hasNode(node) || hasNode(new_name) || node->name() == new_name)
         return false;
-    std::list<Edge> cachedArcs;
+    std::list<Edge> cachedEdges;
     for (auto it = edgeSet().begin(); it != edgeSet().end(); ++it) {
         auto edge = Edge(it);
         if (edge.u() == node || edge.v() == node)
-            cachedArcs.emplace_back(edge);
+            cachedEdges.emplace_back(edge);
     }
     addNode(Node(new_name, node->euclidePos()));
     for (auto it = edgeSet().begin(); it != edgeSet().end(); ++it) {
@@ -161,9 +169,11 @@ bool Graph::setNodeName(const std::string &old_name, const std::string &new_name
 }
 
 int Graph::weight(Node *u, Node *v) const {
+    if (u == v)
+        return 0;
     if (!hasEdge(u, v))
-        return INT_MAX;
-    return _edgeSet.at({u, v});
+        return _invalidValue;
+    return edge(u, v).weight();
 }
 
 int Graph::weight(const std::string &uname, const std::string &vname) const {
@@ -171,14 +181,26 @@ int Graph::weight(const std::string &uname, const std::string &vname) const {
 }
 
 bool Graph::setEdge(Node *u, Node *v, int w) {
-    if (u == v || !hasNode(u) || !hasNode(v) || w <= 0 || w >= INT_MAX)
+    if (w == _invalidValue)
+        return removeEdge(u, v);
+
+    if (u == v || !hasNode(u) || !hasNode(v)
+        || w < _weightRange.first || w > _weightRange.second)
         return false;
-    if (hasEdge(u, v))
-        _edgeSet.at(std::make_pair(u, v)) = w;
+
+    if (hasDirectedEdge(u, v))
+        _edgeSet.at({u, v}) = w;
+    else if (!_directed && hasDirectedEdge(v, u))
+        _edgeSet.at({v, u}) = w;
     else {
-        _edgeSet.insert({std::make_pair(u, v), w});
-        u->incPositiveDeg();
-        v->incNegativeDeg();
+        _edgeSet.insert({{u, v}, w});
+        if (_directed) {
+            u->incPosDegree();
+            v->incNegDegree();
+        } else {
+            u->incUndirDegree();
+            v->incUndirDegree();
+        }
     }
     return true;
 }
@@ -187,14 +209,27 @@ bool Graph::setEdge(const std::string &uname, const std::string &vname, int w) {
     return setEdge(node(uname), node(vname), w);
 }
 
+bool Graph::setEdge(const std::string &uname, const std::string &vname) {
+    return setEdge(node(uname), node(vname), 1);
+}
+
 bool Graph::removeEdge(Node *u, Node *v) {
     if (u == v || !hasNode(u) || !hasNode(v))
         return false;
-    if (hasEdge(u, v)) {
-        _edgeSet.erase(std::make_pair(u, v));
-        u->decPositiveDeg();
-        v->decNegativeDeg();
+    if (hasDirectedEdge(u, v)) {
+        _edgeSet.erase({u, v});
+        if (_directed) {
+            u->decPosDegree();
+            v->decNegDegree();
+        } else {
+            u->decUndirDegree();
+            v->decUndirDegree();
+        }
         return true;
+    } else if (!_directed && hasDirectedEdge(v, u)) {
+        _edgeSet.erase({v, u});
+        u->decUndirDegree();
+        v->decUndirDegree();
     }
     return false;
 }
@@ -204,7 +239,8 @@ bool Graph::removeEdge(const std::string &uname, const std::string &vname) {
 }
 
 Graph Graph::transpose() const {
-    Graph transposed_graph;
+    Graph transposed_graph = *this;
+    transposed_graph.clear();
     for (const auto &node: this->nodeList())
         transposed_graph.addNode(node->name());
     for (auto it = edgeSet().begin(); it != edgeSet().end(); ++it)
@@ -215,7 +251,7 @@ Graph Graph::transpose() const {
 std::ostream &operator<<(std::ostream &os, const Graph &graph) {
     if (graph.nodeList().empty()) {
         if (!graph.nodeList().empty())
-            throw "Error in clearing graph: nodeSet is empty but arcSet";
+            throw "Error in clearing graph: nodeSet is empty but edgeSet";
         else {
             os << "";
             return os;
@@ -238,10 +274,11 @@ std::ostream &operator<<(std::ostream &os, const Graph &graph) {
     for (int i = 0; i < nodeNum; i++) {
         os << std::left << std::setw(maxLength) << adj.node(i)->name() << " ";
         for (int j = 0; j < nodeNum; j++) {
-            if (adj.weight(i, j) != INT_MAX)
+            if (adj.weight(i, j) != graph.invalidValue())
                 os << std::left << std::setw(maxLength) << adj.weight(i, j) << " ";
             else
-                os << std::left << std::setw(maxLength) << "INF" << " ";
+                os << std::left << std::setw(maxLength)
+                   << ((graph.invalidValue() == INT_MAX) ? "INF" : std::to_string(graph.invalidValue())) << " ";
         }
         os << "\n";
     }
@@ -251,5 +288,30 @@ std::ostream &operator<<(std::ostream &os, const Graph &graph) {
 bool Graph::hasNode(Node *node) const {
     if (!node) return false;
     return _nodeSet.find(*node) != _nodeSet.end();
+}
+
+Edge Graph::edge(Node *u, Node *v) const {
+    auto it = _edgeSet.find({u, v});
+    if (_directed)
+        return Edge(it);
+    it = (it != _edgeSet.end()) ? it : _edgeSet.find({v, u});
+    if (it == _edgeSet.end()) throw "Edge not found";
+    return Edge(it);
+}
+
+Edge Graph::edge(const std::string &uname, const std::string &vname) const {
+    return edge(node(uname), node(vname));
+}
+
+bool Graph::hasDirectedEdge(Node *u, Node *v) const {
+    return _edgeSet.find(std::make_pair(u, v)) != _edgeSet.end();
+}
+
+bool Graph::hasEdge(Node *u, Node *v) const {
+    return _directed ? hasDirectedEdge(u, v) : (hasDirectedEdge(u, v) || hasDirectedEdge(v, u));
+}
+
+bool Graph::hasEdge(const std::string &uname, const std::string &vname) const {
+    return hasEdge(node(uname), node(vname));
 }
 

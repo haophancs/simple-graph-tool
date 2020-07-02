@@ -31,7 +31,9 @@ namespace GraphType {
 
         Node *v() const { return _nodePair.second; }
 
-        int weight() const { return _weight; }
+        const int &weight() const { return _weight; }
+
+        friend class Graph;
 
     private:
         const NodePair &_nodePair;

@@ -41,7 +41,7 @@ add_executable(simple_graph_tool
         utils/qdebugstream.h
         utils/random.h
         widgets/sources/ElementPropertiesTable.cpp
-        widgets/headers/ElementPropertiesTable.h widgets/sources/GraphPropertiesTable.cpp widgets/headers/GraphPropertiesTable.h basis/headers/Matrix.h basis/headers/Edge.h basis/sources/UndirectedGraph.cpp basis/headers/UndirectedGraph.h basis/sources/DirectedGraph.cpp basis/headers/DirectedGraph.h) #sources/Edge.cpp utils/Edge.h)
+        widgets/headers/ElementPropertiesTable.h widgets/sources/GraphPropertiesTable.cpp widgets/headers/GraphPropertiesTable.h basis/headers/Matrix.h basis/headers/Edge.h widgets/headers/OptionDialog.h widgets/sources/OptionDialog.cpp) #sources/Edge.cpp utils/Edge.h)
 
 target_link_libraries(simple_graph_tool Qt5::Core)
 target_link_libraries(simple_graph_tool Qt5::Widgets)

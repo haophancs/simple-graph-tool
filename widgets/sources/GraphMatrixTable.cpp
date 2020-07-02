@@ -4,11 +4,11 @@
 
 void GraphMatrixTable::defaultSetting() {
 
-    this->horizontalHeader()->setMinimumSectionSize(this->sectionSize);
-    this->horizontalHeader()->setDefaultSectionSize(this->sectionSize);
+    this->horizontalHeader()->setMinimumSectionSize(this->_sectionSize);
+    this->horizontalHeader()->setDefaultSectionSize(this->_sectionSize);
     this->horizontalHeader()->setCascadingSectionResizes(false);
-    this->verticalHeader()->setMinimumSectionSize(this->sectionSize);
-    this->verticalHeader()->setDefaultSectionSize(this->sectionSize);
+    this->verticalHeader()->setMinimumSectionSize(this->_sectionSize);
+    this->verticalHeader()->setDefaultSectionSize(this->_sectionSize);
     this->verticalHeader()->setCascadingSectionResizes(false);
     this->setSelectionMode(QAbstractItemView::SingleSelection);
     this->setSizeAdjustPolicy(QTableWidget::AdjustToContents);
@@ -27,48 +27,58 @@ GraphType::Graph *GraphMatrixTable::graph() const {
 
 void GraphMatrixTable::adjustCell(int row, int column) {
 
-    bool invalid = false;
-
+    bool out_of_range = false;
+    std::string _strInvalidVal = _graph->invalidValue() != INT_MAX ? std::to_string(_graph->invalidValue()) : "inf";
     QRegExp re("\\d*");
     QString data = this->item(row, column)->text();
     data = data.trimmed();
     if (data.isNull() || data.isNull() || data == "")
-        data = "inf";
+        data = QString::fromStdString(_strInvalidVal);
+
+    bool is_invalid_value = data == QString::fromStdString(_strInvalidVal);
 
     if (re.exactMatch(data)) {
-        if (data.toLongLong() <= 0)
-            invalid = true;
-        else if (data.toLongLong() >= INT_MAX) {
-            data = "inf";
-        }
-    } else if (data != "inf")
-        invalid = true;
+        if (data == QString::number(_adj->weight(row, column))) return;
+        out_of_range = (data.toLongLong() < _graph->weightRange().first ||
+                        data.toLongLong() > _graph->weightRange().second);
+    } else if (data != QString::fromStdString(_strInvalidVal))
+        out_of_range = true;
 
-    if (invalid) {
+    if (out_of_range && !is_invalid_value) {
         QMessageBox msgWarning;
-        msgWarning.setText("Weight value of the Edge(u, v) with u != v "
-                           "\nmust be a NUMBER that greater than 0!\n"
-                           "\nTo remove the edge, enter \"inf\" "
-                           "\nor a number that greater than " + QString::number(INT_MAX));
+
+        QString msg;
+        msg.sprintf("Weight value of the Edge(u, v) with u != v must be a NUMBER\n"
+                    "that >= %d and <= %d!\n"
+                    "To remove the edge, enter \"%s\"",
+                    _graph->weightRange().first, _graph->weightRange().second, _strInvalidVal.c_str());
+
+        msgWarning.setText(msg);
         msgWarning.setIcon(QMessageBox::Warning);
         msgWarning.setWindowTitle("Error");
         msgWarning.exec();
         this->item(row, column)->setText(
-                (_adj->weight(row, column)!= INT_MAX) ?
-                QString::number(_adj->weight(row, column))
-                                                         : "inf");
+                (_adj->weight(row, column) != INT_MAX) ?
+                QString::number(_adj->weight(row, column)) : "inf");
     } else {
-        if (data == "inf") {
-            _graph->removeEdge(_adj->node(row), _adj->node(column));
-            this->item(row, column)->setText(data);
-        }
         _graph->setEdge(_adj->node(row), _adj->node(column), data.toInt());
+        if (this->item(column, row) != this->item(row, column)) {
+            delete _adj;
+            _adj = new GraphType::AdjacencyMatrix(_graph->adjMatrix());
+            if (_graph->isUndirected()) {
+                auto old_item = this->item(column, row);
+                auto new_item = new QTableWidgetItem(*old_item);
+                new_item->setText((_adj->weight(column, row) != INT_MAX) ?
+                                  QString::number(_adj->weight(column, row)) : "inf");
+                this->removeCellWidget(column, row);
+                this->setItem(column, row, new_item);
+            }
+        }
         emit graphChanged();
-        emit edgeSelected(_adj->node(row)->name(), _adj->node(column)->name());
     }
 }
 
-GraphMatrixTable::GraphMatrixTable(GraphType::Graph *graph, int sectionSize) : sectionSize(sectionSize) {
+GraphMatrixTable::GraphMatrixTable(GraphType::Graph *graph, int sectionSize) : _sectionSize(sectionSize) {
     defaultSetting();
     setGraph(graph);
 
@@ -78,8 +88,9 @@ GraphMatrixTable::GraphMatrixTable(GraphType::Graph *graph, int sectionSize) : s
             adjustCell(item->row(), item->column());
     });
     connect(this, &GraphMatrixTable::currentCellChanged, this, [this](int row, int col) {
-        if (row >= 0 && col >= 0 && row < _adj->nodes().size() && col < _adj->nodes().size())
+        if (row >= 0 && col >= 0 && row < _adj->nodes().size() && col < _adj->nodes().size()) {
             emit edgeSelected(_adj->node(row)->name(), _adj->node(col)->name());
+        }
     });
 }
 
@@ -88,6 +99,7 @@ void GraphMatrixTable::reload() {
     disconnect(this, SIGNAL(cellChanged(int, int)), this, SLOT(adjustCell(int, int)));
     this->clear();
     delete this->_adj;
+
     this->_adj = new GraphType::AdjacencyMatrix(_graph->adjMatrix());
     this->setRowCount(_graph->countNodes());
     this->setColumnCount(_graph->countNodes());
@@ -99,7 +111,6 @@ void GraphMatrixTable::reload() {
 
     for (int i = 0; i < _adj->nodes().size(); i++) {
         for (int j = 0; j < _adj->nodes().size(); j++) {
-
             this->setItem(i, j, new QTableWidgetItem);
             if (_adj->weight(i, j) != INT_MAX) {
                 this->item(i, j)->setText(QString::fromStdString(std::to_string(_adj->weight(i, j))));
@@ -110,10 +121,12 @@ void GraphMatrixTable::reload() {
             } else {
                 this->item(i, j)->setText("inf");
                 this->item(i, j)->setToolTip("No edge from node " +
-                                             QString::fromStdString(_adj->node(i)->name())+ " to node " +
+                                             QString::fromStdString(_adj->node(i)->name()) + " to node " +
                                              QString::fromStdString(_adj->node(i)->name()));
             }
             this->item(i, j)->setTextAlignment(Qt::AlignCenter);
+            if (this->_graph->isUndirected() && j < i)
+                this->item(i, j)->setFlags(Qt::ItemIsEditable);
         }
         this->item(i, i)->setFlags(Qt::ItemIsEditable);
     }

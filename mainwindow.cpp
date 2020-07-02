@@ -6,6 +6,7 @@
 #include <QtGui>
 #include <QMessageBox>
 #include <QTimer>
+#include <widgets/headers/OptionDialog.h>
 #include "utils/qdebugstream.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -31,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
     _ui->openGraphButton->setFont(btnFont);
     _ui->coloringBtn->setVisible(false);
 
-    this->_graph = new Graph();
+    this->_graph = new Graph(false, false);
     this->_scene = new GraphGraphicsScene(_graph);
     this->_view = new GraphGraphicsView();
     this->_matrix = new GraphMatrixTable(_graph);
@@ -112,7 +113,6 @@ MainWindow::MainWindow(QWidget *parent) :
                     return;
                 }
                 this->_ui->consoleText->clear();
-                qDebug() << GraphUtils::isConnectedFromUtoV(this->_graph, source_name, target->name());
                 auto result = GraphUtils::Dijkstra(this->_graph, source_name, target->name());
                 emit startDemoAlgorithm(result, GraphDemoFlag::EdgeAndNode);
             }
@@ -154,6 +154,14 @@ MainWindow::MainWindow(QWidget *parent) :
     setWorkspaceEnabled(false);
 }
 
+void MainWindow::resetGraph(Graph *graph) {
+    this->_graph = graph;
+    this->_scene->setGraph(_graph);
+    this->_matrix->setGraph(_graph);
+    this->_elementPropertiesTable->setGraph(_graph);
+    this->_graphPropertiesTable->setGraph(_graph);
+}
+
 void MainWindow::initWorkspace(const QString &filename, bool new_file) {
 
     try {
@@ -161,13 +169,18 @@ void MainWindow::initWorkspace(const QString &filename, bool new_file) {
             _graph->readFromFile(filename.toStdString());
             this->_dataNeedSaving = false;
         } else {
-            this->_dataNeedSaving = true;
-            bool ok_pressed = false;
+            /*bool ok_pressed = false;
             int n = QInputDialog::getInt(this, "Initialize graph with nodes",
                                          "No limit",
                                          0, 0, INT_MAX, 1, &ok_pressed);
-            if (!ok_pressed) return;
-            _graph->init(n);
+            if (!ok_pressed) return;*/
+            bool weighted, directed, ok;
+            int node_num;
+            OptionDialog::initGraph(this, weighted, directed, node_num, ok);
+            if (!ok) return;
+            this->_dataNeedSaving = true;
+            delete _graph;
+            resetGraph(new Graph(node_num, directed, weighted));
         }
         emit graphChanged();
     }

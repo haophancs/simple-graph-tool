@@ -11,23 +11,28 @@ namespace GraphType {
     private:
         int _degPos;
         int _degNeg;
+        int _deg;
         std::string _name;
         QPointF _euclidePos;
 
-        void incPositiveDeg() { this->_degPos++; }
+        void incPosDegree() { this->_degPos++; }
 
-        void incNegativeDeg() { this->_degNeg++; }
+        void incNegDegree() { this->_degNeg++; }
 
-        void decPositiveDeg() { if (this->_degPos > 0) this->_degPos--; }
+        void decPosDegree() { if (this->_degPos > 0) this->_degPos--; }
 
-        void decNegativeDeg() { if (this->_degNeg > 0) this->_degNeg--; }
+        void decNegDegree() { if (this->_degNeg > 0) this->_degNeg--; }
+
+        void incUndirDegree() { this->_deg++; }
+
+        void decUndirDegree() { if (this->_deg > 0) this->_deg--; }
 
         void setName(std::string newName) { this->_name = std::move(newName); }
 
         friend class Graph;
 
         Node() {
-            this->_degPos = this->_degNeg = 0;
+            this->_degPos = this->_degNeg = this->_deg = 0;
         }
 
     public:
@@ -36,11 +41,11 @@ namespace GraphType {
 
         explicit Node(std::string name, QPointF);
 
-        int negativeDegree() const { return this->_degNeg; }
+        int negDegree() const { return this->_degNeg; }
 
-        int positiveDegree() const { return this->_degPos; }
+        int posDegree() const { return this->_degPos; }
 
-        int degree() const { return this->_degPos + this->_degNeg; }
+        int undirDegree() const { return this->_deg; }
 
         QPointF euclidePos() const { return this->_euclidePos; }
 

@@ -19,7 +19,8 @@ NodeGraphicsItem::NodeGraphicsItem(GraphGraphicsScene *scene, GraphType::Node *n
 void NodeGraphicsItem::setNode(GraphType::Node *node) {
     this->_node = node;
     this->setPos(_node->euclidePos());
-    _radius = std::max(_radius, _fontSize * (int) this->_node->name().length() / 2 + _fontSize);
+    QFontMetrics fm(QFont(_font, _fontSize));
+    _radius = std::max(_radius, fm.width(QString::fromStdString(_node->name() + "  ")));
 }
 
 GraphType::Node *NodeGraphicsItem::node() const {
@@ -71,11 +72,11 @@ void NodeGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     painter->setBrush(QBrush(_color));
     painter->drawEllipse(-_radius / 2, -_radius / 2, _radius, _radius);
 
-    QFont font;
-    font.setPixelSize(25);
+    QFont font(_font, _fontSize);
     painter->setFont(font);
     QString txt = QString::fromStdString(this->node()->name());
-    painter->drawText(- _fontSize * txt.length() / 4 + _fontSize / 8, _fontSize / 3, txt);
+    QFontMetrics fm(font);
+    painter->drawText(- fm.width(txt) / 2, fm.height() / 3, txt);
 }
 
 void NodeGraphicsItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {

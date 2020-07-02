@@ -22,11 +22,13 @@ public slots:
 
     void onGraphChanged();
 
-    void onNodeSelected(const std::string& node_name);
+    void onNodeSelected(const std::string &node_name);
 
-    void onEdgeSelected(const std::string& uname, const std::string& vname);
+    void onEdgeSelected(const std::string &uname, const std::string &vname);
 
     void onUnSelected();
+
+    void setGraph(GraphType::Graph *graph);
 };
 
 

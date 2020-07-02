@@ -519,9 +519,9 @@ std::list<std::list<std::string>> GraphUtils::displayHamiltonianCycle(const Grap
     }
     auto nodes = graph->nodeList();
     for (auto &node: nodes)
-        if (node->degree() < graph->countNodes() / 2) {
+        if (node->undirDegree() < graph->countNodes() / 2) {
             std::cout << "Hamiltonian Cycle not found: ";
-            std::cout << "deg(" << node->name() << ") = " << node->degree() << " < " << graph->countNodes()
+            std::cout << "deg(" << node->name() << ") = " << node->undirDegree() << " < " << graph->countNodes()
                       << "/2\n";
             return result;
         }
@@ -551,7 +551,7 @@ std::list<std::string> GraphUtils::getEulerianCircuit(const Graph *_graph, std::
     s.push(source);
     while (!s.empty()) {
         auto vname = s.top();
-        if (graph.node(vname)->degree() > 0) {
+        if (graph.node(vname)->undirDegree() > 0) {
             for (auto &adj: graph.nodeList()) {
                 if (graph.hasEdge(vname, adj->name())) {
                     s.push(adj->name());
@@ -575,7 +575,7 @@ std::list<std::list<std::string>> GraphUtils::displayEulerianCircuit(const Graph
     }
     auto nodes = graph->nodeList();
     for (auto &node: nodes) {
-        if (node->negativeDegree() != node->positiveDegree()) {
+        if (node->negDegree() != node->posDegree()) {
             std::cout << "Eulerian Circuit not found because Node " << node->name() << " has deg+ != deg-\n";
             return result;
         }

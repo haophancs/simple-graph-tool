@@ -10,8 +10,8 @@ class GraphMatrixTable : public QTableWidget {
 Q_OBJECT
 private:
     GraphType::Graph *_graph{};
-    GraphType::AdjacencyMatrix* _adj{};
-    int sectionSize;
+    GraphType::AdjacencyMatrix *_adj{};
+    int _sectionSize;
 
 public:
     explicit GraphMatrixTable(GraphType::Graph *graph, int sectionSize = 80);

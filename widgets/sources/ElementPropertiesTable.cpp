@@ -12,6 +12,10 @@ ElementPropertiesTable::ElementPropertiesTable(GraphType::Graph *graph, int sect
 
 ElementPropertiesTable::ElementPropertiesTable(GraphType::Graph *graph) : ElementPropertiesTable(graph, 48) {}
 
+void ElementPropertiesTable::setGraph(GraphType::Graph *graph) {
+    this->_graph = graph;
+}
+
 void ElementPropertiesTable::clearTable() {
     this->setRowCount(0);
     this->setColumnCount(0);
@@ -28,8 +32,13 @@ void ElementPropertiesTable::onUnSelected() {
 void ElementPropertiesTable::onNodeSelected(const std::string& node_name) {
     clearTable();
     QStringList tableHeader;
-    tableHeader << tr("Name") << tr("Positive degree") << tr("Negative degree");
-    this->setRowCount(3);
+    if (this->_graph->isDirected()) {
+        this->setRowCount(3);
+        tableHeader << tr("Name") << tr("Positive degree") << tr("Negative degree");
+    } else {
+        this->setRowCount(2);
+        tableHeader << tr("Name") << tr("Degree");
+    }
     this->setColumnCount(1);
     this->setVerticalHeaderLabels(tableHeader);
 
@@ -38,15 +47,22 @@ void ElementPropertiesTable::onNodeSelected(const std::string& node_name) {
     this->item(0, 0)->setText(QString::fromStdString(node_name));
     this->item(0, 0)->setFlags(Qt::ItemIsEnabled);
 
-    this->setItem(1, 0, new QTableWidgetItem());
-    this->item(1, 0)->setTextAlignment(Qt::AlignCenter);
-    this->item(1, 0)->setText(QString::number(this->_graph->node(node_name)->positiveDegree()));
-    this->item(1, 0)->setFlags(Qt::ItemIsEnabled);
+    if (this->_graph->isDirected()) {
+        this->setItem(1, 0, new QTableWidgetItem());
+        this->item(1, 0)->setTextAlignment(Qt::AlignCenter);
+        this->item(1, 0)->setText(QString::number(this->_graph->node(node_name)->posDegree()));
+        this->item(1, 0)->setFlags(Qt::ItemIsEnabled);
 
-    this->setItem(2, 0, new QTableWidgetItem());
-    this->item(2, 0)->setTextAlignment(Qt::AlignCenter);
-    this->item(2, 0)->setText(QString::number(this->_graph->node(node_name)->negativeDegree()));
-    this->item(2, 0)->setFlags(Qt::ItemIsEnabled);
+        this->setItem(2, 0, new QTableWidgetItem());
+        this->item(2, 0)->setTextAlignment(Qt::AlignCenter);
+        this->item(2, 0)->setText(QString::number(this->_graph->node(node_name)->negDegree()));
+        this->item(2, 0)->setFlags(Qt::ItemIsEnabled);
+    } else {
+        this->setItem(1, 0, new QTableWidgetItem());
+        this->item(1, 0)->setTextAlignment(Qt::AlignCenter);
+        this->item(1, 0)->setText(QString::number(this->_graph->node(node_name)->undirDegree()));
+        this->item(1, 0)->setFlags(Qt::ItemIsEnabled);
+    }
 }
 
 void ElementPropertiesTable::onEdgeSelected(const std::string& uname, const std::string& vname) {
