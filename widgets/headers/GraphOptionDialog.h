@@ -12,12 +12,12 @@ class QLineEdit;
 class QPushButton;
 QT_END_NAMESPACE
 
-class OptionDialog: public QDialog
+class GraphOptionDialog: public QDialog
 {
 Q_OBJECT
 
 public:
-    explicit OptionDialog(QWidget *parent = nullptr);
+    explicit GraphOptionDialog(QWidget *parent = nullptr);
 
     static void initGraph(QWidget *parent, bool &weighted, bool &directed, int &node_num, bool &ok);
 

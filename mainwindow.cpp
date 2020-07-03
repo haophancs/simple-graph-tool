@@ -6,7 +6,7 @@
 #include <QtGui>
 #include <QMessageBox>
 #include <QTimer>
-#include <widgets/headers/OptionDialog.h>
+#include <widgets/headers/GraphOptionDialog.h>
 #include "utils/qdebugstream.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -64,8 +64,13 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this, SIGNAL(startDemoAlgorithm(std::list<std::pair<std::string, std::string> >, GraphDemoFlag)), _scene,
             SLOT(demoAlgorithm(std::list<std::pair<std::string, std::string> >, GraphDemoFlag)));
 
-    connect(_view, &GraphGraphicsView::nodeAdded, this, [this](QPointF pos) {
-        showNewNodeDialog(pos);
+    connect(_view, &GraphGraphicsView::nodeAdded, this, [this](QPointF pos, bool auto_naming) {
+        if (!auto_naming) {
+            showNewNodeDialog(pos);
+            return;
+        }
+        this->_graph->addNode(Node(_graph->nextNodeName(), pos));
+        emit graphChanged();
     });
     connect(_view, &GraphGraphicsView::nodeRemoved, this, [this](const std::string& node_name) {
         if (this->_graph->removeNode(node_name))
@@ -82,13 +87,16 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(_view, &GraphGraphicsView::edgeSet, this, [this](const std::string& uname, const std::string& vname) {
         bool ok{};
         int defaultValue = _graph->hasEdge(uname, vname) ? _graph->weight(uname, vname) : 1;
-        int w = QInputDialog::getInt(this, tr("Set weight for edge(")
-                                           + QString::fromStdString(_graph->node(uname)->name()) + ", "
-                                           + QString::fromStdString(_graph->node(vname)->name()) + tr(")"),
-                                     "0 <= weight < " + QString::number(INT_MAX),
-                                     defaultValue, 1, INT_MAX, 1, &ok);
-        if (ok && this->_graph->setEdge(uname, vname, w))
-                emit graphChanged();
+        int w = _graph->isWeighted() ?
+                (QInputDialog::getInt(this, tr("Set weight for edge(")
+                    + QString::fromStdString(_graph->node(uname)->name()) + ", "
+                    + QString::fromStdString(_graph->node(vname)->name()) + tr(")"),
+                    "0 <= weight < " + QString::number(INT_MAX),
+                    defaultValue, 1, INT_MAX, 1, &ok))
+                : 1;
+        qDebug() << w;
+        if ((ok || _graph->isUnweighted()) && this->_graph->setEdge(uname, vname, w))
+            emit graphChanged();
     });
     connect(_view, &GraphGraphicsView::startAlgorithm, this, [this](const QString &algo, const std::string& source_name) {
         QDebugStream qout(std::cout, _ui->consoleText);
@@ -121,7 +129,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(_view, &GraphGraphicsView::nodeEdited, this, [this](const std::string& node_name) {
         bool ok;
         QRegExp re("[a-zA-Z0-9]{1,30}");
-        auto new_name = QInputDialog::getText(this, "Rename node", "Name: ", QLineEdit::Normal, QString(), &ok);
+        auto new_name = QInputDialog::getText(this, "Rename node", "Name: ", QLineEdit::Normal, QString::fromStdString(_graph->nextNodeName()), &ok);
         if (ok) {
             if (!re.exactMatch(new_name)) {
                 QMessageBox::critical(this, "Error",
@@ -155,6 +163,7 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 void MainWindow::resetGraph(Graph *graph) {
+    delete this->_graph;
     this->_graph = graph;
     this->_scene->setGraph(_graph);
     this->_matrix->setGraph(_graph);
@@ -166,20 +175,14 @@ void MainWindow::initWorkspace(const QString &filename, bool new_file) {
 
     try {
         if (!new_file) {
-            _graph->readFromFile(filename.toStdString());
+            resetGraph(new Graph(Graph::readFromFile(filename.toStdString())));
             this->_dataNeedSaving = false;
         } else {
-            /*bool ok_pressed = false;
-            int n = QInputDialog::getInt(this, "Initialize graph with nodes",
-                                         "No limit",
-                                         0, 0, INT_MAX, 1, &ok_pressed);
-            if (!ok_pressed) return;*/
             bool weighted, directed, ok;
             int node_num;
-            OptionDialog::initGraph(this, weighted, directed, node_num, ok);
+            GraphOptionDialog::initGraph(this, weighted, directed, node_num, ok);
             if (!ok) return;
             this->_dataNeedSaving = true;
-            delete _graph;
             resetGraph(new Graph(node_num, directed, weighted));
         }
         emit graphChanged();
@@ -214,7 +217,7 @@ void MainWindow::closeEvent(QCloseEvent *event) {
                                                                   QMessageBox::No | QMessageBox::Yes |
                                                                   QMessageBox::Cancel);
         if (reply == QMessageBox::Yes)
-            _graph->writeToFile(_workingFilename.toStdString());
+            Graph::writeToFile(_workingFilename.toStdString(), *_graph);
         else if (reply == QMessageBox::Cancel)
             event->ignore();
     }
@@ -264,7 +267,7 @@ void MainWindow::showNewNodeDialog(QPointF pos) {
         if (!succeeded)
             QMessageBox::critical(this, "Error", "This name has been used by another node");
         else
-                emit graphChanged();
+            emit graphChanged();
     }
 }
 
@@ -302,7 +305,7 @@ void MainWindow::on_openGraphButton_clicked() {
 void MainWindow::on_actionSave_triggered() {
     if (_dataNeedSaving) {
         this->_dataNeedSaving = false;
-        _graph->writeToFile(_workingFilename.toStdString());
+        Graph::writeToFile(_workingFilename.toStdString(), *_graph);
         _ui->statusBar->showMessage("Saved successfully");
         QTimer::singleShot(2000, this, [this]() {
             this->_ui->statusBar->clearMessage();
@@ -313,7 +316,7 @@ void MainWindow::on_actionSave_triggered() {
 void MainWindow::on_actionSave_As_triggered() {
     QString filename = showSaveFileDialog();
     if (!filename.isNull())
-        _graph->writeToFile(filename.toStdString());
+        Graph::writeToFile(_workingFilename.toStdString(), *_graph);
 }
 
 void MainWindow::on_actionNew_Graph_triggered() {

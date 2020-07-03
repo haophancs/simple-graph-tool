@@ -44,10 +44,13 @@ void Graph::clear() {
     this->_cachedNodeList.clear();
 }
 
-void Graph::readFromFile(const std::string &file) {
-    clear();
+Graph Graph::readFromFile(const std::string &file) {
     std::ifstream in(file);
     if (!in) throw "file not existed";
+
+    bool directed, weighted;
+    in >> directed >> weighted;
+    Graph graph(directed, weighted);
 
     int countNodes;
     in >> countNodes;
@@ -56,7 +59,7 @@ void Graph::readFromFile(const std::string &file) {
     qreal x, y;
     for (int i = 0; i < countNodes; i++) {
         if (in.eof()) throw "eof";
-        in >> name >> x >> y, addNode(Node(name, QPointF(x, y)));
+        in >> name >> x >> y, graph.addNode(Node(name, QPointF(x, y)));
     }
     int countEdges;
     in >> countEdges;
@@ -66,22 +69,20 @@ void Graph::readFromFile(const std::string &file) {
         for (int i = 0; i < countEdges; i++) {
             if (in.eof()) throw "eof";
             in >> start >> end >> weight;
-            setEdge(start, end, weight);
+            if (weight >= graph.weightRange().first && weight <= graph.weightRange().second)
+                graph.setEdge(start, end, weight);
+            else
+                throw "Invalid weight value";
         }
     }
     in.close();
+    return graph;
 }
 
-void Graph::writeToFile(const std::string &file) const {
+void Graph::writeToFile(const std::string &file, const Graph &graph) {
     std::ofstream out;
     out.open(file, std::ofstream::out | std::ofstream::trunc);
-    out << countNodes() << "\n";
-    for (const auto &node: nodeList())
-        out << node->name() << " " << node->euclidePos().x() << " " << node->euclidePos().y() << "\n";
-    out << countEdges() << "\n";
-    for (auto it = edgeSet().begin(); it != edgeSet().end(); ++it) {
-        out << Edge(it).u()->name() << " " << Edge(it).v()->name() << " " << Edge(it).weight() << "\n";
-    }
+    out << graph;
     out.close();
 }
 
@@ -248,43 +249,6 @@ Graph Graph::transpose() const {
     return transposed_graph;
 }
 
-std::ostream &operator<<(std::ostream &os, const Graph &graph) {
-    if (graph.nodeList().empty()) {
-        if (!graph.nodeList().empty())
-            throw "Error in clearing graph: nodeSet is empty but edgeSet";
-        else {
-            os << "";
-            return os;
-        }
-    }
-    os << "\n";
-    auto adj = graph.adjMatrix();
-    auto nodeNum = adj.nodes().size();
-    auto maxLength = 3;
-
-    for (auto &node: adj.nodes())
-        maxLength = std::max(maxLength, (int) node->name().length());
-    for (auto it = graph.edgeSet().begin(); it != graph.edgeSet().end(); ++it)
-        maxLength = std::max(maxLength, (int) std::to_string(Edge(it).weight()).length());
-
-    os << std::string(maxLength + 1, ' ');
-    for (auto &node: adj.nodes())
-        os << std::left << std::setw(maxLength) << node->name() << " ";
-    os << "\n";
-    for (int i = 0; i < nodeNum; i++) {
-        os << std::left << std::setw(maxLength) << adj.node(i)->name() << " ";
-        for (int j = 0; j < nodeNum; j++) {
-            if (adj.weight(i, j) != graph.invalidValue())
-                os << std::left << std::setw(maxLength) << adj.weight(i, j) << " ";
-            else
-                os << std::left << std::setw(maxLength)
-                   << ((graph.invalidValue() == INT_MAX) ? "INF" : std::to_string(graph.invalidValue())) << " ";
-        }
-        os << "\n";
-    }
-    return os;
-}
-
 bool Graph::hasNode(Node *node) const {
     if (!node) return false;
     return _nodeSet.find(*node) != _nodeSet.end();
@@ -315,3 +279,16 @@ bool Graph::hasEdge(const std::string &uname, const std::string &vname) const {
     return hasEdge(node(uname), node(vname));
 }
 
+namespace GraphType {
+    std::ostream &operator<<(std::ostream &out, const Graph &graph) {
+        out << graph.isDirected() << " " << graph.isWeighted() << "\n";
+        out << graph.countNodes() << "\n";
+        for (const auto &node: graph.nodeList())
+            out << node->name() << " " << node->euclidePos().x() << " " << node->euclidePos().y() << "\n";
+        out << graph.countEdges() << "\n";
+        for (auto it = graph.edgeSet().begin(); it != graph.edgeSet().end(); ++it) {
+            out << Edge(it).u()->name() << " " << Edge(it).v()->name() << " " << Edge(it).weight() << "\n";
+        }
+        return out;
+    }
+}

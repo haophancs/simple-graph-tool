@@ -1,7 +1,7 @@
 #include <QtWidgets>
-#include "widgets/headers/OptionDialog.h"
+#include "widgets/headers/GraphOptionDialog.h"
 
-OptionDialog::OptionDialog(QWidget *parent)
+GraphOptionDialog::GraphOptionDialog(QWidget *parent)
         : QDialog(parent)
 {
     label = new QLabel(tr("No. of nodes"));
@@ -16,10 +16,10 @@ OptionDialog::OptionDialog(QWidget *parent)
             (QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
                     Qt::Vertical, this);
     bool conn = connect(buttonBox, &QDialogButtonBox::accepted,
-                        this, &OptionDialog::accept);
+                        this, &GraphOptionDialog::accept);
     Q_ASSERT(conn);
     conn = connect(buttonBox, &QDialogButtonBox::rejected,
-                   this, &OptionDialog::reject);
+                   this, &GraphOptionDialog::reject);
     Q_ASSERT(conn);
 
     auto topLeftLayout = new QHBoxLayout;
@@ -42,8 +42,8 @@ OptionDialog::OptionDialog(QWidget *parent)
     setWindowTitle(tr("Initialize graph"));
 }
 
-void OptionDialog::initGraph(QWidget *parent, bool &weighted, bool &directed, int &node_num, bool &ok) {
-    auto dialog = new OptionDialog(parent);
+void GraphOptionDialog::initGraph(QWidget *parent, bool &weighted, bool &directed, int &node_num, bool &ok) {
+    auto dialog = new GraphOptionDialog(parent);
     const int res = dialog->exec();
     if (res) {
         ok = res != 0;

@@ -228,7 +228,7 @@ void GraphGraphicsScene::resetAfterDemoAlgo() {
 EdgeGraphicsItem *GraphGraphicsScene::edgeItem(const std::string& uname, const std::string& vname) {
     if (_edgeItems.find(std::make_pair(uname, vname)) != _edgeItems.end())
         return _edgeItems.find(std::make_pair(uname, vname))->second;
-    else if (_graph->isDirected() && _edgeItems.find(std::make_pair(vname, uname)) != _edgeItems.end())
+    else if (_graph->isUndirected() && _edgeItems.find(std::make_pair(vname, uname)) != _edgeItems.end())
         return _edgeItems.find(std::make_pair(vname, uname))->second;
     return nullptr;
 }

@@ -42,7 +42,7 @@ signals:
 
     void nodeSelected(std::string node_name);
 
-    void nodeAdded(QPointF pos);
+    void nodeAdded(QPointF pos, bool auto_naming);
 
     void nodeRemoved(std::string node_name);
 

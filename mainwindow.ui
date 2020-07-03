@@ -671,12 +671,12 @@
   </action>
   <action name="actionAddEdge">
    <property name="text">
-    <string>&amp;Arc</string>
+    <string>&amp;Edge</string>
    </property>
   </action>
   <action name="actionEditEdge">
    <property name="text">
-    <string>&amp;Arc</string>
+    <string>&amp;Edge</string>
    </property>
   </action>
   <action name="actionDelNode">
@@ -686,7 +686,7 @@
   </action>
   <action name="actionDelEdge">
    <property name="text">
-    <string>&amp;Arc</string>
+    <string>&amp;Edge</string>
    </property>
   </action>
   <action name="actionBFS">

@@ -48,8 +48,8 @@ void GraphMatrixTable::adjustCell(int row, int column) {
         QMessageBox msgWarning;
 
         QString msg;
-        msg.sprintf("Weight value of the Edge(u, v) with u != v must be a NUMBER\n"
-                    "that >= %d and <= %d!\n"
+        msg.sprintf("Weight value of the Edge(u, v) must be a NUMBER\n"
+                    "in range [%d, %d]\n"
                     "To remove the edge, enter \"%s\"",
                     _graph->weightRange().first, _graph->weightRange().second, _strInvalidVal.c_str());
 
@@ -132,3 +132,4 @@ void GraphMatrixTable::reload() {
     }
     connect(this, SIGNAL(cellChanged(int, int)), this, SLOT(adjustCell(int, int)));
 }
+

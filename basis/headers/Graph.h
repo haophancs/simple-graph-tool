@@ -64,9 +64,9 @@ namespace GraphType {
 
         void clear();
 
-        void readFromFile(const std::string &file);
+        static Graph readFromFile(const std::string &file);
 
-        void writeToFile(const std::string &file) const;
+        static void writeToFile(const std::string &file, const Graph &graph);
 
         AdjacencyMatrix adjMatrix() const {
             return AdjacencyMatrix(_cachedNodeList, _edgeSet, _directed, _invalidValue);

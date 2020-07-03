@@ -49,51 +49,50 @@ void GraphGraphicsView::contextMenuEvent(QContextMenuEvent *event) {
             QAction *act = menu.exec(event->globalPos());
             if (act != nullptr) {
                 if (act->text() == "&Delete")
-                        emit nodeRemoved(node_name);
+                    emit nodeRemoved(node_name);
                 if (act->text() == "&Isolate")
-                        emit nodeIsolated(node_name);
+                    emit nodeIsolated(node_name);
                 if (act->text() == "Re&name")
-                        emit nodeEdited(node_name);
+                    emit nodeEdited(node_name);
                 if (act->text().contains("&Set edge to")) {
                     this->_selectTargetNode = true;
                     this->_startItem = nodeItem;
                 }
                 if (act->text().contains("BFS"))
-                        emit startAlgorithm("BFS", node_name);
+                    emit startAlgorithm("BFS", node_name);
                 if (act->text().contains("DFS"))
-                        emit startAlgorithm("DFS", node_name);
+                    emit startAlgorithm("DFS", node_name);
                 if (act->text().contains("Find path"))
-                        emit startAlgorithm("Find path", node_name);
+                    emit startAlgorithm("Find path", node_name);
             } else {
                 item->setSelected(false);
             }
         } else if (edgeItem) {
             QMenu menu;
             menu.addAction("&Delete");
-            menu.addAction("Adjust &weight");
+            if (dynamic_cast<GraphGraphicsScene*>(scene())->graph()->isWeighted())
+                menu.addAction("Adjust &weight");
             emit edgeSelected(edgeItem->edge().u()->name(), edgeItem->edge().v()->name());
             QAction *act = menu.exec(event->globalPos());
             if (act != nullptr) {
                 if (act->text() == "&Delete")
-                        emit edgeRemoved(edgeItem->edge().u()->name(), edgeItem->edge().v()->name());
+                    emit edgeRemoved(edgeItem->edge().u()->name(), edgeItem->edge().v()->name());
                 if (act->text() == "Adjust &weight")
-                        emit edgeSet(edgeItem->edge().u()->name(), edgeItem->edge().v()->name());
+                    emit edgeSet(edgeItem->edge().u()->name(), edgeItem->edge().v()->name());
             }
         }
     } else {
         if (!scene()->selectedItems().empty())
             scene()->selectedItems()[0]->setSelected(false);
         QMenu menu;
-        menu.addAction("New &node");
-        //menu.addAction("&Refresh");
+        menu.addAction("Create node now");
+        menu.addAction("Create node...");
         QAction *act = menu.exec(event->globalPos());
         if (act) {
-            if (act->text() == "New &node")
-                    emit nodeAdded(mapToScene(event->pos()));
-            //else if (act->text() == "&Refresh") {
-            //    dynamic_cast<GraphGraphicsScene*>(scene())->reload();
-            //    redraw();
-            //}
+            if (act->text() == "Create node...")
+                emit nodeAdded(mapToScene(event->pos()), false);
+            else if (act->text() == "Create node now")
+                emit nodeAdded(mapToScene(event->pos()), true);
         }
     }
 }
@@ -140,7 +139,7 @@ void GraphGraphicsView::mouseReleaseEvent(QMouseEvent *event) {
         else if (fni) emit nodeSelected(fni->node()->name());
     }
     if (items(event->pos()).empty())
-            emit unSelected();
+        emit unSelected();
     QGraphicsView::mouseReleaseEvent(event);
 }
 
