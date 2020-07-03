@@ -88,7 +88,6 @@ void EdgeGraphicsItem::updatePosition() {
                 (1 - ty1) * q + ty1 * s);
     }
     if (_gscene->graph()->isDirected() && inversionAvailable()) {
-        angle = std::atan2(line().dy(), -line().dx());
         qreal offset = arrowHeadSize / 2;
         qreal foo = qMax(5., qMin(25., length / 6));
         if (edge().u()->name() < edge().v()->name()) {

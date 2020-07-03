@@ -63,6 +63,7 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<std::pair<std::string, st
                 this->update();
             } else {
                 _uniqueTimer->stop();
+                this->_listOfPair.clear();
             }
         });
     }
@@ -93,6 +94,7 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<std::pair<std::string, st
                 this->_listOfPair.pop_front();
             } else {
                 _uniqueTimer->stop();
+                this->_listOfPair.clear();
             }
         });
     }
@@ -126,6 +128,7 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<std::string> &listOfNodeT
                 this->update();
             } else {
                 this->_uniqueTimer->stop();
+                this->_listOfNode.clear();
             }
         });
     _uniqueTimer->start(350);
@@ -168,16 +171,16 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<std::list<std::string> > 
                 this->update();
             } else {
                 _uniqueTimer->stop();
+                this->_listOfList.clear();
             }
         });
         _uniqueTimer->start(50);
     } else if (flag == GraphDemoFlag::EdgeAndNode) {
         connect(_uniqueTimer.get(), &QTimer::timeout, this, [this]() {
-            if (!this->_listOfList.empty() || !this->_listOfNode.empty()) {
+            if (!this->_listOfList.empty()) {
                 bool theLast;
                 if (this->_listOfNode.empty()) {
                     this->_listOfNode = this->_listOfList.front();
-                    _uniqueTimer->setInterval(400);
                     this->_listOfList.pop_front();
                 }
                 theLast = this->_listOfList.empty();
@@ -196,17 +199,16 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<std::list<std::string> > 
                     edgeItem->setSelected(true);
 
                 this->update();
-                if (this->_listOfNode.empty() && !theLast) {
+               if (this->_listOfNode.empty() && !theLast) {
                     for (auto gi: this->selectedItems())
                         if (gi != nullptr)
                             gi->setSelected(false);
-                    _uniqueTimer->setInterval(600);
                 }
             } else {
                 _uniqueTimer->stop();
             }
         });
-        _uniqueTimer->start(350);
+        _uniqueTimer->start(250);
     }
 }
 
@@ -248,3 +250,4 @@ void GraphGraphicsScene::clearAll() {
 GraphGraphicsScene::~GraphGraphicsScene() {
     this->clearAll();
 }
+

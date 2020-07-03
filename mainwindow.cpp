@@ -30,7 +30,6 @@ MainWindow::MainWindow(QWidget *parent) :
     btnFont.setPixelSize(32);
     _ui->createGraphButton->setFont(btnFont);
     _ui->openGraphButton->setFont(btnFont);
-    _ui->coloringBtn->setVisible(false);
 
     this->_graph = new Graph(false, false);
     this->_scene = new GraphGraphicsScene(_graph);
@@ -108,6 +107,11 @@ MainWindow::MainWindow(QWidget *parent) :
             this->_ui->consoleText->clear();
             auto result = GraphUtils::DFSToDemo(this->_graph, source_name);
             emit startDemoAlgorithm(result, GraphDemoFlag::EdgeAndNode);
+        } else if (algo == "Find MST") {
+            this->_ui->consoleText->clear();
+            auto result = GraphUtils::Prim(this->_graph, source_name);
+            emit startDemoAlgorithm(result, GraphDemoFlag::EdgeAndNode);
+
         } else if (algo == "Find path") {
             bool ok;
             QString goal = QInputDialog::getText(this, "Find shortest path", "To node: ", QLineEdit::Normal, QString(),
@@ -169,12 +173,30 @@ void MainWindow::resetGraph(Graph *graph) {
     this->_matrix->setGraph(_graph);
     this->_elementPropertiesTable->setGraph(_graph);
     this->_graphPropertiesTable->setGraph(_graph);
+    _ui->coloringBtn->setVisible(_graph->isUndirected());
+    _ui->actionColoring->setVisible(_graph->isUndirected());
+    _ui->topoSortBtn->setVisible(_graph->isDirected());
+    _ui->actionTopo_Sorting->setVisible(_graph->isDirected());
+    _ui->weaklyConnectedBtn->setVisible(_graph->isDirected());
+    _ui->actionFind_weakly_connected_components->setVisible(_graph->isDirected());
+    _ui->connectedComponentsBtn->setText(_graph->isDirected() ?
+        "Find strongly connected components"
+        : "Find connected components");
+    _ui->actionFind_connected_components->setVisible(_ui->connectedComponentsBtn->isVisible());
 }
 
 void MainWindow::initWorkspace(const QString &filename, bool new_file) {
 
     try {
         if (!new_file) {
+            if (this->_dataNeedSaving) {
+                QMessageBox::StandardButton reply = QMessageBox::question(this, "Save Graph?",
+                                                                          "Your changes will be lost if you don't save them!",
+                                                                          QMessageBox::No | QMessageBox::Yes |
+                                                                          QMessageBox::Cancel);
+                if (reply == QMessageBox::Cancel)
+                    return;
+            }
             resetGraph(new Graph(Graph::readFromFile(filename.toStdString())));
             this->_dataNeedSaving = false;
         } else {
@@ -422,10 +444,10 @@ void MainWindow::on_bridgesBtn_clicked() {
 }
 
 void MainWindow::on_coloringBtn_clicked() {
-//    _ui->consoleText->clear();
-//    QDebugStream qout(std::cout, _ui->consoleText);
-//    auto result = GraphUtils::displayColoring(_graph);
-//    emit startDemoAlgorithm(result, GraphDemoFlag::Coloring);
+    _ui->consoleText->clear();
+    QDebugStream qout(std::cout, _ui->consoleText);
+    auto result = GraphUtils::displayColoring(_graph);
+    emit startDemoAlgorithm(result, GraphDemoFlag::Coloring);
 }
 
 void MainWindow::on_weaklyConnectedBtn_clicked() {

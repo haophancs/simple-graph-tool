@@ -2,13 +2,12 @@
 #include <unordered_map>
 #include <utility>
 #include <QString>
-
+#include <QDebug>
 std::list<std::pair<std::string, std::string>> GraphUtils::BFSToDemo(const Graph *graph, const std::string &source) {
     std::list<std::pair<std::string, std::string>> result;
     if (!graph->hasNode(source)) return result;
 
     auto nodes = graph->nodeList();
-    std::list<std::string> steps;
     std::queue<std::string> q;
     std::unordered_map<std::string, bool> visited;
     std::unordered_map<std::string, std::string> parent;
@@ -18,15 +17,13 @@ std::list<std::pair<std::string, std::string>> GraphUtils::BFSToDemo(const Graph
 
     while (!q.empty()) {
         auto vname = q.front();
-        if (!visited[vname])
-            std::cout << vname << " ";
-        visited[vname] = true;
-        steps.push_back(vname);
-        result.emplace_back(parent[steps.back()], steps.back());
+        std::cout << vname << " ";
+        result.emplace_back(parent[vname], vname);
         q.pop();
 
         for (auto &adj : nodes) {
             if (graph->hasEdge(vname, adj->name()) && !visited[adj->name()]) {
+                visited[adj->name()] = true;
                 q.push(adj->name());
                 parent[adj->name()] = vname;
             }
@@ -35,27 +32,23 @@ std::list<std::pair<std::string, std::string>> GraphUtils::BFSToDemo(const Graph
     std::cout << "\n";
     return result;
 }
-#include <QDebug>
 std::list<std::pair<std::string, std::string>> GraphUtils::DFSToDemo(const Graph *graph, const std::string &source) {
     std::list<std::pair<std::string, std::string>> result;
     if (!graph->hasNode(source)) return result;
 
     auto nodes = graph->nodeList();
-    std::list<std::string> steps;
     std::stack<std::string> s;
     std::unordered_map<std::string, bool> visited;
     std::unordered_map<std::string, std::string> parent;
     s.push(source);
     visited[source] = true;
 
-    std::cout << "DFS (source = " << graph->node(source)->name() << "): ";
+    std::cout << "DFS (source = " << source << "): ";
     while (!s.empty()) {
         auto vname = s.top();
-        if (!visited[vname])
-            std::cout << vname << " ";
+        std::cout << vname << " ";
         visited[vname] = true;
-        steps.push_back(vname);
-        result.emplace_back(parent[steps.back()], steps.back());
+        result.emplace_back(parent[vname], vname);
         s.pop();
 
         for (auto &adj: nodes) {
@@ -111,6 +104,15 @@ void UndirectedDFSUtil(const Graph *graph, const std::string &vname, std::unorde
         if ((graph->hasEdge(vname, adj->name()) || graph->hasEdge(adj->name(), vname)) && !visited[adj->name()])
             UndirectedDFSUtil(graph, adj->name(), visited, steps);
     }
+}
+
+int DFSCount(const Graph &graph, const std::string& uname, std::unordered_map<std::string, bool> &visited) {
+    visited[uname] = true;
+    int count = 1;
+    for (auto v: graph.nodeList())
+        if (graph.hasEdge(uname, v->name()) && !visited[v->name()])
+            count += DFSCount(graph, v->name(), visited);
+    return count;
 }
 
 std::list<std::string> GraphUtils::DFS(const Graph *graph, std::string source) {
@@ -232,19 +234,12 @@ std::string minKey(std::unordered_map<std::string, int> &key, std::unordered_map
     }
     return min_index;
 }
-
-std::list<std::pair<std::string, std::string>> GraphUtils::Prim(const Graph *graph, std::string source) {
-    const auto nodes = graph->nodeList();
-    if (source.empty())
-        source = nodes.front()->name();
+std::list<std::pair<std::string, std::string>> PrimUtil(const Graph *graph, const std::string& source, bool &full) {
     std::list<std::pair<std::string, std::string>> result;
     if (!graph->hasNode(source)) return result;
-    if (!isAllWeaklyConnected(graph)) {
-        std::cout << "Minimum spanning tree: not found because the graph is not weakly connected!";
-        return result;
-    }
     std::unordered_map<std::string, std::string> parent;
     std::unordered_map<std::string, int> key;
+    auto nodes = graph->nodeList();
     for (auto &node: nodes)
         key[node->name()] = INT_MAX;
     std::unordered_map<std::string, bool> mstSet;
@@ -265,24 +260,64 @@ std::list<std::pair<std::string, std::string>> GraphUtils::Prim(const Graph *gra
         }
     }
     int cost = 0;
-    std::cout << "Minimum panning tree (source = " << source << "): " << std::endl;
-    std::cout << "vertex \t parent \t cost:" << std::endl;
+
     for (auto &node: nodes) {
         if (node->name() != source) {
             if (graph->hasEdge(parent[node->name()], node->name())) {
                 result.emplace_back(std::make_pair(parent[node->name()], node->name()));
-                std::cout << node->name() << " \t " << parent[node->name()] << " \t "
-                          << graph->weight(parent[node->name()], node->name()) << std::endl;
                 cost += graph->weight(parent[node->name()], node->name());
             }
         }
+    }
+    full = true;
+    if (!result.empty()) {
+        for (auto node: nodes) {
+            if (node->name() != source && parent[node->name()].empty())
+                full = false;
+        }
+    }
+    else {
+        full = false;
+    }
+    std::cout << "\n";
+    return result;
+}
+
+void printMST(const Graph &graph, const std::list<std::pair<std::string, std::string>>& result, const std::string& source) {
+    std::cout << "Minimum panning tree (source = " << source << "): " << std::endl;
+    std::cout << "vertex \t parent \t cost:" << std::endl;
+
+    int cost = 0;
+    for (const auto& it: result) {
+        std::cout << it.second << " \t " << it.first << " \t "
+                  << graph.weight(it.first, it.second) << std::endl;
+        cost += graph.weight(it.first, it.second);
     }
     if (!result.empty())
         std::cout << "total cost: " << cost;
     else
         std::cout << "not found";
     std::cout << "\n";
-    return result;
+}
+
+std::list<std::pair<std::string, std::string>> GraphUtils::Prim(const Graph *graph, const std::string& source) {
+    const auto nodes = graph->nodeList();
+    bool full{};
+    if (source.empty()) {
+        if (!isAllWeaklyConnected(graph)) {
+            std::cout << "Minimum spanning tree: not found because the graph is not connected!";
+            return std::list<std::pair<std::string, std::string>>();
+        }
+        for (auto node: nodes) {
+            auto res = PrimUtil(graph, node->name(), full);
+            if (full) {
+                printMST(*graph, res, source);
+                return res;
+            }
+        }
+        return std::list<std::pair<std::string, std::string>>();
+    }
+    return PrimUtil(graph, source, full);
 }
 
 void weaklyFillOrder(const Graph *graph, const std::string &vname, std::unordered_map<std::string, bool> &visited,
@@ -306,7 +341,7 @@ void stronglyFillOrder(const Graph *graph, const std::string &vname, std::unorde
     stack.push(vname);
 }
 
-std::list<std::list<std::string>> GraphUtils::stronglyConnectedComponents(const Graph *graph) {
+std::list<std::list<std::string>> GraphUtils::connectedComponents(const Graph *graph) {
     std::list<std::list<std::string>> result;
     std::unordered_map<std::string, bool> visited;
     std::stack<std::string> stack;
@@ -448,7 +483,7 @@ std::list<std::pair<std::string, std::string>> GraphUtils::displayBridges(const 
     std::list<std::pair<std::string, std::string>> bridges = getBridges(graph);
     std::cout << "Number of bridges: " << bridges.size() << "\n";
     for (const auto &b: bridges)
-        std::cout << " - " << b.first << " " << b.second << "\n";
+        std::cout << b.first << " " << b.second << "\n";
     return bridges;
 }
 
@@ -456,7 +491,7 @@ std::list<std::list<std::string>> GraphUtils::displayConnectedComponents(const G
     auto nodes = graph->nodeList();
     std::list<std::list<std::string>> result;
     if (strong)
-        result = stronglyConnectedComponents(graph);
+        result = connectedComponents(graph);
     else
         result = weaklyConnectedComponents(graph);
     std::cout << "Number of " << (strong ? "strongly" : "weakly") << " connected components: " << result.size() << "\n";
@@ -518,13 +553,15 @@ std::list<std::list<std::string>> GraphUtils::displayHamiltonianCycle(const Grap
         return result;
     }
     auto nodes = graph->nodeList();
-    for (auto &node: nodes)
-        if (node->undirDegree() < graph->countNodes() / 2) {
+    for (auto &node: nodes) {
+        auto degree = graph->isUndirected() ? node->undirDegree() : node->posDegree() + node->negDegree();
+        if (degree < graph->countNodes() / 2) {
             std::cout << "Hamiltonian Cycle not found: ";
-            std::cout << "deg(" << node->name() << ") = " << node->undirDegree() << " < " << graph->countNodes()
+            std::cout << "deg(" << node->name() << ") = " << degree << " < " << graph->countNodes()
                       << "/2\n";
             return result;
         }
+    }
 
     for (auto &source: nodes) {
         std::cout << "Hamiltonian Cycle (source = " << source->name() << "): ";
@@ -541,56 +578,69 @@ std::list<std::list<std::string>> GraphUtils::displayHamiltonianCycle(const Grap
     return result;
 }
 
-std::list<std::string> GraphUtils::getEulerianCircuit(const Graph *_graph, std::string source) {
-    auto graph = *_graph;
-    auto nodes = graph.nodeList();
-    if (source.empty())
-        source = nodes.front()->name();
-    std::list<std::string> cycle;
-    std::stack<std::string> s;
-    s.push(source);
-    while (!s.empty()) {
-        auto vname = s.top();
-        if (graph.node(vname)->undirDegree() > 0) {
-            for (auto &adj: graph.nodeList()) {
-                if (graph.hasEdge(vname, adj->name())) {
-                    s.push(adj->name());
-                    graph.removeEdge(vname, adj->name());
-                    break;
-                }
-            }
-        } else {
-            cycle.push_front(vname);
-            s.pop();
-        }
-    }
-    return cycle;
+bool isBridge(Graph graph, const std::string& uname, const std::string& vname) {
+    if (uname == vname)
+        return false;
+    std::unordered_map<std::string, bool> visited;
+    int count1 = DFSCount(graph, uname, visited);
+    graph.removeEdge(uname, vname);
+    int count2 = DFSCount(graph, vname, visited);
+    return count1 <= count2;
 }
 
-std::list<std::list<std::string>> GraphUtils::displayEulerianCircuit(const Graph *graph) {
-    std::list<std::list<std::string>> result;
-    if (!isAllStronglyConnected(graph)) {
-        std::cout << "Eulerian Circuit not found because the graph is not strongly connected\n";
-        return result;
+void undirEulerUtil(Graph &graph, const std::string& uname, std::list<std::string> &result) {
+    for (auto v: graph.nodeList()) {
+        if (graph.hasEdge(uname, v->name())) {
+            if ((graph.node(uname)->undirDegree() == 1)
+            || (graph.node(uname)->undirDegree() > 1 && !isBridge(graph, uname, v->name()))) {
+                result.emplace_back(uname);
+                result.emplace_back(v->name());
+                graph.removeEdge(uname, v->name());
+                undirEulerUtil(graph, v->name(), result);
+            }
+        }
     }
-    auto nodes = graph->nodeList();
-    for (auto &node: nodes) {
-        if (node->negDegree() != node->posDegree()) {
-            std::cout << "Eulerian Circuit not found because Node " << node->name() << " has deg+ != deg-\n";
+}
+
+std::list<std::string> GraphUtils::getUndirEulerianCircuit(const Graph *_graph, const std::string& source) {
+    std::list<std::string> result;
+    Graph graph = *_graph;
+    undirEulerUtil(graph, source, result);
+    return result;
+}
+std::list<std::list<std::string>>
+        GraphUtils::displayEulerianCircuit(const Graph *graph) {
+    std::list<std::list<std::string>> result;
+    if (graph->isDirected()) {
+        if (!isAllStronglyConnected(graph)) {
+            std::cout << "Eulerian Circuit not found because the graph is not strongly connected\n";
             return result;
+        }
+        for (auto &node: graph->nodeList()) {
+            if (node->negDegree() != node->posDegree()) {
+                std::cout << "Eulerian Circuit not found because Node " << node->name() << " has deg+ != deg-\n";
+                return result;
+            }
         }
     }
 
-    for (auto &node: nodes) {
-        std::list<std::string> cycle = getEulerianCircuit(graph, node->name());
+    for (auto &node: graph->nodeList()) {
+        if (node->undirDegree() % 2 == 0)
+            continue;
+        auto cycle = getUndirEulerianCircuit(graph, node->name());
         std::cout << "Euler Circuit (source = " << node->name() << "): ";
         if (cycle.empty())
             std::cout << "not found!\n";
-        else
-            result.push_back(cycle);
-        for (auto &v: cycle)
-            std::cout << v << " ";
-        std::cout << "\n";
+        else {
+            result.emplace_back(cycle);
+            while (cycle.size() > 1) {
+                std::cout << cycle.front() << "-";
+                cycle.pop_front();
+                std::cout << cycle.front() << " ";
+                cycle.pop_front();
+            }
+            std::cout << "\n";
+        }
     }
     return result;
 }
@@ -604,9 +654,32 @@ void topoSortUtil(const Graph *graph, const std::string &vname, std::unordered_m
     stack.push(vname);
 }
 
+bool GraphUtils::isCycle(const Graph *graph) {
+    std::queue<std::string> q;
+    std::unordered_map<std::string, int> in_degree;
+    for (auto node: graph->nodeList()) {
+        in_degree[node->name()] = node->posDegree();
+        if (in_degree[node->name()] == 0)
+            q.push(node->name());
+    }
+    int cnt = 0;
+    std::vector<std::string> top_order;
+    while (!q.empty()) {
+        auto u = q.front();
+        q.pop();
+        top_order.push_back(u);
+        for (auto v: graph->nodeList()) {
+            if (--in_degree[v->name()] == 0)
+                q.push(v->name());
+            cnt++;
+        }
+    }
+    return (cnt != graph->countNodes());
+}
+
 std::list<std::string> GraphUtils::getTopoSortResult(const Graph *graph) {
-    if (!isAllWeaklyConnected(graph)) {
-        std::cout << "The is not weakly connected\n";
+    if (! (graph->isDirected() && isCycle(graph))) {
+        std::cout << "The graph is not DAG\n";
         return std::list<std::string>();
     }
     std::unordered_map<std::string, bool> visited;
@@ -624,46 +697,54 @@ std::list<std::string> GraphUtils::getTopoSortResult(const Graph *graph) {
 }
 
 std::list<std::string> GraphUtils::displayTopoSort(const Graph *graph) {
-    std::list<std::string> topo_sorted = getTopoSortResult(graph);
-    std::cout << "Topo sorted: ";
-    if (topo_sorted.empty()) {
-        std::cout << "not found!\n";
-        return topo_sorted;
+    std::list<std::string> topo_sorted;
+    if (graph->isDirected()) {
+        topo_sorted = getTopoSortResult(graph);
+        std::cout << "Topo sorted: ";
+        if (topo_sorted.empty()) {
+            std::cout << "not found!\n";
+            return topo_sorted;
+        }
+        for (const auto &v: topo_sorted)
+            std::cout << v << " ";
+        std::cout << "\n";
     }
-    for (const auto &v: topo_sorted)
-        std::cout << v << " ";
-    std::cout << "\n";
     return topo_sorted;
 }
 
 std::list<std::pair<std::string, int>> GraphUtils::getColoringResult(const Graph *graph, std::string source) {
+    std::list<std::pair<std::string, int>> res_list;
+    if (graph->isDirected())
+        return res_list;
+
     auto nodes = graph->nodeList();
     if (source.empty())
         source = nodes.front()->name();
     std::unordered_map<int, bool> available; // available colors
     std::unordered_map<std::string, int> result; // result: map of pairs { nodeName : _color }
+
     for (auto &node: nodes)
         result[node->name()] = -1;
-    std::list<std::pair<std::string, int>> res_list;
     result[source] = 0;
-    for (int i = 1; i < nodes.size(); i++) {
-        auto v = nodes.front();
-        for (int j = 0; j < nodes.size(); j++) {
-            auto adj = nodes.front();
-            if (graph->hasEdge(v->name(), adj->name())) {
-                if (result[adj->name()])
-                    available[result[adj->name()]] = true;
+    for (auto u: nodes) {
+        if (u->name() != source) {
+            for (auto v: nodes) {
+                if (graph->hasEdge(u->name(), v->name())) {
+                    if (result[v->name()] != -1)
+                        available[result[v->name()]] = true;
+                }
             }
-        }
-        int cr;
-        for (cr = 0; cr < graph->countNodes(); cr++)
-            if (!available[cr])
-                break;
-        result[v->name()] = cr;
-        for (auto &adj: nodes) {
-            if (graph->hasEdge(v->name(), adj->name())) {
-                if (result[adj->name()] != -1)
-                    available[result[adj->name()]] = false;
+            int cr;
+            for (cr = 0; cr < graph->countNodes(); cr++) {
+                if (!available[cr])
+                    break;
+            }
+            result[u->name()] = cr;
+            for (auto &v: nodes) {
+                if (graph->hasEdge(v->name(), v->name())) {
+                    if (result[v->name()] != -1)
+                        available[result[v->name()]] = false;
+                }
             }
         }
     }
@@ -675,6 +756,8 @@ std::list<std::pair<std::string, int>> GraphUtils::getColoringResult(const Graph
 }
 
 std::list<std::pair<std::string, std::string>> GraphUtils::displayColoring(const Graph *graph, std::string source) {
+    if (graph->isDirected())
+        return std::list<std::pair<std::string, std::string>>();
     auto result = getColoringResult(graph, std::move(source));
     std::list<std::pair<std::string, std::string>> resultToSent;
     std::cout << "Coloring of the graph: " << std::endl;
@@ -683,4 +766,12 @@ std::list<std::pair<std::string, std::string>> GraphUtils::displayColoring(const
         resultToSent.emplace_back(it.first, std::to_string(it.second));
     }
     return resultToSent;
+}
+
+std::list<std::pair<std::string, std::string>> GraphUtils::usualST(const Graph *graph, const std::string& source) {
+    std::list<std::pair<std::string, std::string>> result;
+    std::unordered_map<std::string, bool> visited;
+    std::list<std::string> steps;
+    DFSUtil(graph, source, visited, steps);
+    return result;
 }

@@ -54,7 +54,7 @@ Graph Graph::readFromFile(const std::string &file) {
 
     int countNodes;
     in >> countNodes;
-    if (countNodes <= 0) throw "number of nodes <= 0";
+    if (countNodes <= 0) throw "Number of nodes <= 0";
     std::string name;
     qreal x, y;
     for (int i = 0; i < countNodes; i++) {

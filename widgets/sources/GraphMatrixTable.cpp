@@ -61,7 +61,10 @@ void GraphMatrixTable::adjustCell(int row, int column) {
                 (_adj->weight(row, column) != INT_MAX) ?
                 QString::number(_adj->weight(row, column)) : "inf");
     } else {
-        _graph->setEdge(_adj->node(row), _adj->node(column), data.toInt());
+        if (is_invalid_value)
+            _graph->removeEdge(_adj->node(row), _adj->node(column));
+        else
+            _graph->setEdge(_adj->node(row), _adj->node(column), data.toInt());
         if (this->item(column, row) != this->item(row, column)) {
             delete _adj;
             _adj = new GraphType::AdjacencyMatrix(_graph->adjMatrix());
