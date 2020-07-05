@@ -42,6 +42,7 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
 signals:
+
     void positionChanged();
 
 private:
@@ -60,7 +61,6 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
-
 };
 
 #endif // NODEGRAPHICSITEM_H

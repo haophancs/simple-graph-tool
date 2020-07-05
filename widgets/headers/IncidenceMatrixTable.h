@@ -1,20 +1,20 @@
-#ifndef GRAPHTABLE_H
-#define GRAPHTABLE_H
+#ifndef INCIDENCEMATRIXTABLE_H
+#define INCIDENCEMATRIXTABLE_H
 
 #include "basis/headers/Graph.h"
 #include <QTableWidget>
 #include <QHeaderView>
 #include <QKeyEvent>
 
-class GraphMatrixTable : public QTableWidget {
+class IncidenceMatrixTable : public QTableWidget {
 Q_OBJECT
 private:
     GraphType::Graph *_graph{};
-    GraphType::AdjacencyMatrix *_adj{};
+    GraphType::IncidenceMatrix *_incidence{};
     int _sectionSize;
 
 public:
-    explicit GraphMatrixTable(GraphType::Graph *graph, int sectionSize = 80);
+    explicit IncidenceMatrixTable(GraphType::Graph *graph, int sectionSize = 80);
 
     void defaultSetting();
 
@@ -30,9 +30,9 @@ signals:
 
 public slots:
 
-    void adjustCell(int row, int column);
-
     void reload();
+
+    void adjustCell(int row, int column);
 };
 
-#endif // GRAPHMATRIXTABLE_H
+#endif //INCIDENCEMATRIXTABLE_H

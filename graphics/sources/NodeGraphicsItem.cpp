@@ -76,7 +76,7 @@ void NodeGraphicsItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     painter->setFont(font);
     QString txt = QString::fromStdString(this->node()->name());
     QFontMetrics fm(font);
-    painter->drawText(- fm.width(txt) / 2, fm.height() / 3, txt);
+    painter->drawText(-fm.width(txt) / 2, fm.height() / 3, txt);
 }
 
 void NodeGraphicsItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {

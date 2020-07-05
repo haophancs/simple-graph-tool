@@ -2,7 +2,8 @@
 #include "ui_mainwindow.h"
 #include "graphics/headers/GraphGraphicsView.h"
 #include "basis/headers/GraphUtils.h"
-#include "widgets/headers/InputDialog.h"
+#include "widgets/headers/MultiLineInputDialog.h"
+#include "widgets/headers/MultiComboboxDialog.h"
 #include <QtGui>
 #include <QMessageBox>
 #include <QTimer>
@@ -12,6 +13,7 @@
 MainWindow::MainWindow(QWidget *parent) :
         QMainWindow(parent),
         _ui(new Ui::MainWindow) {
+    setWindowState(Qt::WindowMaximized);
     _ui->setupUi(this);
     _ui->statusBar->setStyleSheet("color: darkgrey");
     _ui->consoleText->setReadOnly(true);
@@ -21,10 +23,13 @@ MainWindow::MainWindow(QWidget *parent) :
     auto *m = new QSignalMapper(this);
     auto *s1 = new QShortcut(QKeySequence("Alt+1"), this);
     auto *s2 = new QShortcut(QKeySequence("Alt+2"), this);
+    auto *s3 = new QShortcut(QKeySequence("Alt+3"), this);
     connect(s1, SIGNAL(activated()), m, SLOT(map()));
     connect(s2, SIGNAL(activated()), m, SLOT(map()));
+    connect(s3, SIGNAL(activated()), m, SLOT(map()));
     m->setMapping(s1, 0);
     m->setMapping(s2, 1);
+    m->setMapping(s3, 2);
     connect(m, SIGNAL(mapped(int)), _ui->tabWidget, SLOT(setCurrentIndex(int)));
     QFont btnFont;
     btnFont.setPixelSize(32);
@@ -34,27 +39,35 @@ MainWindow::MainWindow(QWidget *parent) :
     this->_graph = new Graph(false, false);
     this->_scene = new GraphGraphicsScene(_graph);
     this->_view = new GraphGraphicsView();
-    this->_matrix = new GraphMatrixTable(_graph);
+    this->_adjMatrix = new AdjacencyMatrixTable(_graph);
+    this->_incidenceMatrix = new IncidenceMatrixTable(_graph);
     this->_elementPropertiesTable = new ElementPropertiesTable(_graph);
     this->_graphPropertiesTable = new GraphPropertiesTable(_graph);
 
-    connect(_matrix, SIGNAL(graphChanged()), _scene, SLOT(reload()));
-    connect(_scene, SIGNAL(graphChanged()), _matrix, SLOT(reload()));
+    connect(_adjMatrix, SIGNAL(graphChanged()), _scene, SLOT(reload()));
+    connect(_scene, SIGNAL(graphChanged()), _adjMatrix, SLOT(reload()));
+    connect(_scene, SIGNAL(graphChanged()), _incidenceMatrix, SLOT(reload()));
     connect(this, SIGNAL(graphChanged()), _scene, SLOT(reload()));
-    connect(this, SIGNAL(graphChanged()), _matrix, SLOT(reload()));
+    connect(this, SIGNAL(graphChanged()), _adjMatrix, SLOT(reload()));
+    connect(this, SIGNAL(graphChanged()), _incidenceMatrix, SLOT(reload()));
     connect(this, SIGNAL(graphChanged()), _view, SLOT(redraw()));
     connect(this, SIGNAL(graphChanged()), this, SLOT(onGraphChanged()));
-    connect(_matrix, SIGNAL(graphChanged()), this, SLOT(onGraphChanged()));
+    connect(_adjMatrix, SIGNAL(graphChanged()), this, SLOT(onGraphChanged()));
     connect(_scene, SIGNAL(graphChanged()), this, SLOT(onGraphChanged()));
+    _scene->setInterval(_ui->horizontalSlider->value());
+    connect(_ui->horizontalSlider, &QSlider::valueChanged, _scene, &GraphGraphicsScene::setInterval);
 
     connect(_view, SIGNAL(unSelected()), _elementPropertiesTable, SLOT(onUnSelected()));
     connect(this, SIGNAL(graphChanged()), _elementPropertiesTable, SLOT(onGraphChanged()));
     connect(this, SIGNAL(graphChanged()), _graphPropertiesTable, SLOT(onGraphChanged()));
-    connect(_matrix, SIGNAL(graphChanged()), _graphPropertiesTable, SLOT(onGraphChanged()));
+    connect(_adjMatrix, SIGNAL(graphChanged()), _graphPropertiesTable, SLOT(onGraphChanged()));
     connect(_scene, SIGNAL(graphChanged()), _graphPropertiesTable, SLOT(onGraphChanged()));
     connect(_view, &GraphGraphicsView::nodeSelected, _elementPropertiesTable, &ElementPropertiesTable::onNodeSelected);
     connect(_view, &GraphGraphicsView::edgeSelected, _elementPropertiesTable, &ElementPropertiesTable::onEdgeSelected);
-    connect(_matrix, &GraphMatrixTable::edgeSelected, _elementPropertiesTable, &ElementPropertiesTable::onEdgeSelected);
+    connect(_adjMatrix, &AdjacencyMatrixTable::edgeSelected, _elementPropertiesTable,
+            &ElementPropertiesTable::onEdgeSelected);
+    connect(_incidenceMatrix, &IncidenceMatrixTable::edgeSelected, _elementPropertiesTable,
+            &ElementPropertiesTable::onEdgeSelected);
 
     connect(this, SIGNAL(startDemoAlgorithm(std::list<std::list<std::string> >, GraphDemoFlag)), _scene,
             SLOT(demoAlgorithm(std::list<std::list<std::string> >, GraphDemoFlag)));
@@ -71,69 +84,91 @@ MainWindow::MainWindow(QWidget *parent) :
         this->_graph->addNode(Node(_graph->nextNodeName(), pos));
         emit graphChanged();
     });
-    connect(_view, &GraphGraphicsView::nodeRemoved, this, [this](const std::string& node_name) {
+    connect(_view, &GraphGraphicsView::nodeRemoved, this, [this](const std::string &node_name) {
         if (this->_graph->removeNode(node_name))
                 emit graphChanged();
     });
-    connect(_view, &GraphGraphicsView::nodeIsolated, this, [this](const std::string& node_name) {
+    connect(_view, &GraphGraphicsView::nodeIsolated, this, [this](const std::string &node_name) {
         if (this->_graph->isolateNode(node_name))
                 emit graphChanged();
     });
-    connect(_view, &GraphGraphicsView::edgeRemoved, this, [this](const std::string& uname, const std::string& vname) {
+    connect(_view, &GraphGraphicsView::edgeRemoved, this, [this](const std::string &uname, const std::string &vname) {
         if (_graph->removeEdge(uname, vname))
                 emit graphChanged();
     });
-    connect(_view, &GraphGraphicsView::edgeSet, this, [this](const std::string& uname, const std::string& vname) {
+    connect(_view, &GraphGraphicsView::edgeSet, this, [this](const std::string &uname, const std::string &vname) {
         bool ok{};
         int defaultValue = _graph->hasEdge(uname, vname) ? _graph->weight(uname, vname) : 1;
         int w = _graph->isWeighted() ?
                 (QInputDialog::getInt(this, tr("Set weight for edge(")
-                    + QString::fromStdString(_graph->node(uname)->name()) + ", "
-                    + QString::fromStdString(_graph->node(vname)->name()) + tr(")"),
-                    "0 <= weight < " + QString::number(INT_MAX),
-                    defaultValue, 1, INT_MAX, 1, &ok))
-                : 1;
+                                            + QString::fromStdString(_graph->node(uname)->name()) + ", "
+                                            + QString::fromStdString(_graph->node(vname)->name()) + tr(")"),
+                                      "0 <= weight < " + QString::number(INT_MAX),
+                                      defaultValue, 1, INT_MAX, 1, &ok))
+                                     : 1;
         qDebug() << w;
         if ((ok || _graph->isUnweighted()) && this->_graph->setEdge(uname, vname, w))
-            emit graphChanged();
+                emit graphChanged();
     });
-    connect(_view, &GraphGraphicsView::startAlgorithm, this, [this](const QString &algo, const std::string& source_name) {
-        QDebugStream qout(std::cout, _ui->consoleText);
-        if (algo == "BFS") {
-            this->_ui->consoleText->clear();
-            auto result = GraphUtils::BFSToDemo(this->_graph, source_name);
-            emit startDemoAlgorithm(result, GraphDemoFlag::EdgeAndNode);
-        } else if (algo == "DFS") {
-            this->_ui->consoleText->clear();
-            auto result = GraphUtils::DFSToDemo(this->_graph, source_name);
-            emit startDemoAlgorithm(result, GraphDemoFlag::EdgeAndNode);
-        } else if (algo == "Find MST") {
-            this->_ui->consoleText->clear();
-            auto result = GraphUtils::Prim(this->_graph, source_name);
-            emit startDemoAlgorithm(result, GraphDemoFlag::EdgeAndNode);
+    connect(_view, &GraphGraphicsView::startAlgorithm, this,
+            [this](const QString &algo, const std::string &source_name) {
+                QDebugStream qout(std::cout, _ui->consoleText);
+                if (algo == "BFS") {
+                    this->_ui->consoleText->clear();
+                    auto result = GraphUtils::BFSToDemo(this->_graph, source_name);
+                    emit startDemoAlgorithm(result, GraphDemoFlag::EdgeAndNode);
+                } else if (algo == "DFS") {
+                    this->_ui->consoleText->clear();
+                    auto result = GraphUtils::DFSToDemo(this->_graph, source_name);
+                    emit startDemoAlgorithm(result, GraphDemoFlag::EdgeAndNode);
+                } else if (algo == "Prim") {
+                    this->_ui->consoleText->clear();
+                    auto result = GraphUtils::Prim(this->_graph, source_name);
+                    emit startDemoAlgorithm(result, GraphDemoFlag::EdgeAndNode);
 
-        } else if (algo == "Find path") {
-            bool ok;
-            QString goal = QInputDialog::getText(this, "Find shortest path", "To node: ", QLineEdit::Normal, QString(),
-                                                 &ok);
-            if (ok) {
-                if (goal.isNull())
-                    return;
-                auto target = this->_graph->node(goal.toStdString());
-                if (!this->_graph->hasNode(target)) {
-                    QMessageBox::critical(this, "Error", tr("No node named ") + goal);
-                    return;
+                } else if (algo == "Dijkstra") {
+                    bool ok;
+                    QStringList items;
+                    for (auto node: _graph->nodeList())
+                        items.append(QString::fromStdString(node->name()));
+                    auto goal = QInputDialog::getItem(this, "Source node:", "Name", items, 0, false, &ok);
+                    if (ok) {
+                        if (goal.isNull())
+                            return;
+                        auto target = this->_graph->node(goal.toStdString());
+                        if (!this->_graph->hasNode(target)) {
+                            QMessageBox::critical(this, "Error", tr("No node named ") + goal);
+                            return;
+                        }
+                        this->_ui->consoleText->clear();
+                        auto result = GraphUtils::Dijkstra(this->_graph, source_name, target->name());
+                        emit startDemoAlgorithm(result, GraphDemoFlag::EdgeAndNode);
+                    }
+                } else if (algo == "A-star") {
+                    bool ok;
+                    QStringList items;
+                    for (auto node: _graph->nodeList())
+                        items.append(QString::fromStdString(node->name()));
+                    auto goal = QInputDialog::getItem(this, "Source node:", "Name", items, 0, false, &ok);
+                    if (ok) {
+                        if (goal.isNull())
+                            return;
+                        auto target = this->_graph->node(goal.toStdString());
+                        if (!this->_graph->hasNode(target)) {
+                            QMessageBox::critical(this, "Error", tr("No node named ") + goal);
+                            return;
+                        }
+                        this->_ui->consoleText->clear();
+                        auto result = GraphUtils::AStar(this->_graph, source_name, target->name());
+                        emit startDemoAlgorithm(result, GraphDemoFlag::EdgeAndNode);
+                    }
                 }
-                this->_ui->consoleText->clear();
-                auto result = GraphUtils::Dijkstra(this->_graph, source_name, target->name());
-                emit startDemoAlgorithm(result, GraphDemoFlag::EdgeAndNode);
-            }
-        }
-    });
-    connect(_view, &GraphGraphicsView::nodeEdited, this, [this](const std::string& node_name) {
+            });
+    connect(_view, &GraphGraphicsView::nodeEdited, this, [this](const std::string &node_name) {
         bool ok;
         QRegExp re("[a-zA-Z0-9]{1,30}");
-        auto new_name = QInputDialog::getText(this, "Rename node", "Name: ", QLineEdit::Normal, QString::fromStdString(_graph->nextNodeName()), &ok);
+        auto new_name = QInputDialog::getText(this, "Rename node", "Name: ", QLineEdit::Normal,
+                                              QString::fromStdString(_graph->nextNodeName()), &ok);
         if (ok) {
             if (!re.exactMatch(new_name)) {
                 QMessageBox::critical(this, "Error",
@@ -150,7 +185,8 @@ MainWindow::MainWindow(QWidget *parent) :
         }
     });
 
-    _ui->matrixLayout->addWidget(this->_matrix, 0, Qt::AlignCenter);
+    _ui->adjMatLayout->addWidget(this->_adjMatrix, 0, Qt::AlignCenter);
+    _ui->incMatLayout->addWidget(this->_incidenceMatrix, 0, Qt::AlignCenter);
     auto gLabel = new QLabel(this);
     gLabel->setText("Graph properties");
     _ui->propertiesLayout->addWidget(gLabel);
@@ -170,7 +206,8 @@ void MainWindow::resetGraph(Graph *graph) {
     delete this->_graph;
     this->_graph = graph;
     this->_scene->setGraph(_graph);
-    this->_matrix->setGraph(_graph);
+    this->_adjMatrix->setGraph(_graph);
+    this->_incidenceMatrix->setGraph(_graph);
     this->_elementPropertiesTable->setGraph(_graph);
     this->_graphPropertiesTable->setGraph(_graph);
     _ui->coloringBtn->setVisible(_graph->isUndirected());
@@ -180,9 +217,11 @@ void MainWindow::resetGraph(Graph *graph) {
     _ui->weaklyConnectedBtn->setVisible(_graph->isDirected());
     _ui->actionFind_weakly_connected_components->setVisible(_graph->isDirected());
     _ui->connectedComponentsBtn->setText(_graph->isDirected() ?
-        "Find strongly connected components"
-        : "Find connected components");
-    _ui->actionFind_connected_components->setVisible(_ui->connectedComponentsBtn->isVisible());
+                                         "Find strongly connected components"
+                                                              : "Find connected components");
+    _ui->actionFind_connected_components->setText(_graph->isDirected() ?
+                                                  "Find strongly connected components"
+                                                                       : "Find connected components");
 }
 
 void MainWindow::initWorkspace(const QString &filename, bool new_file) {
@@ -276,7 +315,8 @@ QString MainWindow::showSaveFileDialog() {
 void MainWindow::showNewNodeDialog(QPointF pos) {
     bool ok;
     QRegExp re("[a-zA-Z0-9]{1,3}");
-    QString newNodeName = QInputDialog::getText(this, "Add new node", "Name: ", QLineEdit::Normal, QString::fromStdString(_graph->nextNodeName()), &ok);
+    QString newNodeName = QInputDialog::getText(this, "Add new node", "Name: ", QLineEdit::Normal,
+                                                QString::fromStdString(_graph->nextNodeName()), &ok);
     if (ok) {
         if (!re.exactMatch(newNodeName)) {
             QMessageBox::critical(this, "Error", tr("Node's name contains only alphabetical or numeric characters\n")
@@ -289,7 +329,7 @@ void MainWindow::showNewNodeDialog(QPointF pos) {
         if (!succeeded)
             QMessageBox::critical(this, "Error", "This name has been used by another node");
         else
-            emit graphChanged();
+                emit graphChanged();
     }
 }
 
@@ -371,7 +411,7 @@ void MainWindow::on_actionAddEdge_triggered() {
     labelText.push_back("From node: ");
     labelText.push_back("To node: ");
     labelText.push_back("Weight: ");
-    QList<QString> list = InputDialog::getStrings(this, "Add new edge", labelText, &ok);
+    QList<QString> list = MultiLineInputDialog::getStrings(this, "Add new edge", labelText, &ok);
     QRegExp re("\\d*");
     if (ok && !list.empty() && re.exactMatch(list[2])) {
         bool succeeded = _graph->setEdge(list[0].toStdString(), list[1].toStdString(), list[2].toInt());
@@ -388,7 +428,7 @@ void MainWindow::on_actionEditEdge_triggered() {
     labelText.push_back("From node: ");
     labelText.push_back("To node: ");
     labelText.push_back("Weight: ");
-    QList<QString> list = InputDialog::getStrings(this, "Edit edge", labelText, &ok);
+    QList<QString> list = MultiLineInputDialog::getStrings(this, "Edit edge", labelText, &ok);
     QRegExp re("\\d*");
     if (ok && !list.empty() && re.exactMatch(list[2])) {
         if (_graph->hasEdge(list[0].toStdString(), list[1].toStdString())) {
@@ -419,7 +459,7 @@ void MainWindow::on_actionDelEdge_triggered() {
     QList<QString> labelText;
     labelText.push_back("From node: ");
     labelText.push_back("To node: ");
-    QList<QString> list = InputDialog::getStrings(this, "Delete edge", labelText, &ok);
+    QList<QString> list = MultiLineInputDialog::getStrings(this, "Delete edge", labelText, &ok);
     if (ok && !list.empty()) {
         bool succeeded = _graph->removeEdge(list[0].toStdString(), list[1].toStdString());
         if (succeeded)
@@ -465,28 +505,67 @@ void MainWindow::on_connectedComponentsBtn_clicked() {
     emit startDemoAlgorithm(result, GraphDemoFlag::Component);
 }
 
-void MainWindow::on_shortestPathBtn_clicked() {
+void MainWindow::on_dijkstraBtn_clicked() {
     _ui->consoleText->clear();
     QDebugStream qout(std::cout, _ui->consoleText);
     bool ok{};
-    QList<QString> labels;
-    labels.append("From node: ");
-    labels.append("To node: ");
-    QList<QString> reply = InputDialog::getStrings(this, "Find shortest path", labels, &ok);
+    QStringList labels;
+    labels << "From node: " << "To node: ";
+    QList<QStringList> itemLists;
+    QStringList items;
+    for (auto node: _graph->nodeList())
+        items << QString::fromStdString(node->name());
+    itemLists << items << items;
+    QList<QString> replies = MultiComboboxDialog::getItems(this, "Dijkstra", labels, itemLists, &ok);
     if (ok) {
-        if (reply[0].trimmed().isNull() || reply[1].trimmed().isNull())
+        replies[0] = replies[0].trimmed();
+        replies[1] = replies[1].trimmed();
+        if (replies[0].isNull() || replies[1].isNull() || replies[0] == replies[1])
             return;
-        auto startNode = _graph->node(reply[0].toStdString());
-        auto endNode = _graph->node(reply[1].toStdString());
+        auto startNode = _graph->node(replies[0].toStdString());
+        auto endNode = _graph->node(replies[1].toStdString());
         if (!_graph->hasNode(startNode)) {
-            QMessageBox::critical(this, "Error", tr("No node named ") + reply[0]);
+            QMessageBox::critical(this, "Error", tr("No node named ") + replies[0]);
             return;
         }
         if (!_graph->hasNode(endNode)) {
-            QMessageBox::critical(this, "Error", tr("No node named ") + reply[1]);
+            QMessageBox::critical(this, "Error", tr("No node named ") + replies[1]);
             return;
         }
         auto result = GraphUtils::Dijkstra(_graph, startNode->name(), endNode->name());
+        emit startDemoAlgorithm(result, GraphDemoFlag::EdgeAndNode);
+    }
+}
+
+
+void MainWindow::on_aStarBtn_clicked() {
+    _ui->consoleText->clear();
+    QDebugStream qout(std::cout, _ui->consoleText);
+    bool ok{};
+    QStringList labels;
+    labels << "From node: " << "To node: ";
+    QList<QStringList> itemLists;
+    QStringList items;
+    for (auto node: _graph->nodeList())
+        items << QString::fromStdString(node->name());
+    itemLists << items << items;
+    QList<QString> replies = MultiComboboxDialog::getItems(this, "Dijkstra", labels, itemLists, &ok);
+    if (ok) {
+        replies[0] = replies[0].trimmed();
+        replies[1] = replies[1].trimmed();
+        if (replies[0].isNull() || replies[1].isNull() || replies[0] == replies[1])
+            return;
+        auto startNode = _graph->node(replies[0].toStdString());
+        auto endNode = _graph->node(replies[1].toStdString());
+        if (!_graph->hasNode(startNode)) {
+            QMessageBox::critical(this, "Error", tr("No node named ") + replies[0]);
+            return;
+        }
+        if (!_graph->hasNode(endNode)) {
+            QMessageBox::critical(this, "Error", tr("No node named ") + replies[1]);
+            return;
+        }
+        auto result = GraphUtils::AStar(_graph, startNode->name(), endNode->name());
         emit startDemoAlgorithm(result, GraphDemoFlag::EdgeAndNode);
     }
 }
@@ -502,7 +581,10 @@ void MainWindow::on_topoSortBtn_clicked() {
 void MainWindow::on_BFSbtn_clicked() {
     _ui->consoleText->clear();
     bool ok{};
-    QString source_str = QInputDialog::getText(this, "Source node", "Name: ", QLineEdit::Normal, QString(), &ok);
+    QStringList items;
+    for (auto node: _graph->nodeList())
+        items.append(QString::fromStdString(node->name()));
+    auto source_str = QInputDialog::getItem(this, "Source node:", "Name", items, 0, false, &ok);
     if (ok) {
         if (source_str.isNull())
             return;
@@ -520,7 +602,10 @@ void MainWindow::on_BFSbtn_clicked() {
 void MainWindow::on_DFSbtn_clicked() {
     _ui->consoleText->clear();
     bool ok{};
-    QString source_str = QInputDialog::getText(this, "Source node", "Name: ", QLineEdit::Normal, QString(), &ok);
+    QStringList items;
+    for (auto node: _graph->nodeList())
+        items.append(QString::fromStdString(node->name()));
+    auto source_str = QInputDialog::getItem(this, "Source node:", "Name", items, 0, false, &ok);
     if (ok) {
         if (source_str.isNull())
             return;
@@ -580,8 +665,12 @@ void MainWindow::on_actionHamiltonian_Cycle_triggered() {
     on_HamiltonBtn_clicked();
 }
 
-void MainWindow::on_actionFind_shortest_path_triggered() {
-    on_shortestPathBtn_clicked();
+void MainWindow::on_actionDijkstra_triggered() {
+    on_dijkstraBtn_clicked();
+}
+
+void MainWindow::on_actionA_star_triggered() {
+    on_aStarBtn_clicked();
 }
 
 void MainWindow::on_actionFind_all_bridges_triggered() {
@@ -602,5 +691,9 @@ void MainWindow::on_actionFInd_minimum_spanning_tree_triggered() {
 
 void MainWindow::on_actionFind_weakly_connected_components_triggered() {
     on_weaklyConnectedBtn_clicked();
+}
+
+void MainWindow::on_tabWidget_currentChanged(int index) {
+    _elementPropertiesTable->onUnSelected();
 }
 

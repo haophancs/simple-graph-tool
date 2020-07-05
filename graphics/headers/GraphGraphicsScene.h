@@ -32,9 +32,15 @@ public slots:
 
     void reload();
 
-    void demoAlgorithm(const std::list<std::pair<std::string, std::string>>& listOfPairToDemo, GraphDemoFlag flag);
+    void setInterval(int interval) {
+        this->_interval = interval;
+        if (_uniqueTimer)
+            this->_uniqueTimer->setInterval(interval);
+    }
 
-   void demoAlgorithm(const std::list<std::string> &listOfNodeToDemo, GraphDemoFlag flag);
+    void demoAlgorithm(const std::list<std::pair<std::string, std::string>> &listOfPairToDemo, GraphDemoFlag flag);
+
+    void demoAlgorithm(const std::list<std::string> &listOfNodeToDemo, GraphDemoFlag flag);
 
     void demoAlgorithm(const std::list<std::list<std::string>> &listOfListToDemo, GraphDemoFlag flag);
 
@@ -52,13 +58,15 @@ private:
     std::unordered_map<std::string, NodeGraphicsItem *> _nodeItems;
     std::unordered_map<std::pair<std::string, std::string>, EdgeGraphicsItem *> _edgeItems;
 
-    EdgeGraphicsItem *edgeItem(const std::string& uname, const std::string& vname);
+    EdgeGraphicsItem *edgeItem(const std::string &uname, const std::string &vname);
+
     NodeGraphicsItem *nodeItem(const std::string &name);
 
     std::unique_ptr<QTimer> _uniqueTimer;
     std::list<std::string> _listOfNode;
     std::list<std::list<std::string>> _listOfList;
     std::list<std::pair<std::string, std::string>> _listOfPair;
+    int _interval;
 
     void resetAfterDemoAlgo();
 };

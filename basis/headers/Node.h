@@ -47,6 +47,8 @@ namespace GraphType {
 
         int undirDegree() const { return this->_deg; }
 
+        int dirDegree() const { return this->_degPos + this->_degNeg; }
+
         QPointF euclidePos() const { return this->_euclidePos; }
 
         void setEuclidePos(const QPointF &pos) { this->_euclidePos = pos; }
@@ -55,6 +57,9 @@ namespace GraphType {
 
         bool operator==(const Node &other) const { return (this->_name == other._name); }
 
+        bool operator<(const Node &other) const { return (this->_name < other._name); }
+
+        bool operator>(const Node &other) const { return (this->_name > other._name); }
     };
 }
 

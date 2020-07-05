@@ -1,11 +1,12 @@
-#include "widgets/headers/InputDialog.h"
+#include "widgets/headers/MultiLineInputDialog.h"
 
 #include <QLabel>
 #include <QLineEdit>
 #include <QDialogButtonBox>
 #include <QFormLayout>
 
-InputDialog::InputDialog(QWidget *parent, const QString &title, const QList<QString>& labelText) : QDialog(parent) {
+MultiLineInputDialog::MultiLineInputDialog(QWidget *parent, const QString &title, const QList<QString> &labelText)
+        : QDialog(parent) {
     auto *lytMain = new QFormLayout(this);
     setWindowTitle(title);
     for (auto &i : labelText) {
@@ -19,17 +20,18 @@ InputDialog::InputDialog(QWidget *parent, const QString &title, const QList<QStr
              Qt::Horizontal, this);
     lytMain->addWidget(buttonBox);
     bool conn = connect(buttonBox, &QDialogButtonBox::accepted,
-                        this, &InputDialog::accept);
+                        this, &MultiLineInputDialog::accept);
     Q_ASSERT(conn);
     conn = connect(buttonBox, &QDialogButtonBox::rejected,
-                   this, &InputDialog::reject);
+                   this, &MultiLineInputDialog::reject);
     Q_ASSERT(conn);
 
     setLayout(lytMain);
 }
 
-QStringList InputDialog::getStrings(QWidget *parent, const QString& title, const QList<QString>& labelText, bool *ok) {
-    auto *dialog = new InputDialog(parent, title, labelText);
+QStringList
+MultiLineInputDialog::getStrings(QWidget *parent, const QString &title, const QList<QString> &labelText, bool *ok) {
+    auto *dialog = new MultiLineInputDialog(parent, title, labelText);
     QStringList list;
     const int ret = dialog->exec();
     if (ok)

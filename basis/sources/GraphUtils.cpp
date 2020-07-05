@@ -3,6 +3,7 @@
 #include <utility>
 #include <QString>
 #include <QDebug>
+
 std::list<std::pair<std::string, std::string>> GraphUtils::BFSToDemo(const Graph *graph, const std::string &source) {
     std::list<std::pair<std::string, std::string>> result;
     if (!graph->hasNode(source)) return result;
@@ -32,6 +33,7 @@ std::list<std::pair<std::string, std::string>> GraphUtils::BFSToDemo(const Graph
     std::cout << "\n";
     return result;
 }
+
 std::list<std::pair<std::string, std::string>> GraphUtils::DFSToDemo(const Graph *graph, const std::string &source) {
     std::list<std::pair<std::string, std::string>> result;
     if (!graph->hasNode(source)) return result;
@@ -106,7 +108,7 @@ void UndirectedDFSUtil(const Graph *graph, const std::string &vname, std::unorde
     }
 }
 
-int DFSCount(const Graph &graph, const std::string& uname, std::unordered_map<std::string, bool> &visited) {
+int DFSCount(const Graph &graph, const std::string &uname, std::unordered_map<std::string, bool> &visited) {
     visited[uname] = true;
     int count = 1;
     for (auto v: graph.nodeList())
@@ -158,7 +160,6 @@ bool GraphUtils::isAllWeaklyConnected(const Graph *graph) {
     while (!q.empty()) {
         auto vname = q.front();
         q.pop();
-
         for (auto &adj: nodes) {
             if ((graph->hasEdge(vname, adj->name()) || graph->hasEdge(adj->name(), vname)) &&
                 !visited[adj->name()]) {
@@ -206,7 +207,7 @@ std::list<std::string> GraphUtils::Dijkstra(const Graph *graph, const std::strin
         }
     }
     std::list<std::string> path;
-    std::cout << "Shortest path from " << start << " to " << goal << ": ";
+    std::cout << "Dijkstra: shortest path from " << start << " to " << goal << ": ";
     if (dist[goal] == INT_MAX) {
         std::cout << " not found!\n";
         return path;
@@ -222,6 +223,58 @@ std::list<std::string> GraphUtils::Dijkstra(const Graph *graph, const std::strin
     return path;
 }
 
+#include <cmath>
+
+int euclideanDist(QPointF p1, QPointF p2) {
+    return (int) std::sqrt(std::pow(p1.x() - p2.x(), 2) +
+                           std::pow(p1.y() - p2.y(), 2));
+}
+
+std::list<std::string> GraphUtils::AStar(const Graph *graph, std::string start, std::string goal) {
+    if (!graph->hasNode(start) || !graph->hasNode(goal))
+        return std::list<std::string>();
+    auto nodes = graph->nodeList();
+    std::unordered_map<std::string, int> dist;
+    std::unordered_map<std::string, int> cost;
+    for (auto &node: nodes) {
+        dist[node->name()] = INT_MAX;
+        cost[node->name()] = INT_MAX;
+    }
+
+    std::unordered_map<std::string, bool> sptSet;
+    std::unordered_map<std::string, std::string> parent;
+    dist[start] = 0;
+    cost[start] = 0;
+    for (int count = 0; count < graph->countNodes() - 1; count++) {
+        auto uname = minDistance(dist, sptSet);
+        sptSet[uname] = true;
+        for (auto &v: nodes) {
+            double h = graph->weight(uname, v->name()) +
+                       euclideanDist(graph->node(v->name())->euclidePos(), graph->node(goal)->euclidePos());
+            if (!sptSet[v->name()] && graph->hasEdge(uname, v->name()) && dist[uname] != INT_MAX &&
+                dist[uname] + h < dist[v->name()]) {
+                dist[v->name()] = dist[uname] + h;
+                cost[v->name()] = cost[uname] + graph->weight(uname, v->name());
+                parent[v->name()] = uname;
+            }
+        }
+    }
+    std::list<std::string> path;
+    std::cout << "A-star: Shortest path from " << start << " to " << goal << ": ";
+    if (cost[goal] == INT_MAX) {
+        std::cout << " not found!\n";
+        return path;
+    }
+    auto curr = goal;
+    while (!curr.empty()) {
+        path.push_front(curr);
+        curr = parent[curr];
+    }
+    for (auto &nodeName: path)
+        std::cout << nodeName << " ";
+    std::cout << " ------------ cost = " << cost[goal];
+    return path;
+}
 
 std::string minKey(std::unordered_map<std::string, int> &key, std::unordered_map<std::string, bool> &mstSet) {
     int min = INT_MAX;
@@ -234,7 +287,9 @@ std::string minKey(std::unordered_map<std::string, int> &key, std::unordered_map
     }
     return min_index;
 }
-std::list<std::pair<std::string, std::string>> PrimUtil(const Graph *graph, const std::string& source, bool &full) {
+
+std::list<std::pair<std::string, std::string>>
+PrimUtil(const Graph *graph, const std::string &source, bool &full, int &cost) {
     std::list<std::pair<std::string, std::string>> result;
     if (!graph->hasNode(source)) return result;
     std::unordered_map<std::string, std::string> parent;
@@ -246,6 +301,7 @@ std::list<std::pair<std::string, std::string>> PrimUtil(const Graph *graph, cons
 
     key[source] = 0;
     parent[source] = "";
+    cost = 0;
     for (int count = 0; count < graph->countNodes(); count++) {
         auto u = minKey(key, mstSet);
         mstSet[u] = true;
@@ -256,16 +312,8 @@ std::list<std::pair<std::string, std::string>> PrimUtil(const Graph *graph, cons
                 && graph->weight(u, v) < key[v]) {
                 key[v] = graph->weight(u, v);
                 parent[v] = u;
-            }
-        }
-    }
-    int cost = 0;
-
-    for (auto &node: nodes) {
-        if (node->name() != source) {
-            if (graph->hasEdge(parent[node->name()], node->name())) {
-                result.emplace_back(std::make_pair(parent[node->name()], node->name()));
-                cost += graph->weight(parent[node->name()], node->name());
+                result.emplace_back(std::make_pair(u, v));
+                cost += graph->weight(u, v);
             }
         }
     }
@@ -275,49 +323,54 @@ std::list<std::pair<std::string, std::string>> PrimUtil(const Graph *graph, cons
             if (node->name() != source && parent[node->name()].empty())
                 full = false;
         }
-    }
-    else {
+    } else
         full = false;
-    }
-    std::cout << "\n";
     return result;
 }
 
-void printMST(const Graph &graph, const std::list<std::pair<std::string, std::string>>& result, const std::string& source) {
-    std::cout << "Minimum panning tree (source = " << source << "): " << std::endl;
+void
+printMST(const Graph &graph, const std::list<std::pair<std::string, std::string>> &result, const std::string &source,
+         int cost) {
+    if (result.empty()) {
+        std::cout << "Not found minimum spanning tree" << (source.empty() ? " for the whole graph" : " from source = ")
+                  << source << "\n";
+        return;
+    }
+    std::cout << "Minimum spanning tree (source = " << source << "): " << std::endl;
     std::cout << "vertex \t parent \t cost:" << std::endl;
 
-    int cost = 0;
-    for (const auto& it: result) {
+    for (const auto &it: result) {
         std::cout << it.second << " \t " << it.first << " \t "
                   << graph.weight(it.first, it.second) << std::endl;
-        cost += graph.weight(it.first, it.second);
     }
-    if (!result.empty())
-        std::cout << "total cost: " << cost;
-    else
-        std::cout << "not found";
-    std::cout << "\n";
+    std::cout << "total cost: " << cost << "\n";
 }
 
-std::list<std::pair<std::string, std::string>> GraphUtils::Prim(const Graph *graph, const std::string& source) {
+std::list<std::pair<std::string, std::string>> GraphUtils::Prim(const Graph *graph, std::string source) {
+    std::list<std::pair<std::string, std::string>> result;
     const auto nodes = graph->nodeList();
     bool full{};
+    int min_cost = INT_MAX;
     if (source.empty()) {
         if (!isAllWeaklyConnected(graph)) {
             std::cout << "Minimum spanning tree: not found because the graph is not connected!";
-            return std::list<std::pair<std::string, std::string>>();
+            return result;
         }
         for (auto node: nodes) {
-            auto res = PrimUtil(graph, node->name(), full);
-            if (full) {
-                printMST(*graph, res, source);
-                return res;
+            int cost;
+            auto res = PrimUtil(graph, node->name(), full, cost);
+            if (full && cost < min_cost) {
+                result = res;
+                min_cost = cost;
+                source = node->name();
             }
         }
-        return std::list<std::pair<std::string, std::string>>();
+        printMST(*graph, result, source, min_cost);
+        return result;
     }
-    return PrimUtil(graph, source, full);
+    result = PrimUtil(graph, source, full, min_cost);
+    printMST(*graph, result, source, min_cost);
+    return result;
 }
 
 void weaklyFillOrder(const Graph *graph, const std::string &vname, std::unordered_map<std::string, bool> &visited,
@@ -494,7 +547,8 @@ std::list<std::list<std::string>> GraphUtils::displayConnectedComponents(const G
         result = connectedComponents(graph);
     else
         result = weaklyConnectedComponents(graph);
-    std::cout << "Number of " << (strong ? "strongly" : "weakly") << " connected components: " << result.size() << "\n";
+    std::cout << "Number of " << (strong ? (graph->isDirected() ? "strongly " : "") : "weakly ")
+              << "connected components: " << result.size() << "\n";
     for (const auto &ri: result) {
         for (const auto &si: ri)
             std::cout << si << " ";
@@ -545,7 +599,6 @@ std::list<std::string> GraphUtils::getHamiltonianCycle(const Graph *graph, std::
 }
 
 std::list<std::list<std::string>> GraphUtils::displayHamiltonianCycle(const Graph *graph) {
-
     std::list<std::list<std::string>> result;
     if (graph->countNodes() < 3) {
         std::cout << "Hamiltonian Cycle not found: ";
@@ -553,32 +606,24 @@ std::list<std::list<std::string>> GraphUtils::displayHamiltonianCycle(const Grap
         return result;
     }
     auto nodes = graph->nodeList();
-    for (auto &node: nodes) {
-        auto degree = graph->isUndirected() ? node->undirDegree() : node->posDegree() + node->negDegree();
-        if (degree < graph->countNodes() / 2) {
-            std::cout << "Hamiltonian Cycle not found: ";
-            std::cout << "deg(" << node->name() << ") = " << degree << " < " << graph->countNodes()
-                      << "/2\n";
-            return result;
-        }
-    }
-
     for (auto &source: nodes) {
-        std::cout << "Hamiltonian Cycle (source = " << source->name() << "): ";
         auto cycle = getHamiltonianCycle(graph, source->name());
         if (cycle.empty())
-            std::cout << "not found!";
+            continue;
         else
             result.push_back(cycle);
 
+        std::cout << "Hamiltonian Cycle (source = " << source->name() << "): ";
         for (auto &node: cycle)
             std::cout << node << " ";
         std::cout << "\n";
     }
+    if (result.empty())
+        std::cout << "Not found any Hamiltonian cycle";
     return result;
 }
 
-bool isBridge(Graph graph, const std::string& uname, const std::string& vname) {
+bool isBridge(Graph graph, const std::string &uname, const std::string &vname) {
     if (uname == vname)
         return false;
     std::unordered_map<std::string, bool> visited;
@@ -588,28 +633,51 @@ bool isBridge(Graph graph, const std::string& uname, const std::string& vname) {
     return count1 <= count2;
 }
 
-void undirEulerUtil(Graph &graph, const std::string& uname, std::list<std::string> &result) {
-    for (auto v: graph.nodeList()) {
-        if (graph.hasEdge(uname, v->name())) {
-            if ((graph.node(uname)->undirDegree() == 1)
-            || (graph.node(uname)->undirDegree() > 1 && !isBridge(graph, uname, v->name()))) {
-                result.emplace_back(uname);
-                result.emplace_back(v->name());
-                graph.removeEdge(uname, v->name());
-                undirEulerUtil(graph, v->name(), result);
+std::list<std::string> GraphUtils::Hierholzer(Graph &graph, std::string source) {
+    std::list<std::string> result;
+    std::stack<std::string> curr_path;
+    std::vector<std::string> cycle;
+    auto curr_node = source;
+    curr_path.push(source);
+    while (!curr_path.empty()) {
+        int degree = graph.isDirected() ? graph.node(curr_node)->negDegree() : graph.node(curr_node)->undirDegree();
+        if (degree) {
+            curr_path.push(curr_node);
+            std::string next_node;
+            for (auto v: graph.nodeList()) {
+                if (graph.hasEdge(curr_node, v->name())) {
+                    next_node = v->name();
+                    break;
+                }
             }
+            graph.removeEdge(curr_node, next_node);
+            curr_node = next_node;
+        }
+        else {
+            cycle.push_back(curr_node);
+            curr_node = curr_path.top();
+            curr_path.pop();
         }
     }
-}
-
-std::list<std::string> GraphUtils::getUndirEulerianCircuit(const Graph *_graph, const std::string& source) {
-    std::list<std::string> result;
-    Graph graph = *_graph;
-    undirEulerUtil(graph, source, result);
+    for (int i = cycle.size() - 1; i >= 0; --i)
+        result.push_back(cycle[i]);
     return result;
 }
+
+std::list<std::string> GraphUtils::getEulerianCircuit(const Graph *_graph, std::string source) {
+    std::list<std::string> result;
+    Graph graph(*_graph);
+    if (source.empty())
+        source = graph.nodeList().front()->name();
+    if (!graph.hasNode(source))
+        return result;
+
+    result = Hierholzer(graph, source);
+    return result;
+}
+
 std::list<std::list<std::string>>
-        GraphUtils::displayEulerianCircuit(const Graph *graph) {
+GraphUtils::displayEulerianCircuit(const Graph *graph) {
     std::list<std::list<std::string>> result;
     if (graph->isDirected()) {
         if (!isAllStronglyConnected(graph)) {
@@ -625,17 +693,13 @@ std::list<std::list<std::string>>
     }
 
     for (auto &node: graph->nodeList()) {
-        if (node->undirDegree() % 2 == 0)
-            continue;
-        auto cycle = getUndirEulerianCircuit(graph, node->name());
+        auto cycle = getEulerianCircuit(graph, node->name());
         std::cout << "Euler Circuit (source = " << node->name() << "): ";
         if (cycle.empty())
             std::cout << "not found!\n";
         else {
             result.emplace_back(cycle);
-            while (cycle.size() > 1) {
-                std::cout << cycle.front() << "-";
-                cycle.pop_front();
+            while (!cycle.empty()) {
                 std::cout << cycle.front() << " ";
                 cycle.pop_front();
             }
@@ -678,7 +742,7 @@ bool GraphUtils::isCycle(const Graph *graph) {
 }
 
 std::list<std::string> GraphUtils::getTopoSortResult(const Graph *graph) {
-    if (! (graph->isDirected() && isCycle(graph))) {
+    if (!(graph->isDirected() && isCycle(graph))) {
         std::cout << "The graph is not DAG\n";
         return std::list<std::string>();
     }
@@ -768,7 +832,7 @@ std::list<std::pair<std::string, std::string>> GraphUtils::displayColoring(const
     return resultToSent;
 }
 
-std::list<std::pair<std::string, std::string>> GraphUtils::usualST(const Graph *graph, const std::string& source) {
+std::list<std::pair<std::string, std::string>> GraphUtils::usualST(const Graph *graph, const std::string &source) {
     std::list<std::pair<std::string, std::string>> result;
     std::unordered_map<std::string, bool> visited;
     std::list<std::string> steps;

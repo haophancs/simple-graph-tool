@@ -21,6 +21,7 @@ namespace GraphType {
     typedef std::unordered_map<NodePair, int> EdgeSet;
 
     struct Edge {
+
         Edge(NodePair &pair, int &w) : _nodePair(pair), _weight(w) {}
 
         explicit Edge(EdgeSet::iterator &it) : _nodePair(it->first), _weight(it->second) {}
@@ -36,8 +37,8 @@ namespace GraphType {
         friend class Graph;
 
     private:
-        const NodePair &_nodePair;
-        const int &_weight;
+        const NodePair &_nodePair{};
+        const int &_weight{};
     };
 }
 #endif

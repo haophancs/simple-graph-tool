@@ -50,6 +50,7 @@ public:
     QColor onSelectedColor() const { return this->_onSelectedColor; }
 
 public slots:
+
     void updatePosition();
 
 protected:

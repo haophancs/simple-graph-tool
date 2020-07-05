@@ -240,7 +240,7 @@
           </property>
           <widget class="QWidget" name="tabVisualization">
            <attribute name="title">
-            <string>Visual View</string>
+            <string>Visualization</string>
            </attribute>
            <layout class="QHBoxLayout" name="horizontalLayout_2">
             <item>
@@ -248,17 +248,27 @@
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="tabMatrix">
+          <widget class="QWidget" name="tabAdjMat">
            <attribute name="title">
-            <string>Matrix View</string>
+            <string>Adjency Matrix</string>
            </attribute>
            <layout class="QVBoxLayout" name="verticalLayout_3">
             <item>
-             <layout class="QVBoxLayout" name="matrixLayout">
+             <layout class="QVBoxLayout" name="adjMatLayout">
               <property name="spacing">
                <number>0</number>
               </property>
              </layout>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tabIncMat">
+           <attribute name="title">
+            <string>Incidence Matrix</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_5">
+            <item>
+             <layout class="QVBoxLayout" name="incMatLayout"/>
             </item>
            </layout>
           </widget>
@@ -273,7 +283,7 @@
           <property name="minimumSize">
            <size>
             <width>0</width>
-            <height>200</height>
+            <height>240</height>
            </size>
           </property>
           <property name="maximumSize">
@@ -327,52 +337,58 @@
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="algorithmsLabel">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
+           <layout class="QVBoxLayout" name="verticalLayout_4">
+            <property name="topMargin">
+             <number>6</number>
             </property>
-            <property name="text">
-             <string>Algorithms</string>
+            <property name="bottomMargin">
+             <number>3</number>
             </property>
-           </widget>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_4">
             <item>
-             <widget class="QPushButton" name="BFSbtn">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
+             <widget class="QLabel" name="label">
               <property name="text">
-               <string>BFS</string>
+               <string>Animation interval</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="DFSbtn">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
+             <widget class="QSlider" name="horizontalSlider">
+              <property name="minimum">
+               <number>10</number>
               </property>
-              <property name="text">
-               <string>DFS</string>
+              <property name="maximum">
+               <number>600</number>
+              </property>
+              <property name="sliderPosition">
+               <number>300</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
               </property>
              </widget>
             </item>
            </layout>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <widget class="Line" name="line">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout_6">
+            <property name="topMargin">
+             <number>6</number>
+            </property>
             <item>
-             <widget class="QPushButton" name="EulerBtn">
+             <widget class="QLabel" name="algorithmsLabel">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                 <horstretch>0</horstretch>
@@ -380,12 +396,102 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Euler</string>
+               <string>Algorithms</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="HamiltonBtn">
+             <layout class="QHBoxLayout" name="horizontalLayout_4">
+              <item>
+               <widget class="QPushButton" name="BFSbtn">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>BFS</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="DFSbtn">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>DFS</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_5">
+              <item>
+               <widget class="QPushButton" name="EulerBtn">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>Euler</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="HamiltonBtn">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>Hamiltonian</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_6">
+              <item>
+               <widget class="QPushButton" name="aStarBtn">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>A-star</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="dijkstraBtn">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>Dijkstra</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <widget class="QPushButton" name="coloringBtn">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                 <horstretch>0</horstretch>
@@ -393,115 +499,89 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Hamiltonian</string>
+               <string>Coloring</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="topoSortBtn">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Topo sorting</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="bridgesBtn">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Find all bridges</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="articulationNodeBtn">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Find all articulation nodes</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="spanningTreeBtn">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Find minimum spanning tree</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="connectedComponentsBtn">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Find strongly connected components</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="weaklyConnectedBtn">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Find weakly connected components</string>
               </property>
              </widget>
             </item>
            </layout>
-          </item>
-          <item>
-           <widget class="QPushButton" name="coloringBtn">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>Coloring</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="topoSortBtn">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>Topo sorting</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="bridgesBtn">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>Find all bridges</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="shortestPathBtn">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string> Find shortest path</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="articulationNodeBtn">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>Find all Articulation nodes</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="spanningTreeBtn">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>Find minimum spanning tree</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="weaklyConnectedBtn">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>Find weakly connected components</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="connectedComponentsBtn">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>Find strongly connected components</string>
-            </property>
-           </widget>
           </item>
           <item>
            <spacer name="verticalSpacer_10">
@@ -604,13 +684,15 @@
     <addaction name="actionBFS"/>
     <addaction name="actionDFS"/>
     <addaction name="separator"/>
+    <addaction name="actionA_star"/>
+    <addaction name="actionDijkstra"/>
+    <addaction name="separator"/>
     <addaction name="actionColoring"/>
     <addaction name="actionTopo_Sorting"/>
     <addaction name="separator"/>
     <addaction name="actionEuler_Cycle"/>
     <addaction name="actionHamiltonian_Cycle"/>
     <addaction name="separator"/>
-    <addaction name="actionFind_shortest_path"/>
     <addaction name="actionFind_all_bridges"/>
     <addaction name="actionFind_all_Articulation_nodes"/>
     <addaction name="actionFInd_minimum_spanning_tree"/>
@@ -719,9 +801,9 @@
     <string>&amp;Hamiltonian Cycle</string>
    </property>
   </action>
-  <action name="actionFind_shortest_path">
+  <action name="actionDijkstra">
    <property name="text">
-    <string>Find shortest path</string>
+    <string>Dijkstra</string>
    </property>
   </action>
   <action name="actionFind_all_bridges">
@@ -747,6 +829,11 @@
   <action name="actionFind_weakly_connected_components">
    <property name="text">
     <string>Find weakly connected components</string>
+   </property>
+  </action>
+  <action name="actionA_star">
+   <property name="text">
+    <string>A-star</string>
    </property>
   </action>
  </widget>

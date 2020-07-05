@@ -1,8 +1,8 @@
-#include "widgets/headers/GraphMatrixTable.h"
+#include "widgets/headers/AdjacencyMatrixTable.h"
 #include <QMessageBox>
 #include <QDebug>
 
-void GraphMatrixTable::defaultSetting() {
+void AdjacencyMatrixTable::defaultSetting() {
 
     this->horizontalHeader()->setMinimumSectionSize(this->_sectionSize);
     this->horizontalHeader()->setDefaultSectionSize(this->_sectionSize);
@@ -14,18 +14,18 @@ void GraphMatrixTable::defaultSetting() {
     this->setSizeAdjustPolicy(QTableWidget::AdjustToContents);
 }
 
-void GraphMatrixTable::setGraph(GraphType::Graph *graph) {
+void AdjacencyMatrixTable::setGraph(GraphType::Graph *graph) {
 
     this->_graph = graph;
     if (graph == nullptr) return;
     reload();
 }
 
-GraphType::Graph *GraphMatrixTable::graph() const {
+GraphType::Graph *AdjacencyMatrixTable::graph() const {
     return this->_graph;
 }
 
-void GraphMatrixTable::adjustCell(int row, int column) {
+void AdjacencyMatrixTable::adjustCell(int row, int column) {
 
     bool out_of_range = false;
     std::string _strInvalidVal = _graph->invalidValue() != INT_MAX ? std::to_string(_graph->invalidValue()) : "inf";
@@ -38,7 +38,7 @@ void GraphMatrixTable::adjustCell(int row, int column) {
     bool is_invalid_value = data == QString::fromStdString(_strInvalidVal);
 
     if (re.exactMatch(data)) {
-        if (data == QString::number(_adj->weight(row, column))) return;
+        if (data == QString::number(_adj->value(row, column))) return;
         out_of_range = (data.toLongLong() < _graph->weightRange().first ||
                         data.toLongLong() > _graph->weightRange().second);
     } else if (data != QString::fromStdString(_strInvalidVal))
@@ -58,8 +58,8 @@ void GraphMatrixTable::adjustCell(int row, int column) {
         msgWarning.setWindowTitle("Error");
         msgWarning.exec();
         this->item(row, column)->setText(
-                (_adj->weight(row, column) != INT_MAX) ?
-                QString::number(_adj->weight(row, column)) : "inf");
+                (_adj->value(row, column) != INT_MAX) ?
+                QString::number(_adj->value(row, column)) : "inf");
     } else {
         if (is_invalid_value)
             _graph->removeEdge(_adj->node(row), _adj->node(column));
@@ -71,8 +71,8 @@ void GraphMatrixTable::adjustCell(int row, int column) {
             if (_graph->isUndirected()) {
                 auto old_item = this->item(column, row);
                 auto new_item = new QTableWidgetItem(*old_item);
-                new_item->setText((_adj->weight(column, row) != INT_MAX) ?
-                                  QString::number(_adj->weight(column, row)) : "inf");
+                new_item->setText((_adj->value(column, row) != INT_MAX) ?
+                                  QString::number(_adj->value(column, row)) : "inf");
                 this->removeCellWidget(column, row);
                 this->setItem(column, row, new_item);
             }
@@ -81,7 +81,7 @@ void GraphMatrixTable::adjustCell(int row, int column) {
     }
 }
 
-GraphMatrixTable::GraphMatrixTable(GraphType::Graph *graph, int sectionSize) : _sectionSize(sectionSize) {
+AdjacencyMatrixTable::AdjacencyMatrixTable(GraphType::Graph *graph, int sectionSize) : _sectionSize(sectionSize) {
     defaultSetting();
     setGraph(graph);
 
@@ -90,14 +90,14 @@ GraphMatrixTable::GraphMatrixTable(GraphType::Graph *graph, int sectionSize) : _
         for (QTableWidgetItem *item : this->selectedItems())
             adjustCell(item->row(), item->column());
     });
-    connect(this, &GraphMatrixTable::currentCellChanged, this, [this](int row, int col) {
-        if (row >= 0 && col >= 0 && row < _adj->nodes().size() && col < _adj->nodes().size()) {
+    connect(this, &AdjacencyMatrixTable::currentCellChanged, this, [this](int row, int col) {
+        if (row >= 0 && col >= 0 && row < rowCount() && col < columnCount()) {
             emit edgeSelected(_adj->node(row)->name(), _adj->node(col)->name());
         }
     });
 }
 
-void GraphMatrixTable::reload() {
+void AdjacencyMatrixTable::reload() {
 
     disconnect(this, SIGNAL(cellChanged(int, int)), this, SLOT(adjustCell(int, int)));
     this->clear();
@@ -115,8 +115,8 @@ void GraphMatrixTable::reload() {
     for (int i = 0; i < _adj->nodes().size(); i++) {
         for (int j = 0; j < _adj->nodes().size(); j++) {
             this->setItem(i, j, new QTableWidgetItem);
-            if (_adj->weight(i, j) != INT_MAX) {
-                this->item(i, j)->setText(QString::fromStdString(std::to_string(_adj->weight(i, j))));
+            if (_adj->value(i, j) != INT_MAX) {
+                this->item(i, j)->setText(QString::fromStdString(std::to_string(_adj->value(i, j))));
                 if (i != j)
                     this->item(i, j)->setToolTip("Weight of the edge from node " +
                                                  QString::fromStdString(_adj->node(i)->name()) + " to node " +

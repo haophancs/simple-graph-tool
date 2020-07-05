@@ -1,5 +1,6 @@
 #ifndef GRAPHPROPERTIESTABLE_H
 #define GRAPHPROPERTIESTABLE_H
+
 #include <QTableWidget>
 #include <QHeaderView>
 #include "basis/headers/Graph.h"

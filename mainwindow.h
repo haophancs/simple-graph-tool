@@ -3,10 +3,11 @@
 
 #include <QMainWindow>
 #include <widgets/headers/GraphPropertiesTable.h>
+#include <widgets/headers/IncidenceMatrixTable.h>
 
 #include "basis/headers/Graph.h"
 #include "graphics/headers/GraphGraphicsScene.h"
-#include "widgets/headers/GraphMatrixTable.h"
+#include "widgets/headers/AdjacencyMatrixTable.h"
 #include "graphics/headers/GraphGraphicsView.h"
 #include "widgets/headers/ElementPropertiesTable.h"
 
@@ -60,7 +61,9 @@ private slots:
 
     void on_connectedComponentsBtn_clicked();
 
-    void on_shortestPathBtn_clicked();
+    void on_dijkstraBtn_clicked();
+
+    void on_aStarBtn_clicked();
 
     void on_topoSortBtn_clicked();
 
@@ -84,7 +87,9 @@ private slots:
 
     void on_actionHamiltonian_Cycle_triggered();
 
-    void on_actionFind_shortest_path_triggered();
+    void on_actionDijkstra_triggered();
+
+    void on_actionA_star_triggered();
 
     void on_actionFind_all_bridges_triggered();
 
@@ -99,6 +104,8 @@ private slots:
     void on_actionFind_weakly_connected_components_triggered();
 
     void on_weaklyConnectedBtn_clicked();
+
+    void on_tabWidget_currentChanged(int index);
 
 signals:
 
@@ -118,7 +125,8 @@ private:
     Ui::MainWindow *_ui;
     GraphGraphicsScene *_scene;
     GraphGraphicsView *_view;
-    GraphMatrixTable *_matrix;
+    AdjacencyMatrixTable *_adjMatrix;
+    IncidenceMatrixTable *_incidenceMatrix;
     ElementPropertiesTable *_elementPropertiesTable;
     GraphPropertiesTable *_graphPropertiesTable;
     GraphType::Graph *_graph;

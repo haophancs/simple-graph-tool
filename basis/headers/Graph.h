@@ -72,6 +72,10 @@ namespace GraphType {
             return AdjacencyMatrix(_cachedNodeList, _edgeSet, _directed, _invalidValue);
         }
 
+        IncidenceMatrix incidenceMatrix() const {
+            return IncidenceMatrix(_cachedNodeList, _edgeSet, _directed);
+        }
+
         const EdgeSet &edgeSet() const { return this->_edgeSet; }
 
         std::list<Node *> nodeList() const { return this->_cachedNodeList; }

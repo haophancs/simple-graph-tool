@@ -28,9 +28,9 @@ public:
 
     static std::list<std::string> Dijkstra(const Graph *graph, const std::string &start, const std::string &goal);
 
-    static std::list<std::pair<std::string, std::string>> usualST(const Graph *graph, const std::string& source = "");
+    static std::list<std::pair<std::string, std::string>> usualST(const Graph *graph, const std::string &source = "");
 
-    static std::list<std::pair<std::string, std::string>> Prim(const Graph *graph, const std::string& source = "");
+    static std::list<std::pair<std::string, std::string>> Prim(const Graph *graph, std::string source = "");
 
     static std::list<std::list<std::string>> connectedComponents(const Graph *graph);
 
@@ -54,7 +54,7 @@ public:
 
     static std::list<std::string> getHamiltonianCycle(const Graph *graph, std::string source = "");
 
-    static std::list<std::string> getUndirEulerianCircuit(const Graph *_graph, const std::string& source = "");
+    static std::list<std::string> getEulerianCircuit(const Graph *_graph, std::string source = "");
 
     static std::list<std::list<std::string>> displayHamiltonianCycle(const Graph *graph);
 
@@ -69,6 +69,10 @@ public:
     static std::list<std::pair<std::string, std::string>> displayColoring(const Graph *graph, std::string source = "");
 
     static bool isCycle(const Graph *graph);
+
+    static std::list<std::string> AStar(const Graph *graph, std::string start, std::string goal);
+
+    static std::list<std::string> Hierholzer(Graph &graph, std::string source);
 };
 
 #endif

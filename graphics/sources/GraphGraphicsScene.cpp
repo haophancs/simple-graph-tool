@@ -25,11 +25,11 @@ void GraphGraphicsScene::reload() {
         _nodeItems[node->name()] = new NodeGraphicsItem(this, node);
     for (auto it = graph()->edgeSet().begin(); it != graph()->edgeSet().end(); ++it) {
         auto edge = GraphType::Edge(it);
-        _edgeItems.insert({ std::make_pair(edge.u()->name(), edge.v()->name()),
+        _edgeItems.insert({std::make_pair(edge.u()->name(), edge.v()->name()),
                            new EdgeGraphicsItem(this,
                                                 _nodeItems[edge.u()->name()],
                                                 _nodeItems[edge.v()->name()])
-        });
+                          });
     }
     for (const auto &item: _edgeItems)
         this->addItem(item.second);
@@ -38,7 +38,8 @@ void GraphGraphicsScene::reload() {
     this->update();
 }
 
-void GraphGraphicsScene::demoAlgorithm(const std::list<std::pair<std::string, std::string>>& listOfPairToDemo, GraphDemoFlag flag) {
+void GraphGraphicsScene::demoAlgorithm(const std::list<std::pair<std::string, std::string>> &listOfPairToDemo,
+                                       GraphDemoFlag flag) {
     resetAfterDemoAlgo();
     _listOfPair = listOfPairToDemo;
     _uniqueTimer = std::make_unique<QTimer>();
@@ -66,8 +67,7 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<std::pair<std::string, st
                 this->_listOfPair.clear();
             }
         });
-    }
-    else {
+    } else {
         connect(_uniqueTimer.get(), &QTimer::timeout, this, [this, flag]() {
             if (!this->_listOfPair.empty()) {
                 auto startItem = this->nodeItem(this->_listOfPair.front().first);
@@ -98,40 +98,40 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<std::pair<std::string, st
             }
         });
     }
-    _uniqueTimer->start(350);
+    _uniqueTimer->start(_interval);
 }
 
 void GraphGraphicsScene::demoAlgorithm(const std::list<std::string> &listOfNodeToDemo, GraphDemoFlag flag) {
     resetAfterDemoAlgo();
     this->_listOfNode = listOfNodeToDemo;
     _uniqueTimer = std::make_unique<QTimer>();
-        connect(_uniqueTimer.get(), &QTimer::timeout, this, [this, flag]() {
-            if (!this->_listOfNode.empty()) {
-                auto start_name = this->_listOfNode.front();
-                this->_listOfNode.pop_front();
-                auto end_name = !this->_listOfNode.empty() ? this->_listOfNode.front() : "";
+    connect(_uniqueTimer.get(), &QTimer::timeout, this, [this, flag]() {
+        if (!this->_listOfNode.empty()) {
+            auto start_name = this->_listOfNode.front();
+            this->_listOfNode.pop_front();
+            auto end_name = !this->_listOfNode.empty() ? this->_listOfNode.front() : "";
 
-                auto startItem = this->nodeItem(start_name);
-                auto endItem = this->nodeItem(end_name);
-                auto edgeItem = this->edgeItem(start_name, end_name);
-                if (flag == GraphDemoFlag::EdgeAndNode) {
-                    if (startItem != nullptr)
-                        startItem->setSelected(true);
-                    if (edgeItem != nullptr)
-                        edgeItem->setSelected(true);
-                    if (endItem != nullptr)
-                        endItem->setSelected(true);
-                } else if (flag == GraphDemoFlag::OnlyNode) {
-                    if (startItem != nullptr)
-                        startItem->setSelected(true);
-                }
-                this->update();
-            } else {
-                this->_uniqueTimer->stop();
-                this->_listOfNode.clear();
+            auto startItem = this->nodeItem(start_name);
+            auto endItem = this->nodeItem(end_name);
+            auto edgeItem = this->edgeItem(start_name, end_name);
+            if (flag == GraphDemoFlag::EdgeAndNode) {
+                if (startItem != nullptr)
+                    startItem->setSelected(true);
+                if (edgeItem != nullptr)
+                    edgeItem->setSelected(true);
+                if (endItem != nullptr)
+                    endItem->setSelected(true);
+            } else if (flag == GraphDemoFlag::OnlyNode) {
+                if (startItem != nullptr)
+                    startItem->setSelected(true);
             }
-        });
-    _uniqueTimer->start(350);
+            this->update();
+        } else {
+            this->_uniqueTimer->stop();
+            this->_listOfNode.clear();
+        }
+    });
+    _uniqueTimer->start(_interval);
 }
 
 void GraphGraphicsScene::demoAlgorithm(const std::list<std::list<std::string> > &listOfListToDemo, GraphDemoFlag flag) {
@@ -144,7 +144,7 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<std::list<std::string> > 
         for (int i = 0; i < this->_listOfList.size(); i++) {
             auto random = Random();
             colorTable.emplace_back(QColor(random.drawNumber(0, 255), random.drawNumber(0, 255),
-                                               random.drawNumber(0, 255)));
+                                           random.drawNumber(0, 255)));
         }
         int org_size = this->_listOfList.size();
         connect(_uniqueTimer.get(), &QTimer::timeout, this, [this, colorTable, org_size]() {
@@ -152,8 +152,8 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<std::list<std::string> > 
                 QColor currColor = colorTable[org_size - this->_listOfList.size()];
                 std::list<std::string> currList = this->_listOfList.front();
                 this->_listOfList.pop_front();
-                for (const auto& start_name: currList) {
-                    for (const auto& end_name: currList) {
+                for (const auto &start_name: currList) {
+                    for (const auto &end_name: currList) {
                         if (start_name != end_name) {
                             auto edgeItem = this->edgeItem(start_name, end_name);
                             if (edgeItem != nullptr) {
@@ -174,10 +174,10 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<std::list<std::string> > 
                 this->_listOfList.clear();
             }
         });
-        _uniqueTimer->start(50);
+        _uniqueTimer->start(_interval);
     } else if (flag == GraphDemoFlag::EdgeAndNode) {
         connect(_uniqueTimer.get(), &QTimer::timeout, this, [this]() {
-            if (!this->_listOfList.empty()) {
+            if (!this->_listOfList.empty() || !this->_listOfNode.empty()) {
                 bool theLast;
                 if (this->_listOfNode.empty()) {
                     this->_listOfNode = this->_listOfList.front();
@@ -199,7 +199,7 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<std::list<std::string> > 
                     edgeItem->setSelected(true);
 
                 this->update();
-               if (this->_listOfNode.empty() && !theLast) {
+                if (this->_listOfNode.empty() && !theLast) {
                     for (auto gi: this->selectedItems())
                         if (gi != nullptr)
                             gi->setSelected(false);
@@ -208,7 +208,7 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<std::list<std::string> > 
                 _uniqueTimer->stop();
             }
         });
-        _uniqueTimer->start(250);
+        _uniqueTimer->start(_interval);
     }
 }
 
@@ -227,7 +227,7 @@ void GraphGraphicsScene::resetAfterDemoAlgo() {
     this->_listOfPair.clear();
 }
 
-EdgeGraphicsItem *GraphGraphicsScene::edgeItem(const std::string& uname, const std::string& vname) {
+EdgeGraphicsItem *GraphGraphicsScene::edgeItem(const std::string &uname, const std::string &vname) {
     if (_edgeItems.find(std::make_pair(uname, vname)) != _edgeItems.end())
         return _edgeItems.find(std::make_pair(uname, vname))->second;
     else if (_graph->isUndirected() && _edgeItems.find(std::make_pair(vname, uname)) != _edgeItems.end())

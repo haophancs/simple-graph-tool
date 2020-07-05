@@ -29,7 +29,7 @@ void ElementPropertiesTable::onUnSelected() {
     clearTable();
 }
 
-void ElementPropertiesTable::onNodeSelected(const std::string& node_name) {
+void ElementPropertiesTable::onNodeSelected(const std::string &node_name) {
     clearTable();
     QStringList tableHeader;
     if (this->_graph->isDirected()) {
@@ -65,7 +65,7 @@ void ElementPropertiesTable::onNodeSelected(const std::string& node_name) {
     }
 }
 
-void ElementPropertiesTable::onEdgeSelected(const std::string& uname, const std::string& vname) {
+void ElementPropertiesTable::onEdgeSelected(const std::string &uname, const std::string &vname) {
     clearTable();
     QStringList tableHeader;
     tableHeader << tr("From node") << tr("To node") << tr("Weight");

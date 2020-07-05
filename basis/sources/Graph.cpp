@@ -20,7 +20,7 @@ void Graph::_init(int node_num) {
     Random random;
     for (int i = 0; i < node_num; i++) {
         QPointF point((1 - sin((i * 6.28) / node_num)) * node_num * 80 / 2.,
-            (1 - cos((i * 6.28) / node_num)) * node_num * 80 / 2.);
+                      (1 - cos((i * 6.28) / node_num)) * node_num * 80 / 2.);
         addNode(Node(nextNodeName(), point));
     }
 }
@@ -196,8 +196,8 @@ bool Graph::setEdge(Node *u, Node *v, int w) {
     else {
         _edgeSet.insert({{u, v}, w});
         if (_directed) {
-            u->incPosDegree();
-            v->incNegDegree();
+            u->incNegDegree();
+            v->incPosDegree();
         } else {
             u->incUndirDegree();
             v->incUndirDegree();
@@ -220,8 +220,8 @@ bool Graph::removeEdge(Node *u, Node *v) {
     if (hasDirectedEdge(u, v)) {
         _edgeSet.erase({u, v});
         if (_directed) {
-            u->decPosDegree();
-            v->decNegDegree();
+            u->decNegDegree();
+            v->decPosDegree();
         } else {
             u->decUndirDegree();
             v->decUndirDegree();

@@ -2,8 +2,7 @@
 #include "widgets/headers/GraphOptionDialog.h"
 
 GraphOptionDialog::GraphOptionDialog(QWidget *parent)
-        : QDialog(parent)
-{
+        : QDialog(parent) {
     label = new QLabel(tr("No. of nodes"));
     lineEdit = new QLineEdit;
     lineEdit->setValidator(new QIntValidator(0, 100, this));
@@ -14,7 +13,7 @@ GraphOptionDialog::GraphOptionDialog(QWidget *parent)
 
     buttonBox = new QDialogButtonBox
             (QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
-                    Qt::Vertical, this);
+             Qt::Vertical, this);
     bool conn = connect(buttonBox, &QDialogButtonBox::accepted,
                         this, &GraphOptionDialog::accept);
     Q_ASSERT(conn);
