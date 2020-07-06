@@ -112,22 +112,22 @@ MainWindow::MainWindow(QWidget *parent) :
                 emit graphChanged();
     });
     connect(_view, &GraphGraphicsView::startAlgorithm, this,
-            [this](const QString &algo, const std::string &source_name) {
+            [this](const StartAlgoFlag &algo, const std::string &source_name) {
                 QDebugStream qout(std::cout, _ui->consoleText);
-                if (algo == "BFS") {
+                if (algo == StartAlgoFlag::BFS) {
                     this->_ui->consoleText->clear();
                     auto result = GraphUtils::BFSToDemo(this->_graph, source_name);
                     emit startDemoAlgorithm(result, GraphDemoFlag::EdgeAndNode);
-                } else if (algo == "DFS") {
+                } else if (algo == StartAlgoFlag::DFS) {
                     this->_ui->consoleText->clear();
                     auto result = GraphUtils::DFSToDemo(this->_graph, source_name);
                     emit startDemoAlgorithm(result, GraphDemoFlag::EdgeAndNode);
-                } else if (algo == "Prim") {
+                } else if (algo == StartAlgoFlag::Prim) {
                     this->_ui->consoleText->clear();
                     auto result = GraphUtils::Prim(this->_graph, source_name);
                     emit startDemoAlgorithm(result, GraphDemoFlag::EdgeAndNode);
 
-                } else if (algo == "Dijkstra") {
+                } else if (algo == StartAlgoFlag::Dijkstra) {
                     bool ok;
                     QStringList items;
                     for (auto node: _graph->nodeList())
@@ -145,7 +145,7 @@ MainWindow::MainWindow(QWidget *parent) :
                         auto result = GraphUtils::Dijkstra(this->_graph, source_name, target->name());
                         emit startDemoAlgorithm(result, GraphDemoFlag::EdgeAndNode);
                     }
-                } else if (algo == "A-star") {
+                } else if (algo == StartAlgoFlag::AStar) {
                     bool ok;
                     QStringList items;
                     for (auto node: _graph->nodeList())
@@ -163,6 +163,15 @@ MainWindow::MainWindow(QWidget *parent) :
                         auto result = GraphUtils::AStar(this->_graph, source_name, target->name());
                         emit startDemoAlgorithm(result, GraphDemoFlag::EdgeAndNode);
                     }
+                } else if (algo == StartAlgoFlag::ST_BFS) {
+                    this->_ui->consoleText->clear();
+                    auto result = GraphUtils::spanningTreeBFS(this->_graph, source_name);
+                    emit startDemoAlgorithm(result, GraphDemoFlag::EdgeAndNode);
+
+                } else if (algo == StartAlgoFlag::ST_DFS) {
+                    this->_ui->consoleText->clear();
+                    auto result = GraphUtils::spanningTreeDFS(this->_graph, source_name);
+                    emit startDemoAlgorithm(result, GraphDemoFlag::EdgeAndNode);
                 }
             });
     connect(_view, &GraphGraphicsView::nodeEdited, this, [this](const std::string &node_name) {
@@ -631,14 +640,14 @@ void MainWindow::on_EulerBtn_clicked() {
 
     _ui->consoleText->clear();
     QDebugStream qout(std::cout, _ui->consoleText);
-    auto result = GraphUtils::displayEulerianCircuit(_graph);
+    auto result = GraphUtils::displayAllEulerianCircuits(_graph);
     emit startDemoAlgorithm(result, GraphDemoFlag::EdgeAndNode);
 }
 
 void MainWindow::on_HamiltonBtn_clicked() {
     _ui->consoleText->clear();
     QDebugStream qout(std::cout, _ui->consoleText);
-    auto result = GraphUtils::displayHamiltonianCycle(_graph);
+    auto result = GraphUtils::displayAllHamiltonianCircuits(_graph);
     emit startDemoAlgorithm(result, GraphDemoFlag::EdgeAndNode);
 }
 

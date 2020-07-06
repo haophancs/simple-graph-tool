@@ -136,7 +136,7 @@ bool GraphUtils::isConnectedFromUtoV(const Graph *graph, const std::string &unam
     return visited[vname];
 }
 
-bool GraphUtils::isAllStronglyConnected(const Graph *graph) {
+bool GraphUtils::isAllConnected(const Graph *graph) {
     auto nodes = graph->nodeList();
     for (auto &node: nodes) {
         std::unordered_map<std::string, bool> visited;
@@ -583,7 +583,7 @@ bool hamCycleUtil(const Graph *graph, std::vector<std::string> &path, int pos) {
     return false;
 }
 
-std::list<std::string> GraphUtils::getHamiltonianCycle(const Graph *graph, std::string source) {
+std::list<std::string> GraphUtils::getHamiltonianCircuit(const Graph *graph, std::string source) {
     auto nodes = graph->nodeList();
     if (source.empty())
         source = nodes.front()->name();
@@ -598,22 +598,22 @@ std::list<std::string> GraphUtils::getHamiltonianCycle(const Graph *graph, std::
     return result;
 }
 
-std::list<std::list<std::string>> GraphUtils::displayHamiltonianCycle(const Graph *graph) {
+std::list<std::list<std::string>> GraphUtils::displayAllHamiltonianCircuits(const Graph *graph) {
     std::list<std::list<std::string>> result;
     if (graph->countNodes() < 3) {
-        std::cout << "Hamiltonian Cycle not found: ";
+        std::cout << "Hamiltonian Circuit not found: ";
         std::cout << "|V| = " << graph->countNodes() << " < 3\n";
         return result;
     }
     auto nodes = graph->nodeList();
     for (auto &source: nodes) {
-        auto cycle = getHamiltonianCycle(graph, source->name());
+        auto cycle = getHamiltonianCircuit(graph, source->name());
         if (cycle.empty())
             continue;
         else
             result.push_back(cycle);
 
-        std::cout << "Hamiltonian Cycle (source = " << source->name() << "): ";
+        std::cout << "Hamiltonian Circuit (source = " << source->name() << "): ";
         for (auto &node: cycle)
             std::cout << node << " ";
         std::cout << "\n";
@@ -633,7 +633,7 @@ bool isBridge(Graph graph, const std::string &uname, const std::string &vname) {
     return count1 <= count2;
 }
 
-std::list<std::string> GraphUtils::Hierholzer(Graph &graph, std::string source) {
+std::list<std::string> GraphUtils::Hierholzer(Graph &graph, const std::string& source) {
     std::list<std::string> result;
     std::stack<std::string> curr_path;
     std::vector<std::string> cycle;
@@ -659,7 +659,7 @@ std::list<std::string> GraphUtils::Hierholzer(Graph &graph, std::string source) 
             curr_path.pop();
         }
     }
-    for (int i = cycle.size() - 1; i >= 0; --i)
+    for (int i = (int)cycle.size() - 1; i >= 0; --i)
         result.push_back(cycle[i]);
     return result;
 }
@@ -676,9 +676,9 @@ std::list<std::string> GraphUtils::getEulerianCircuit(const Graph *_graph, std::
 }
 
 std::list<std::list<std::string>>
-GraphUtils::displayEulerianCircuit(const Graph *graph) {
+GraphUtils::displayAllEulerianCircuits(const Graph *graph) {
     std::list<std::list<std::string>> result;
-    if (!isAllStronglyConnected(graph)) {
+    if (!isAllConnected(graph)) {
         std::cout << "Eulerian Circuit not found because the graph is not connected\n";
         return result;
     }
@@ -856,16 +856,16 @@ void DFSCycle(const Graph *graph, const std::string& uname, const std::string& p
     color[uname] = 2;
 }
 
-std::list<std::list<std::string>> GraphUtils::displayAllCycles(const Graph *graph, std::string source) {
-    if (source.empty())
-        source = graph->nodeList().front()->name();
-
+std::list<std::list<std::string>> GraphUtils::displayAllCycles(const Graph *graph) {
     std::unordered_map<std::string, int> color;
     std::unordered_map<std::string, std::string> parent;
     std::unordered_map<std::string, int> mark;
     std::unordered_map<int, std::list<std::string>> cycles;
     int cycle_number = 0;
-    DFSCycle(graph, source, "", color, mark, parent, cycle_number);
+    for (auto v: graph->nodeList()) {
+        if (!mark[v->name()])
+            DFSCycle(graph, v->name(), "", color, mark, parent, cycle_number);
+    }
     for (auto v: graph->nodeList()) {
         if (mark[v->name()] != 0)
             cycles[mark[v->name()]].push_back(v->name());
@@ -874,7 +874,7 @@ std::list<std::list<std::string>> GraphUtils::displayAllCycles(const Graph *grap
     int i = 0;
     for (const auto& it: cycles) {
         std::list<std::string> cycle;
-        if (!it.second.empty()) {
+        if (it.second.size() > 2) {
             std::cout << "Cycle number " << i << ": ";
             for (const auto &node_name: it.second) {
                 cycle.push_back(node_name);
@@ -888,10 +888,68 @@ std::list<std::list<std::string>> GraphUtils::displayAllCycles(const Graph *grap
     return result;
 }
 
-std::list<std::pair<std::string, std::string>> GraphUtils::usualST(const Graph *graph, const std::string &source) {
+std::list<std::pair<std::string, std::string>> GraphUtils::spanningTreeBFS(const Graph *graph, const std::string &source) {
     std::list<std::pair<std::string, std::string>> result;
-    std::unordered_map<std::string, bool> visited;
-    std::list<std::string> steps;
-    DFSUtil(graph, source, visited, steps);
+    if (!graph->hasNode(source))
+        return result;
+    if (!isAllConnected(graph)) {
+        std::cout << "The graph must be " << (graph->isDirected() ? "strongly " : "") << "connected";
+        return result;
+    }
+    std::unordered_map<std::string, bool> in_unprocessed;
+    std::unordered_map<std::string, bool> in_result;
+    std::list<std::string> unprocessed_list;
+    unprocessed_list.push_back(source);
+    in_result[source] = true;
+    in_unprocessed[source] = true;
+    int cost = 0;
+    std::cout << "Minimum spanning tree (source = " << source << "): " << std::endl;
+    std::cout << "vertex \t parent \t cost:" << std::endl;
+    while (!unprocessed_list.empty()) {
+        auto uname = unprocessed_list.front();
+        unprocessed_list.pop_front();
+        in_unprocessed[uname] = false;
+        for (auto v: graph->nodeList()) {
+            if (graph->hasEdge(uname, v->name()) && !in_unprocessed[v->name()] && !in_result[v->name()]) {
+                unprocessed_list.push_back(v->name());
+                result.emplace_back(uname, v->name());
+                in_unprocessed[v->name()] = true;
+                in_result[v->name()] = true;
+                std::cout << v->name() << "\t" << uname << "\t" << graph->weight(uname, v->name()) << std::endl;
+                cost += graph->weight(uname, v->name());
+            }
+        }
+    }
+    std::cout << "total cost: " << cost << std::endl;
     return result;
+}
+
+void STDFSUtil(const Graph *graph, const std::string& uname, std::unordered_map<std::string, bool>& in_tree,
+        std::list<std::pair<std::string, std::string>>& result, int &cost) {
+    for (auto v: graph->nodeList()) {
+        if (graph->hasEdge(uname, v->name()) && !in_tree[v->name()]) {
+            in_tree[v->name()] = true;
+            result.emplace_back(uname, v->name());
+            std::cout << v->name() << "\t" << uname << "\t" << graph->weight(uname, v->name()) << std::endl;
+            cost += graph->weight(uname, v->name());
+            STDFSUtil(graph, v->name(), in_tree, result, cost);
+        }
+    }
+}
+
+std::list<std::pair<std::string, std::string>> GraphUtils::spanningTreeDFS(const Graph *graph, const std::string &source) {
+    std::list<std::pair<std::string, std::string>> result;
+    if (!graph->hasNode(source))
+        return result;
+    if (!isAllConnected(graph)) {
+        std::cout << "The graph must be " << (graph->isDirected() ? "strongly " : "") << "connected";
+        return result;
+    }
+    std::unordered_map<std::string, bool> in_tree;
+    in_tree[source] = true;
+    int cost = 0;
+    std::cout << "Minimum spanning tree (source = " << source << "): " << std::endl;
+    std::cout << "vertex \t parent \t cost:" << std::endl;
+    STDFSUtil(graph, source, in_tree, result, cost);
+    std::cout << "total cost: " << cost << std::endl;
 }

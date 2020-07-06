@@ -28,7 +28,9 @@ public:
 
     static std::list<std::string> Dijkstra(const Graph *graph, const std::string &start, const std::string &goal);
 
-    static std::list<std::pair<std::string, std::string>> usualST(const Graph *graph, const std::string &source = "");
+    static std::list<std::pair<std::string, std::string>> spanningTreeDFS(const Graph *graph, const std::string &source);
+
+    static std::list<std::pair<std::string, std::string>> spanningTreeBFS(const Graph *graph, const std::string &source);
 
     static std::list<std::pair<std::string, std::string>> Prim(const Graph *graph, std::string source = "");
 
@@ -44,7 +46,7 @@ public:
 
     static bool isConnectedFromUtoV(const Graph *graph, const std::string &uname, const std::string &vname);
 
-    static bool isAllStronglyConnected(const Graph *graph);
+    static bool isAllConnected(const Graph *graph);
 
     static bool isAllWeaklyConnected(const Graph *graph);
 
@@ -52,13 +54,13 @@ public:
 
     static std::list<std::string> displayArticulationNodes(const Graph *graph);
 
-    static std::list<std::string> getHamiltonianCycle(const Graph *graph, std::string source = "");
+    static std::list<std::string> getHamiltonianCircuit(const Graph *graph, std::string source = "");
 
     static std::list<std::string> getEulerianCircuit(const Graph *_graph, std::string source = "");
 
-    static std::list<std::list<std::string>> displayHamiltonianCycle(const Graph *graph);
+    static std::list<std::list<std::string>> displayAllHamiltonianCircuits(const Graph *graph);
 
-    static std::list<std::list<std::string>> displayEulerianCircuit(const Graph *graph);
+    static std::list<std::list<std::string>> displayAllEulerianCircuits(const Graph *graph);
 
     static std::list<std::string> getTopoSortResult(const Graph *graph);
 
@@ -72,9 +74,9 @@ public:
 
     static std::list<std::string> AStar(const Graph *graph, std::string start, std::string goal);
 
-    static std::list<std::string> Hierholzer(Graph &graph, std::string source);
+    static std::list<std::string> Hierholzer(Graph &graph, const std::string& source);
 
-    static std::list<std::list<std::string>> displayAllCycles(const Graph *graph, std::string source = "");
+    static std::list<std::list<std::string>> displayAllCycles(const Graph *graph);
 };
 
 #endif

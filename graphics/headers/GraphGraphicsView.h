@@ -6,6 +6,10 @@
 #include <QContextMenuEvent>
 #include <QMenu>
 
+enum StartAlgoFlag {
+    DFS, BFS, Dijkstra, AStar, Prim, ST_DFS, ST_BFS
+};
+
 class GraphGraphicsView : public QGraphicsView {
 Q_OBJECT
 private:
@@ -52,7 +56,7 @@ signals:
 
     void edgeAddedFrom(std::string node_name);
 
-    void startAlgorithm(QString algo, std::string source_name);
+    void startAlgorithm(StartAlgoFlag algo_flag, std::string source_name);
 
     void edgeSelected(std::string uname, std::string vname);
 

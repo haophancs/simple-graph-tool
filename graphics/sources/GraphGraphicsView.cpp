@@ -13,7 +13,7 @@ void GraphGraphicsView::wheelEvent(QWheelEvent *event) {
     QGraphicsView::wheelEvent(event);
     setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
     double scaleFactor = 1.05;
-    if (event->delta() > 0 && _currentScale < _scaleMax) {
+    if (event->delta() > 0 && _currentScale <= _scaleMax) {
         scale(scaleFactor, scaleFactor);
         _currentScale *= scaleFactor;
     } else {
@@ -39,38 +39,45 @@ void GraphGraphicsView::contextMenuEvent(QContextMenuEvent *event) {
             QMenu menu;
             menu.addAction("&Set edge to (Select other node by mouse)");
             menu.addSeparator();
-            menu.addAction("Re&name");
-            menu.addAction("&Isolate");
             menu.addAction("&Delete");
+            menu.addAction("&Isolate");
+            menu.addAction("Re&name");
             menu.addSeparator();
             menu.addAction("BFS from here");
             menu.addAction("DFS from here");
             menu.addSeparator();
             menu.addAction("Dijkstra");
             menu.addAction("A-star");
-            menu.addAction("Prim");
+            menu.addSeparator();
+            menu.addAction("MST by Prim");
+            menu.addAction("ST by BFS");
+            menu.addAction("ST by DFS");
             QAction *act = menu.exec(event->globalPos());
             if (act != nullptr) {
                 if (act->text() == "Re&name")
-                        emit nodeEdited(node_name);
+                    emit nodeEdited(node_name);
                 if (act->text() == "&Isolate")
-                        emit nodeIsolated(node_name);
+                    emit nodeIsolated(node_name);
                 if (act->text() == "&Delete")
-                        emit nodeRemoved(node_name);
+                    emit nodeRemoved(node_name);
                 if (act->text().contains("&Set edge to")) {
                     this->_selectTargetNode = true;
                     this->_startItem = nodeItem;
                 }
                 if (act->text().contains("BFS"))
-                        emit startAlgorithm("BFS", node_name);
+                    emit startAlgorithm(StartAlgoFlag::BFS, node_name);
                 if (act->text().contains("DFS"))
-                        emit startAlgorithm("DFS", node_name);
+                    emit startAlgorithm(StartAlgoFlag::DFS, node_name);
                 if (act->text().contains("Dijkstra"))
-                        emit startAlgorithm("Dijkstra", node_name);
+                    emit startAlgorithm(StartAlgoFlag::Dijkstra, node_name);
                 if (act->text().contains("A-star"))
-                        emit startAlgorithm("A-star", node_name);
+                    emit startAlgorithm(StartAlgoFlag::AStar, node_name);
                 if (act->text().contains("Prim"))
-                        emit startAlgorithm("Prim", node_name);
+                    emit startAlgorithm(StartAlgoFlag::Prim, node_name);
+                if (act->text().contains("ST by DFS"))
+                    emit startAlgorithm(StartAlgoFlag::ST_DFS, node_name);
+                if (act->text().contains("ST by BFS"))
+                    emit startAlgorithm(StartAlgoFlag::ST_BFS, node_name);
             } else {
                 item->setSelected(false);
             }
@@ -83,9 +90,9 @@ void GraphGraphicsView::contextMenuEvent(QContextMenuEvent *event) {
             QAction *act = menu.exec(event->globalPos());
             if (act != nullptr) {
                 if (act->text() == "&Delete")
-                        emit edgeRemoved(edgeItem->edge().u()->name(), edgeItem->edge().v()->name());
+                   emit edgeRemoved(edgeItem->edge().u()->name(), edgeItem->edge().v()->name());
                 if (act->text() == "Adjust &weight")
-                        emit edgeSet(edgeItem->edge().u()->name(), edgeItem->edge().v()->name());
+                   emit edgeSet(edgeItem->edge().u()->name(), edgeItem->edge().v()->name());
             }
         }
     } else {
@@ -97,9 +104,9 @@ void GraphGraphicsView::contextMenuEvent(QContextMenuEvent *event) {
         QAction *act = menu.exec(event->globalPos());
         if (act) {
             if (act->text() == "Create node...")
-                    emit nodeAdded(mapToScene(event->pos()), false);
+               emit nodeAdded(mapToScene(event->pos()), false);
             else if (act->text() == "Create node now")
-                    emit nodeAdded(mapToScene(event->pos()), true);
+               emit nodeAdded(mapToScene(event->pos()), true);
         }
     }
 }

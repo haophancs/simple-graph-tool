@@ -31,7 +31,7 @@ public:
 
     QColor onSelectedColor() const;
 
-    QColor color() const;
+    QColor color() const { return this->_color; };
 
     void setColor(const QColor &newColor) { this->_color = newColor; }
 

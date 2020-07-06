@@ -108,10 +108,6 @@ void NodeGraphicsItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {
     setCursor(Qt::PointingHandCursor);
 }
 
-QColor NodeGraphicsItem::color() const {
-    return this->_color;
-}
-
 QColor NodeGraphicsItem::onSelectedColor() const {
     return this->_selectedColor;
 }

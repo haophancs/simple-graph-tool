@@ -512,14 +512,14 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Topo sorting</string>
+               <string>Topo sort</string>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QPushButton" name="cyclesBtn">
               <property name="text">
-               <string>Find all cycles</string>
+               <string>Find cycles</string>
               </property>
              </widget>
             </item>
