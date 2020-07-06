@@ -59,6 +59,8 @@ private slots:
 
     void on_coloringBtn_clicked();
 
+    void on_cyclesBtn_clicked();
+
     void on_connectedComponentsBtn_clicked();
 
     void on_dijkstraBtn_clicked();
@@ -90,6 +92,8 @@ private slots:
     void on_actionDijkstra_triggered();
 
     void on_actionA_star_triggered();
+
+    void on_actionFind_all_cycles_triggered();
 
     void on_actionFind_all_bridges_triggered();
 

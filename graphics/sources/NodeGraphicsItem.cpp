@@ -99,7 +99,7 @@ void NodeGraphicsItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event) {
         setSelected(false);
         _isMoving = false;
     }
-    emit this->_gscene->graphChanged();
+    //emit this->_gscene->graphChanged();
     setCursor(Qt::OpenHandCursor);
 }
 

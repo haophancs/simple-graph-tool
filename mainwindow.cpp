@@ -45,6 +45,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->_graphPropertiesTable = new GraphPropertiesTable(_graph);
 
     connect(_adjMatrix, SIGNAL(graphChanged()), _scene, SLOT(reload()));
+    connect(_adjMatrix, SIGNAL(graphChanged()), _incidenceMatrix, SLOT(reload()));
     connect(_scene, SIGNAL(graphChanged()), _adjMatrix, SLOT(reload()));
     connect(_scene, SIGNAL(graphChanged()), _incidenceMatrix, SLOT(reload()));
     connect(this, SIGNAL(graphChanged()), _scene, SLOT(reload()));
@@ -131,7 +132,7 @@ MainWindow::MainWindow(QWidget *parent) :
                     QStringList items;
                     for (auto node: _graph->nodeList())
                         items.append(QString::fromStdString(node->name()));
-                    auto goal = QInputDialog::getItem(this, "Source node:", "Name", items, 0, false, &ok);
+                    auto goal = QInputDialog::getItem(this, "Target node:", "Name", items, 0, false, &ok);
                     if (ok) {
                         if (goal.isNull())
                             return;
@@ -149,7 +150,7 @@ MainWindow::MainWindow(QWidget *parent) :
                     QStringList items;
                     for (auto node: _graph->nodeList())
                         items.append(QString::fromStdString(node->name()));
-                    auto goal = QInputDialog::getItem(this, "Source node:", "Name", items, 0, false, &ok);
+                    auto goal = QInputDialog::getItem(this, "Target node:", "Name", items, 0, false, &ok);
                     if (ok) {
                         if (goal.isNull())
                             return;
@@ -505,6 +506,13 @@ void MainWindow::on_connectedComponentsBtn_clicked() {
     emit startDemoAlgorithm(result, GraphDemoFlag::Component);
 }
 
+void MainWindow::on_cyclesBtn_clicked() {
+    _ui->consoleText->clear();
+    QDebugStream qout(std::cout, _ui->consoleText);
+    auto result = GraphUtils::displayAllCycles(_graph);
+    emit startDemoAlgorithm(result, GraphDemoFlag::Component);
+}
+
 void MainWindow::on_dijkstraBtn_clicked() {
     _ui->consoleText->clear();
     QDebugStream qout(std::cout, _ui->consoleText);
@@ -671,6 +679,10 @@ void MainWindow::on_actionDijkstra_triggered() {
 
 void MainWindow::on_actionA_star_triggered() {
     on_aStarBtn_clicked();
+}
+
+void MainWindow::on_actionFind_all_cycles_triggered() {
+    on_cyclesBtn_clicked();
 }
 
 void MainWindow::on_actionFind_all_bridges_triggered() {

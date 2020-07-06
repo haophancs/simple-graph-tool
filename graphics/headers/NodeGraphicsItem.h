@@ -52,7 +52,7 @@ private:
     QColor _selectedColor;
     GraphGraphicsScene *_gscene;
     bool _isMoving;
-    const int _fontSize = 8;
+    const int _fontSize = 10;
     const QString _font = "Source Code Pro";
 
 protected:

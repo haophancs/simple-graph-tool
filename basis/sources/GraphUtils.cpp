@@ -671,7 +671,6 @@ std::list<std::string> GraphUtils::getEulerianCircuit(const Graph *_graph, std::
         source = graph.nodeList().front()->name();
     if (!graph.hasNode(source))
         return result;
-
     result = Hierholzer(graph, source);
     return result;
 }
@@ -679,25 +678,24 @@ std::list<std::string> GraphUtils::getEulerianCircuit(const Graph *_graph, std::
 std::list<std::list<std::string>>
 GraphUtils::displayEulerianCircuit(const Graph *graph) {
     std::list<std::list<std::string>> result;
-    if (graph->isDirected()) {
-        if (!isAllStronglyConnected(graph)) {
-            std::cout << "Eulerian Circuit not found because the graph is not strongly connected\n";
+    if (!isAllStronglyConnected(graph)) {
+        std::cout << "Eulerian Circuit not found because the graph is not connected\n";
+        return result;
+    }
+    for (auto &node: graph->nodeList()) {
+        if (graph->isDirected() && node->negDegree() != node->posDegree()) {
+            std::cout << "Eulerian Circuit not found because Node " << node->name() << " has deg+ != deg-\n";
             return result;
         }
-        for (auto &node: graph->nodeList()) {
-            if (node->negDegree() != node->posDegree()) {
-                std::cout << "Eulerian Circuit not found because Node " << node->name() << " has deg+ != deg-\n";
-                return result;
-            }
+        else if (graph->isUndirected() && node->undirDegree() % 2 != 0) {
+            std::cout << "Eulerian Circuit not found because degree of Node " << node->name() << " is odd\n";
+            return result;
         }
     }
-
     for (auto &node: graph->nodeList()) {
         auto cycle = getEulerianCircuit(graph, node->name());
-        std::cout << "Euler Circuit (source = " << node->name() << "): ";
-        if (cycle.empty())
-            std::cout << "not found!\n";
-        else {
+        if (!cycle.empty()) {
+            std::cout << "Euler Circuit (source = " << node->name() << "): ";
             result.emplace_back(cycle);
             while (!cycle.empty()) {
                 std::cout << cycle.front() << " ";
@@ -830,6 +828,64 @@ std::list<std::pair<std::string, std::string>> GraphUtils::displayColoring(const
         resultToSent.emplace_back(it.first, std::to_string(it.second));
     }
     return resultToSent;
+}
+
+void DFSCycle(const Graph *graph, const std::string& uname, const std::string& pname, std::unordered_map<std::string, int>& color,
+        std::unordered_map<std::string, int>& mark, std::unordered_map<std::string, std::string>& parent, int &cycle_number) {
+    if (color[uname] == 2)
+        return;
+    if (color[uname] == 1) {
+        cycle_number++;
+        auto cur = pname;
+        mark[cur] = cycle_number;
+        while(cur != uname) {
+            cur = parent[cur];
+            mark[cur] = cycle_number;
+        }
+        return;
+    }
+    parent[uname] = pname;
+    color[uname] = 1;
+    for (auto v: graph->nodeList()) {
+        if (graph->hasEdge(uname, v->name())) {
+            if (v->name() == parent[uname])
+                continue;
+            DFSCycle(graph, v->name(), uname, color, mark, parent, cycle_number);
+        }
+    }
+    color[uname] = 2;
+}
+
+std::list<std::list<std::string>> GraphUtils::displayAllCycles(const Graph *graph, std::string source) {
+    if (source.empty())
+        source = graph->nodeList().front()->name();
+
+    std::unordered_map<std::string, int> color;
+    std::unordered_map<std::string, std::string> parent;
+    std::unordered_map<std::string, int> mark;
+    std::unordered_map<int, std::list<std::string>> cycles;
+    int cycle_number = 0;
+    DFSCycle(graph, source, "", color, mark, parent, cycle_number);
+    for (auto v: graph->nodeList()) {
+        if (mark[v->name()] != 0)
+            cycles[mark[v->name()]].push_back(v->name());
+    }
+    std::list<std::list<std::string>> result;
+    int i = 0;
+    for (const auto& it: cycles) {
+        std::list<std::string> cycle;
+        if (!it.second.empty()) {
+            std::cout << "Cycle number " << i << ": ";
+            for (const auto &node_name: it.second) {
+                cycle.push_back(node_name);
+                std::cout << node_name << " ";
+            }
+            result.push_back(cycle);
+            i++;
+            std::cout << "\n";
+        }
+    }
+    return result;
 }
 
 std::list<std::pair<std::string, std::string>> GraphUtils::usualST(const Graph *graph, const std::string &source) {

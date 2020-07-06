@@ -73,6 +73,8 @@ public:
     static std::list<std::string> AStar(const Graph *graph, std::string start, std::string goal);
 
     static std::list<std::string> Hierholzer(Graph &graph, std::string source);
+
+    static std::list<std::list<std::string>> displayAllCycles(const Graph *graph, std::string source = "");
 };
 
 #endif
