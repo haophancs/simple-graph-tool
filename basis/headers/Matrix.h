@@ -31,6 +31,8 @@ namespace GraphType {
 
         const std::vector<Node *> &nodes() const { return _nodes; }
 
+        std::vector<std::vector<int>> mat() const { return _mat; }
+
         virtual ~Matrix() = default;
     };
 
@@ -85,7 +87,7 @@ namespace GraphType {
             for (int i = 0; i < _nodes.size(); ++i)
                 name_index[_nodes[i]->name()] = i;
 
-            for (int j = 0; j < _edges.size(); j++) {
+            for (int j = 0; j < _edges.size(); ++j) {
                 int i = name_index[_edges[j].u()->name()];
                 _mat[i][j] = _edges[j].weight();
                 i = name_index[_edges[j].v()->name()];

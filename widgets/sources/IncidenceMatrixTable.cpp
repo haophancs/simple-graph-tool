@@ -54,8 +54,8 @@ void IncidenceMatrixTable::reload() {
     this->setHorizontalHeaderLabels(h_header);
     this->setVerticalHeaderLabels(v_header);
 
-    for (int i = 0; i < _incidence->nodes().size(); i++) {
-        for (int j = 0; j < _incidence->edges().size(); j++) {
+    for (int i = 0; i < _incidence->nodes().size(); ++i) {
+        for (int j = 0; j < _incidence->edges().size(); ++j) {
             this->setItem(i, j, new QTableWidgetItem);
             this->item(i, j)->setTextAlignment(Qt::AlignCenter);
             this->item(i, j)->setText(QString::number(_incidence->value(i, j)));

@@ -561,7 +561,7 @@ bool isSafe(const Graph *graph, const std::string &vname,
             std::vector<std::string> &path, int pos) {
     if (!graph->hasEdge(path[pos - 1], vname))
         return false;
-    for (int i = 0; i < pos; i++)
+    for (int i = 0; i < pos; ++i)
         if (path[i] == vname)
             return false;
     return true;
@@ -592,7 +592,7 @@ std::list<std::string> GraphUtils::getHamiltonianCircuit(const Graph *graph, std
     path[0] = source;
     if (!hamCycleUtil(graph, path, 1))
         return result;
-    for (int i = 0; i < graph->countNodes(); i++)
+    for (int i = 0; i < graph->countNodes(); ++i)
         result.push_back(path[i]);
     result.push_back(path[0]);
     return result;
@@ -633,7 +633,7 @@ bool isBridge(Graph graph, const std::string &uname, const std::string &vname) {
     return count1 <= count2;
 }
 
-std::list<std::string> GraphUtils::Hierholzer(Graph &graph, const std::string& source) {
+std::list<std::string> GraphUtils::Hierholzer(Graph &graph, const std::string &source) {
     std::list<std::string> result;
     std::stack<std::string> curr_path;
     std::vector<std::string> cycle;
@@ -652,14 +652,13 @@ std::list<std::string> GraphUtils::Hierholzer(Graph &graph, const std::string& s
             }
             graph.removeEdge(curr_node, next_node);
             curr_node = next_node;
-        }
-        else {
+        } else {
             cycle.push_back(curr_node);
             curr_node = curr_path.top();
             curr_path.pop();
         }
     }
-    for (int i = (int)cycle.size() - 1; i >= 0; --i)
+    for (int i = (int) cycle.size() - 1; i >= 0; --i)
         result.push_back(cycle[i]);
     return result;
 }
@@ -686,8 +685,7 @@ GraphUtils::displayAllEulerianCircuits(const Graph *graph) {
         if (graph->isDirected() && node->negDegree() != node->posDegree()) {
             std::cout << "Eulerian Circuit not found because Node " << node->name() << " has deg+ != deg-\n";
             return result;
-        }
-        else if (graph->isUndirected() && node->undirDegree() % 2 != 0) {
+        } else if (graph->isUndirected() && node->undirDegree() % 2 != 0) {
             std::cout << "Eulerian Circuit not found because degree of Node " << node->name() << " is odd\n";
             return result;
         }
@@ -830,15 +828,17 @@ std::list<std::pair<std::string, std::string>> GraphUtils::displayColoring(const
     return resultToSent;
 }
 
-void DFSCycle(const Graph *graph, const std::string& uname, const std::string& pname, std::unordered_map<std::string, int>& color,
-        std::unordered_map<std::string, int>& mark, std::unordered_map<std::string, std::string>& parent, int &cycle_number) {
+void DFSCycle(const Graph *graph, const std::string &uname, const std::string &pname,
+              std::unordered_map<std::string, int> &color,
+              std::unordered_map<std::string, int> &mark, std::unordered_map<std::string, std::string> &parent,
+              int &cycle_number) {
     if (color[uname] == 2)
         return;
     if (color[uname] == 1) {
         cycle_number++;
         auto cur = pname;
         mark[cur] = cycle_number;
-        while(cur != uname) {
+        while (cur != uname) {
             cur = parent[cur];
             mark[cur] = cycle_number;
         }
@@ -857,38 +857,11 @@ void DFSCycle(const Graph *graph, const std::string& uname, const std::string& p
 }
 
 std::list<std::list<std::string>> GraphUtils::displayAllCycles(const Graph *graph) {
-    std::unordered_map<std::string, int> color;
-    std::unordered_map<std::string, std::string> parent;
-    std::unordered_map<std::string, int> mark;
-    std::unordered_map<int, std::list<std::string>> cycles;
-    int cycle_number = 0;
-    for (auto v: graph->nodeList()) {
-        if (!mark[v->name()])
-            DFSCycle(graph, v->name(), "", color, mark, parent, cycle_number);
-    }
-    for (auto v: graph->nodeList()) {
-        if (mark[v->name()] != 0)
-            cycles[mark[v->name()]].push_back(v->name());
-    }
-    std::list<std::list<std::string>> result;
-    int i = 0;
-    for (const auto& it: cycles) {
-        std::list<std::string> cycle;
-        if (it.second.size() > 2) {
-            std::cout << "Cycle number " << i << ": ";
-            for (const auto &node_name: it.second) {
-                cycle.push_back(node_name);
-                std::cout << node_name << " ";
-            }
-            result.push_back(cycle);
-            i++;
-            std::cout << "\n";
-        }
-    }
-    return result;
+    return Gotlieb(graph);
 }
 
-std::list<std::pair<std::string, std::string>> GraphUtils::spanningTreeBFS(const Graph *graph, const std::string &source) {
+std::list<std::pair<std::string, std::string>>
+GraphUtils::spanningTreeBFS(const Graph *graph, const std::string &source) {
     std::list<std::pair<std::string, std::string>> result;
     if (!graph->hasNode(source))
         return result;
@@ -924,8 +897,8 @@ std::list<std::pair<std::string, std::string>> GraphUtils::spanningTreeBFS(const
     return result;
 }
 
-void STDFSUtil(const Graph *graph, const std::string& uname, std::unordered_map<std::string, bool>& in_tree,
-        std::list<std::pair<std::string, std::string>>& result, int &cost) {
+void STDFSUtil(const Graph *graph, const std::string &uname, std::unordered_map<std::string, bool> &in_tree,
+               std::list<std::pair<std::string, std::string>> &result, int &cost) {
     for (auto v: graph->nodeList()) {
         if (graph->hasEdge(uname, v->name()) && !in_tree[v->name()]) {
             in_tree[v->name()] = true;
@@ -937,7 +910,8 @@ void STDFSUtil(const Graph *graph, const std::string& uname, std::unordered_map<
     }
 }
 
-std::list<std::pair<std::string, std::string>> GraphUtils::spanningTreeDFS(const Graph *graph, const std::string &source) {
+std::list<std::pair<std::string, std::string>>
+GraphUtils::spanningTreeDFS(const Graph *graph, const std::string &source) {
     std::list<std::pair<std::string, std::string>> result;
     if (!graph->hasNode(source))
         return result;
@@ -952,4 +926,109 @@ std::list<std::pair<std::string, std::string>> GraphUtils::spanningTreeDFS(const
     std::cout << "vertex \t parent \t cost:" << std::endl;
     STDFSUtil(graph, source, in_tree, result, cost);
     std::cout << "total cost: " << cost << std::endl;
+    return result;
+}
+
+void dfs_cycle(std::vector<std::vector<int>>& circuit, int u, std::vector<bool> &visited, std::vector<int> &parents, int source, std::list<int> &found_cycle) {
+    if (visited[u]) {
+        if (u == source)
+            while (true) {
+                found_cycle.push_back(u);
+                u = parents[u];
+                if (u == source) {
+                    found_cycle.push_back(u);
+                    break;
+                }
+            }
+        return;
+    }
+    visited[u] = true;
+    for (int v = 0; v < circuit.size(); ++v) {
+        if (circuit[u][v] == 1 && v != parents[u]) {
+            parents[v] = u;
+            dfs_cycle(circuit, v, visited, parents, source, found_cycle);
+        }
+    }
+}
+std::list<std::list<std::string>> GraphUtils::Gotlieb(const Graph *graph) {
+    std::list<std::list<std::string>> result;
+    auto adj = graph->adjMatrix();
+    auto circuit = adj.mat();
+    const auto &nodes = adj.nodes();
+    int r = circuit.size();
+    std::vector<std::vector<int>> b_matrix(r, std::vector<int>(r, 0));
+    for (int i = 0; i < r; ++i)
+        for (int j = i; j < r; ++j)
+            if (circuit[i][j] == 1) {
+                b_matrix[i][j] = 1;
+                b_matrix[j][i] = 1;
+                break;
+            }
+    /*for (int i = 0; i < r; ++i) {
+        for (int j = 0; j < r; ++j)
+            std::cout << b_matrix[i][j] << " ";
+        std::cout << std::endl;
+    }
+    std::cout << "--- end step 1 ---" << std::endl;*/
+    std::vector<std::vector<int>> connCmpt;
+    std::vector<bool> visited(r, false);
+    for (int u = 0; u < r; ++u) {
+        if (visited[u])
+            continue;
+        std::vector<int> cmpt(r, 0);
+        std::stack<int> s;
+        s.push(u);
+        while (!s.empty()) {
+            int v = s.top();
+            visited[v] = true;
+            cmpt[v] = 1;
+            s.pop();
+            for (int w = 0; w < r; w++)
+                if (b_matrix[v][w] && !visited[w])
+                    s.push(w);
+        }
+        connCmpt.push_back(cmpt);
+    }
+    /*for (auto cmpt: connCmpt) {
+        for (int i = 0; i < r; ++i)
+            std::cout << cmpt[i] << " ";
+        std::cout << std::endl;
+    }
+    std::cout << "--- end step 2 ---" << std::endl;*/
+    std::unordered_map<int, bool> f;
+    for (auto & cmpt : connCmpt)
+        for (int j = 0; j < r; ++j)
+            if (cmpt[j] == 1)
+                for (int k = 0; k < r; k++)
+                    if (circuit[j][k] == 1 && cmpt[k] == 0 && !f[k]) {
+                        b_matrix[k][j] = 1;
+                        b_matrix[j][k] = 1;
+                        f[k] = true;
+                    }
+    /*for (int i = 0; i < r; ++i) {
+        for (int j = 0; j < r; ++j)
+            std::cout << b_matrix[i][j] << " ";
+        std::cout << std::endl;
+    }
+    std::cout << "--- end step 3 ---" << std::endl;*/
+    std::list<std::pair<int, int>> eliminated;
+    for (int i = 0; i < r; ++i)
+        for (int j = i; j < r; ++j)
+            if (b_matrix[i][j] != circuit[i][j])
+                eliminated.emplace_back(i, j);
+
+    for (auto e: eliminated) {
+        visited = std::vector<bool>(r, false);
+        std::vector<int> parents(r, -1);
+        std::list<int> found_cycle;
+        b_matrix[e.first][e.second] = b_matrix[e.second][e.first] = 1;
+        dfs_cycle(b_matrix, e.first, visited, parents, e.first, found_cycle);
+        b_matrix[e.first][e.second] = b_matrix[e.second][e.first] = 0;
+
+        std::list<std::string> curr_res;
+        for (auto v: found_cycle)
+            curr_res.push_back(nodes[v]->name());
+        result.push_back(curr_res);
+    }
+    return result;
 }

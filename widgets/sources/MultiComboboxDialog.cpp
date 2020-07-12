@@ -34,7 +34,7 @@ QStringList MultiComboboxDialog::getItems(QWidget *parent, const QString &title,
                                           const QList<QStringList> &itemLists, bool *ok) {
 
     auto *dialog = new MultiComboboxDialog(parent, title, labelText);
-    for (int i = 0; i < dialog->fields.size(); i++)
+    for (int i = 0; i < dialog->fields.size(); ++i)
         dialog->fields[i]->addItems(itemLists[i]);
     QStringList list;
     const int ret = dialog->exec();

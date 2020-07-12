@@ -141,7 +141,7 @@ void GraphGraphicsScene::demoAlgorithm(const std::list<std::list<std::string> > 
 
     if (flag == GraphDemoFlag::Component) {
         std::vector<QColor> colorTable;
-        for (int i = 0; i < this->_listOfList.size(); i++) {
+        for (int i = 0; i < this->_listOfList.size(); ++i) {
             auto random = Random();
             colorTable.emplace_back(QColor(random.drawNumber(0, 255), random.drawNumber(0, 255),
                                            random.drawNumber(0, 255)));

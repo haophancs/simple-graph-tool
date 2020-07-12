@@ -1,5 +1,5 @@
-#ifndef GRAPHTABLE_H
-#define GRAPHTABLE_H
+#ifndef ADJACENCYMATRIXTABLE_H
+#define ADJACENCYMATRIXTABLE_H
 
 #include "basis/headers/Graph.h"
 #include <QTableWidget>
@@ -35,4 +35,4 @@ public slots:
     void reload();
 };
 
-#endif // GRAPHMATRIXTABLE_H
+#endif // ADJACENCYMATRIXTABLE_H

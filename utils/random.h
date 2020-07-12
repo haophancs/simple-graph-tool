@@ -1,5 +1,5 @@
-#ifndef SIMPLE_GRAPH_TOOL_RANDOM_H
-#define SIMPLE_GRAPH_TOOL_RANDOM_H
+#ifndef RANDOM_H
+#define RANDOM_H
 
 #include <random>
 
@@ -19,4 +19,4 @@ private:
     std::mt19937 eng{std::random_device{}()};
 };
 
-#endif //SIMPLE_GRAPH_TOOL_RANDOM_H
+#endif //RANDOM_H

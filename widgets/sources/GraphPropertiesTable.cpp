@@ -18,7 +18,7 @@ void GraphPropertiesTable::setGraph(GraphType::Graph *graph) {
     this->setColumnCount(1);
     this->setVerticalHeaderLabels(tableHeader);
 
-    for (int i = 0; i < this->rowCount(); i++) {
+    for (int i = 0; i < this->rowCount(); ++i) {
         this->setItem(i, 0, new QTableWidgetItem());
         this->item(i, 0)->setTextAlignment(Qt::AlignCenter);
         this->item(i, 0)->setFlags(Qt::ItemIsEnabled);

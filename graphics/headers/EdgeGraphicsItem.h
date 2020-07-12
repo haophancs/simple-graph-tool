@@ -1,5 +1,5 @@
-#ifndef ARCITEM_H
-#define ARCITEM_H
+#ifndef EDGEGRAPHICSITEM_H
+#define EDGEGRAPHICSITEM_H
 
 #include <basis/headers/Edge.h>
 #include "NodeGraphicsItem.h"
@@ -67,4 +67,4 @@ private:
     QPainterPath _path;
 };
 
-#endif // ARCGRAPHICSITEM_H
+#endif // EDGEGRAPHICSITEM_H

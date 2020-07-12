@@ -18,7 +18,7 @@ void Graph::_init(int node_num) {
     this->clear();
     if (node_num <= 0) return;
     Random random;
-    for (int i = 0; i < node_num; i++) {
+    for (int i = 0; i < node_num; ++i) {
         QPointF point((1 - sin((i * 6.28) / node_num)) * node_num * 80 / 2.,
                       (1 - cos((i * 6.28) / node_num)) * node_num * 80 / 2.);
         addNode(Node(nextNodeName(), point));
@@ -57,7 +57,7 @@ Graph Graph::readFromFile(const std::string &file) {
     if (countNodes <= 0) throw "Number of nodes <= 0";
     std::string name;
     qreal x, y;
-    for (int i = 0; i < countNodes; i++) {
+    for (int i = 0; i < countNodes; ++i) {
         if (in.eof()) throw "eof";
         in >> name >> x >> y, graph.addNode(Node(name, QPointF(x, y)));
     }
@@ -66,7 +66,7 @@ Graph Graph::readFromFile(const std::string &file) {
     if (countEdges > 0) {
         std::string start, end;
         int weight;
-        for (int i = 0; i < countEdges; i++) {
+        for (int i = 0; i < countEdges; ++i) {
             if (in.eof()) throw "eof";
             in >> start >> end >> weight;
             if (weight >= graph.weightRange().first && weight <= graph.weightRange().second)
@@ -100,7 +100,7 @@ bool Graph::addNode(const Node &_node) {
 }
 
 std::string Graph::nextNodeName() const {
-    for (int i = 0; i < countNodes(); i++) {
+    for (int i = 0; i < countNodes(); ++i) {
         auto name = std::string(1, 'a' + (i % 26)) + std::to_string(int(i / 26));
         if (!hasNode(name))
             return name;

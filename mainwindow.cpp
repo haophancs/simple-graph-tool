@@ -223,6 +223,7 @@ void MainWindow::resetGraph(Graph *graph) {
     _ui->coloringBtn->setVisible(_graph->isUndirected());
     _ui->actionColoring->setVisible(_graph->isUndirected());
     _ui->topoSortBtn->setVisible(_graph->isDirected());
+    _ui->cyclesBtn->setVisible(_graph->isUndirected());
     _ui->actionTopo_Sorting->setVisible(_graph->isDirected());
     _ui->weaklyConnectedBtn->setVisible(_graph->isDirected());
     _ui->actionFind_weakly_connected_components->setVisible(_graph->isDirected());
@@ -306,7 +307,7 @@ QString MainWindow::showOpenFileDialog() {
 
 QString MainWindow::showSaveFileDialog() {
     QString newFilename;
-    for (int i = 1; true; i++) {
+    for (int i = 1; true; ++i) {
         std::ifstream is(QDir::currentPath().toStdString()
                          + "/graph" + std::to_string(i) + ".gph");
         if (!is.good()) {
@@ -519,7 +520,7 @@ void MainWindow::on_cyclesBtn_clicked() {
     _ui->consoleText->clear();
     QDebugStream qout(std::cout, _ui->consoleText);
     auto result = GraphUtils::displayAllCycles(_graph);
-    emit startDemoAlgorithm(result, GraphDemoFlag::Component);
+    emit startDemoAlgorithm(result, GraphDemoFlag::EdgeAndNode);
 }
 
 void MainWindow::on_dijkstraBtn_clicked() {

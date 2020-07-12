@@ -77,6 +77,8 @@ public:
     static std::list<std::string> Hierholzer(Graph &graph, const std::string& source);
 
     static std::list<std::list<std::string>> displayAllCycles(const Graph *graph);
+
+    static std::list<std::list<std::string>> Gotlieb(const Graph *graph);
 };
 
 #endif

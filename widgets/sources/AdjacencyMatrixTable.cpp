@@ -112,20 +112,20 @@ void AdjacencyMatrixTable::reload() {
     this->setHorizontalHeaderLabels(table_header);
     this->setVerticalHeaderLabels(table_header);
 
-    for (int i = 0; i < _adj->nodes().size(); i++) {
-        for (int j = 0; j < _adj->nodes().size(); j++) {
+    for (int i = 0; i < _adj->nodes().size(); ++i) {
+        for (int j = 0; j < _adj->nodes().size(); ++j) {
             this->setItem(i, j, new QTableWidgetItem);
-            if (_adj->value(i, j) != INT_MAX) {
-                this->item(i, j)->setText(QString::fromStdString(std::to_string(_adj->value(i, j))));
+            if (_adj->value(i, j) != _graph->invalidValue()) {
+                this->item(i, j)->setText(QString::number(_adj->value(i, j)));
                 if (i != j)
                     this->item(i, j)->setToolTip("Weight of the edge from node " +
                                                  QString::fromStdString(_adj->node(i)->name()) + " to node " +
-                                                 QString::fromStdString(_adj->node(i)->name()));
+                                                 QString::fromStdString(_adj->node(j)->name()));
             } else {
-                this->item(i, j)->setText("inf");
+                this->item(i, j)->setText(_graph->invalidValue() == INT_MAX ? "inf" : QString::number(_adj->value(i, j)));
                 this->item(i, j)->setToolTip("No edge from node " +
                                              QString::fromStdString(_adj->node(i)->name()) + " to node " +
-                                             QString::fromStdString(_adj->node(i)->name()));
+                                             QString::fromStdString(_adj->node(j)->name()));
             }
             this->item(i, j)->setTextAlignment(Qt::AlignCenter);
             if (this->_graph->isUndirected() && j < i)
