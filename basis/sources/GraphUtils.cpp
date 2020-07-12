@@ -996,18 +996,18 @@ std::list<std::list<std::string>> GraphUtils::Gotlieb(const Graph *graph) {
     // BLOCK 3: Here the connected components are amalgamated by adding
     // appropriate edges to the adjacency matrix B (treeAdjMat)
     // Example: edges (2,5) and (2,6) are added back to B
-    std::unordered_map<int, bool> edgeAdded;
+    std::unordered_map<int, bool> checked;
     for (auto &cmpt : connComponents)
         for (int j = 0; j < nodeCount; ++j)
             if (cmpt[j] == 1)
                 for (int k = 0; k < nodeCount; k++)
-                    if (orgAdjMat[j][k] == 1 && cmpt[k] == 0 && !edgeAdded[k]) {
+                    if (orgAdjMat[j][k] == 1 && cmpt[k] == 0 && !checked[k]) {
                         treeAdjMat[k][j] = 1;
                         treeAdjMat[j][k] = 1;
-                        edgeAdded[k] = true;
+                        checked[k] = true;
                     }
     // BLOCK 4
-    // Collect all edges eliminated from the original adjacency matrix to build the spanning tree
+    // Collect all edges eliminated from the original adjacency matrix to build the spanning tree matrix
     std::list<std::pair<int, int>> eliminatedEdges;
     for (int i = 0; i < nodeCount; ++i)
         for (int j = i; j < nodeCount; ++j)
