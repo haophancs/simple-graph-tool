@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     _ui->setupUi(this);
     _ui->statusBar->setStyleSheet("color: darkgrey");
     _ui->consoleText->setReadOnly(true);
+    _ui->consoleText->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
     _ui->verticalSplitter->setStretchFactor(0, 1);
     this->_dataNeedSaving = false;
     this->setWindowTitle("Simple Graph Tool");

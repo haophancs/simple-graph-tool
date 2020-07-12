@@ -929,7 +929,9 @@ GraphUtils::spanningTreeDFS(const Graph *graph, const std::string &source) {
     return result;
 }
 
-void dfs_cycle(std::vector<std::vector<int>>& circuit, int u, std::vector<bool> &visited, std::vector<int> &parents, int source, std::list<int> &found_cycle) {
+void
+DfsGotliebUtil(std::vector<std::vector<int>> &circuit, int u, std::vector<bool> &visited, std::vector<int> &parents,
+               int source, std::list<int> &found_cycle) {
     if (visited[u]) {
         if (u == source)
             while (true) {
@@ -946,10 +948,11 @@ void dfs_cycle(std::vector<std::vector<int>>& circuit, int u, std::vector<bool> 
     for (int v = 0; v < circuit.size(); ++v) {
         if (circuit[u][v] == 1 && v != parents[u]) {
             parents[v] = u;
-            dfs_cycle(circuit, v, visited, parents, source, found_cycle);
+            DfsGotliebUtil(circuit, v, visited, parents, source, found_cycle);
         }
     }
 }
+
 std::list<std::list<std::string>> GraphUtils::Gotlieb(const Graph *graph) {
     std::list<std::list<std::string>> result;
     auto adj = graph->adjMatrix();
@@ -964,12 +967,6 @@ std::list<std::list<std::string>> GraphUtils::Gotlieb(const Graph *graph) {
                 b_matrix[j][i] = 1;
                 break;
             }
-    /*for (int i = 0; i < r; ++i) {
-        for (int j = 0; j < r; ++j)
-            std::cout << b_matrix[i][j] << " ";
-        std::cout << std::endl;
-    }
-    std::cout << "--- end step 1 ---" << std::endl;*/
     std::vector<std::vector<int>> connCmpt;
     std::vector<bool> visited(r, false);
     for (int u = 0; u < r; ++u) {
@@ -989,14 +986,9 @@ std::list<std::list<std::string>> GraphUtils::Gotlieb(const Graph *graph) {
         }
         connCmpt.push_back(cmpt);
     }
-    /*for (auto cmpt: connCmpt) {
-        for (int i = 0; i < r; ++i)
-            std::cout << cmpt[i] << " ";
-        std::cout << std::endl;
-    }
-    std::cout << "--- end step 2 ---" << std::endl;*/
+
     std::unordered_map<int, bool> f;
-    for (auto & cmpt : connCmpt)
+    for (auto &cmpt : connCmpt)
         for (int j = 0; j < r; ++j)
             if (cmpt[j] == 1)
                 for (int k = 0; k < r; k++)
@@ -1005,12 +997,6 @@ std::list<std::list<std::string>> GraphUtils::Gotlieb(const Graph *graph) {
                         b_matrix[j][k] = 1;
                         f[k] = true;
                     }
-    /*for (int i = 0; i < r; ++i) {
-        for (int j = 0; j < r; ++j)
-            std::cout << b_matrix[i][j] << " ";
-        std::cout << std::endl;
-    }
-    std::cout << "--- end step 3 ---" << std::endl;*/
     std::list<std::pair<int, int>> eliminated;
     for (int i = 0; i < r; ++i)
         for (int j = i; j < r; ++j)
@@ -1022,13 +1008,19 @@ std::list<std::list<std::string>> GraphUtils::Gotlieb(const Graph *graph) {
         std::vector<int> parents(r, -1);
         std::list<int> found_cycle;
         b_matrix[e.first][e.second] = b_matrix[e.second][e.first] = 1;
-        dfs_cycle(b_matrix, e.first, visited, parents, e.first, found_cycle);
+        DfsGotliebUtil(b_matrix, e.first, visited, parents, e.first, found_cycle);
         b_matrix[e.first][e.second] = b_matrix[e.second][e.first] = 0;
 
-        std::list<std::string> curr_res;
-        for (auto v: found_cycle)
-            curr_res.push_back(nodes[v]->name());
-        result.push_back(curr_res);
+        if (!found_cycle.empty()) {
+            std::cout << "Found cycle: ";
+            std::list<std::string> curr_res;
+            for (auto v: found_cycle) {
+                std::cout << nodes[v]->name() << " ";
+                curr_res.push_back(nodes[v]->name());
+            }
+            std::cout << std::endl;
+            result.push_back(curr_res);
+        }
     }
     return result;
 }

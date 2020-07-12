@@ -37,7 +37,6 @@ protected:
             pos = m_string.find('\n');
             if (pos != (int) std::string::npos) {
                 std::string tmp(m_string.begin(), m_string.begin() + pos);
-                tmp = "> " + tmp;
                 log_window->append(tmp.c_str());
                 m_string.erase(m_string.begin(), m_string.begin() + pos + 1);
             }
