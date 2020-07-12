@@ -930,96 +930,109 @@ GraphUtils::spanningTreeDFS(const Graph *graph, const std::string &source) {
 }
 
 void
-DfsGotliebUtil(std::vector<std::vector<int>> &circuit, int u, std::vector<bool> &visited, std::vector<int> &parents,
-               int source, std::list<int> &found_cycle) {
+DFSCheckCycle(std::vector<std::vector<int>> &adjMat, int u, std::vector<bool> &visited, std::vector<int> &parents,
+              int source, std::list<int> &foundCycle) {
     if (visited[u]) {
         if (u == source)
             while (true) {
-                found_cycle.push_back(u);
+                foundCycle.push_back(u);
                 u = parents[u];
                 if (u == source) {
-                    found_cycle.push_back(u);
+                    foundCycle.push_back(u);
                     break;
                 }
             }
         return;
     }
     visited[u] = true;
-    for (int v = 0; v < circuit.size(); ++v) {
-        if (circuit[u][v] == 1 && v != parents[u]) {
+    for (int v = 0; v < adjMat.size(); ++v) {
+        if (adjMat[u][v] == 1 && v != parents[u]) {
             parents[v] = u;
-            DfsGotliebUtil(circuit, v, visited, parents, source, found_cycle);
+            DFSCheckCycle(adjMat, v, visited, parents, source, foundCycle);
         }
     }
 }
 
 std::list<std::list<std::string>> GraphUtils::Gotlieb(const Graph *graph) {
     std::list<std::list<std::string>> result;
-    auto adj = graph->adjMatrix();
-    auto circuit = adj.mat();
-    const auto &nodes = adj.nodes();
-    int r = circuit.size();
-    std::vector<std::vector<int>> b_matrix(r, std::vector<int>(r, 0));
-    for (int i = 0; i < r; ++i)
-        for (int j = i; j < r; ++j)
-            if (circuit[i][j] == 1) {
-                b_matrix[i][j] = 1;
-                b_matrix[j][i] = 1;
+    auto temp = graph->adjMatrix();
+    auto orgAdjMat = temp.mat();
+    const auto &nodes = temp.nodes();
+    int nodeCount = orgAdjMat.size();
+
+    // BLOCK 1: Initialize adjacency matrix for spanning tree
+    std::vector<std::vector<int>> treeAdjMat(nodeCount, std::vector<int>(nodeCount, 0));
+    for (int i = 0; i < nodeCount; ++i)
+        for (int j = i; j < nodeCount; ++j)
+            if (orgAdjMat[i][j] == 1) {
+                treeAdjMat[i][j] = 1;
+                treeAdjMat[j][i] = 1;
                 break;
             }
-    std::vector<std::vector<int>> connCmpt;
-    std::vector<bool> visited(r, false);
-    for (int u = 0; u < r; ++u) {
+    // BLOCK 2: Find all connected components
+    /* Example: C = [ [ 1 1 1 0 0 1 ],
+     *                [ 0 0 0 1 0 0 ],
+     *                [ 0 0 0 0 1 0 ] ] */
+    std::vector<std::vector<int>> connComponents;
+    std::vector<bool> visited(nodeCount, false);
+    for (int u = 0; u < nodeCount; ++u) {
         if (visited[u])
             continue;
-        std::vector<int> cmpt(r, 0);
+        std::vector<int> component(nodeCount, 0);
         std::stack<int> s;
         s.push(u);
         while (!s.empty()) {
             int v = s.top();
             visited[v] = true;
-            cmpt[v] = 1;
+            component[v] = 1;
             s.pop();
-            for (int w = 0; w < r; w++)
-                if (b_matrix[v][w] && !visited[w])
+            for (int w = 0; w < nodeCount; w++)
+                if (treeAdjMat[v][w] && !visited[w])
                     s.push(w);
         }
-        connCmpt.push_back(cmpt);
+        connComponents.push_back(component);
     }
-
-    std::unordered_map<int, bool> f;
-    for (auto &cmpt : connCmpt)
-        for (int j = 0; j < r; ++j)
+    // So far, we have constructed a spanning tree. Now let focus on finding cycle bases
+    // BLOCK 3: Here the connected components are amalgamated by adding
+    // appropriate edges to the adjacency matrix B (treeAdjMat)
+    // Example: edges (2,5) and (2,6) are added back to B
+    std::unordered_map<int, bool> edgeAdded;
+    for (auto &cmpt : connComponents)
+        for (int j = 0; j < nodeCount; ++j)
             if (cmpt[j] == 1)
-                for (int k = 0; k < r; k++)
-                    if (circuit[j][k] == 1 && cmpt[k] == 0 && !f[k]) {
-                        b_matrix[k][j] = 1;
-                        b_matrix[j][k] = 1;
-                        f[k] = true;
+                for (int k = 0; k < nodeCount; k++)
+                    if (orgAdjMat[j][k] == 1 && cmpt[k] == 0 && !edgeAdded[k]) {
+                        treeAdjMat[k][j] = 1;
+                        treeAdjMat[j][k] = 1;
+                        edgeAdded[k] = true;
                     }
-    std::list<std::pair<int, int>> eliminated;
-    for (int i = 0; i < r; ++i)
-        for (int j = i; j < r; ++j)
-            if (b_matrix[i][j] != circuit[i][j])
-                eliminated.emplace_back(i, j);
+    // BLOCK 4
+    // Collect all edges eliminated from the original adjacency matrix to build the spanning tree
+    std::list<std::pair<int, int>> eliminatedEdges;
+    for (int i = 0; i < nodeCount; ++i)
+        for (int j = i; j < nodeCount; ++j)
+            if (treeAdjMat[i][j] != orgAdjMat[i][j])
+                eliminatedEdges.emplace_back(i, j);
 
-    for (auto e: eliminated) {
-        visited = std::vector<bool>(r, false);
-        std::vector<int> parents(r, -1);
-        std::list<int> found_cycle;
-        b_matrix[e.first][e.second] = b_matrix[e.second][e.first] = 1;
-        DfsGotliebUtil(b_matrix, e.first, visited, parents, e.first, found_cycle);
-        b_matrix[e.first][e.second] = b_matrix[e.second][e.first] = 0;
+    // FINAL: Iterate through each eliminated edge, try adding it into the matrix B (treeAdjMat)
+    // Then using DFS to check the cycle, the source node is the first node of the edge
+    for (auto edge: eliminatedEdges) {
+        visited = std::vector<bool>(nodeCount, false);
+        std::vector<int> parents(nodeCount, -1);
+        std::list<int> foundCycle;
+        treeAdjMat[edge.first][edge.second] = treeAdjMat[edge.second][edge.first] = 1;
+        DFSCheckCycle(treeAdjMat, edge.first, visited, parents, edge.first, foundCycle);
+        treeAdjMat[edge.first][edge.second] = treeAdjMat[edge.second][edge.first] = 0;
 
-        if (!found_cycle.empty()) {
+        if (!foundCycle.empty()) {
             std::cout << "Found cycle: ";
-            std::list<std::string> curr_res;
-            for (auto v: found_cycle) {
-                std::cout << nodes[v]->name() << " ";
-                curr_res.push_back(nodes[v]->name());
+            std::list<std::string> cycleWithName;
+            for (auto node: foundCycle) {
+                std::cout << nodes[node]->name() << " ";
+                cycleWithName.push_back(nodes[node]->name());
             }
             std::cout << std::endl;
-            result.push_back(curr_res);
+            result.push_back(cycleWithName);
         }
     }
     return result;
