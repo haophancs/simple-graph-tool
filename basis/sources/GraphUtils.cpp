@@ -930,10 +930,12 @@ GraphUtils::spanningTreeDFS(const Graph *graph, const std::string &source) {
 }
 
 void
-DFSCheckCycle(std::vector<std::vector<int>> &adjMat, int u, std::vector<bool> &visited, std::vector<int> &parents,
+DFSCheckCycle(std::vector<std::vector<int>> &adjMat, int u, int par, std::vector<bool> &visited, std::vector<int> &parents,
               int source, std::list<int> &foundCycle) {
     if (visited[u]) {
-        if (u == source)
+        if (u == source) {
+            // cycle found
+            parents[u] = par;
             while (true) {
                 foundCycle.push_back(u);
                 u = parents[u];
@@ -942,13 +944,14 @@ DFSCheckCycle(std::vector<std::vector<int>> &adjMat, int u, std::vector<bool> &v
                     break;
                 }
             }
+        }
         return;
     }
     visited[u] = true;
+    parents[u] = par;
     for (int v = 0; v < adjMat.size(); ++v) {
         if (adjMat[u][v] == 1 && v != parents[u]) {
-            parents[v] = u;
-            DFSCheckCycle(adjMat, v, visited, parents, source, foundCycle);
+            DFSCheckCycle(adjMat, v, u, visited, parents, source, foundCycle);
         }
     }
 }
@@ -1013,7 +1016,6 @@ std::list<std::list<std::string>> GraphUtils::Gotlieb(const Graph *graph) {
         for (int j = i; j < nodeCount; ++j)
             if (treeAdjMat[i][j] != orgAdjMat[i][j])
                 eliminatedEdges.emplace_back(i, j);
-
     // FINAL: Iterate through each eliminated edge, try adding it into the matrix B (treeAdjMat)
     // Then using DFS to check the cycle, the source node is the first node of the edge
     for (auto edge: eliminatedEdges) {
@@ -1021,9 +1023,8 @@ std::list<std::list<std::string>> GraphUtils::Gotlieb(const Graph *graph) {
         std::vector<int> parents(nodeCount, -1);
         std::list<int> foundCycle;
         treeAdjMat[edge.first][edge.second] = treeAdjMat[edge.second][edge.first] = 1;
-        DFSCheckCycle(treeAdjMat, edge.first, visited, parents, edge.first, foundCycle);
+        DFSCheckCycle(treeAdjMat, edge.first, -1, visited, parents, edge.first, foundCycle);
         treeAdjMat[edge.first][edge.second] = treeAdjMat[edge.second][edge.first] = 0;
-
         if (!foundCycle.empty()) {
             std::cout << "Found cycle: ";
             std::list<std::string> cycleWithName;
