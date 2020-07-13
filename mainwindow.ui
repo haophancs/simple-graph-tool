@@ -517,13 +517,6 @@
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="cyclesBtn">
-              <property name="text">
-               <string>Find cycles</string>
-              </property>
-             </widget>
-            </item>
-            <item>
              <widget class="QPushButton" name="bridgesBtn">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
@@ -559,6 +552,13 @@
               </property>
               <property name="text">
                <string>Find minimum spanning tree</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="cyclesBtn">
+              <property name="text">
+               <string>Find independent sets of cycle</string>
               </property>
              </widget>
             </item>
@@ -700,7 +700,6 @@
     <addaction name="actionEuler_Cycle"/>
     <addaction name="actionHamiltonian_Cycle"/>
     <addaction name="separator"/>
-    <addaction name="actionFind_all_cycles"/>
     <addaction name="actionFind_all_bridges"/>
     <addaction name="actionFind_all_Articulation_nodes"/>
     <addaction name="actionFInd_minimum_spanning_tree"/>
@@ -846,7 +845,7 @@
   </action>
   <action name="actionFind_all_cycles">
    <property name="text">
-    <string>Find all cycles</string>
+    <string>Find fundamental sets of cycle</string>
    </property>
   </action>
  </widget>

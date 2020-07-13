@@ -1,19 +1,24 @@
 # Simple Graph Tool
 ## Introduction 
-**Simple Graph Tool** is a free tool visualizing graph theory and supporting weighted directed graph. Adaptation for undirected graph is currently under development
+**Simple Graph Tool** is a free tool visualizing graph theory and supporting 4 types of graph:
+- Weighted - Directed Graph
+- Weighted - Undirected Graph
+- Unweighted - Directed Graph
+- Unweighted - Undirected Graph
 ### Features
-- **Visualization**: Providing graphical visualization of the graph, supports manipulation for nodes and edge, animated demo of algorithms, displays properties of each element of the graph
-- **Matrix Views**: Supporting Adjacent matrix and Incidence matrix
+- **Visualization**: Providing graphical visualization for the graph. Supporting manipulation (create/edit/delete) for nodes and edge, animated demo of algorithms, displaying properties of the graph's elements
+- **Matrix Views**: Displaying Adjacent matrix and Incidence matrix
 ### Common problems supported for demo
 - BFS, DFS
 - Graph coloring
-- Topo Sort algorithm
+- Topological Sorting algorithm
 - Finding all bridges
-- Finding the shortest path
+- Finding the shortest path (Dijkstra, A*)
 - Finding all articulation nodes
 - Finding minimum spanning tree
-- Finding Hamiltonian cycles, and Euler cycles of the graph
-- Finding strongly and weakly connected components of the graph and grouping them
+- Finding independent sets of cycles
+- Finding Hamiltonian cycles, Euler cycles of the graph
+- Finding strongly and weakly connected components of the graph
 ## Building
 ### Dependencies
 - Qt5
