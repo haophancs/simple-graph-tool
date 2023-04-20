@@ -1,4 +1,0 @@
-/Users/haophancs/Desktop/simple-graph-tool/build/CMakeFiles/simple_graph_tool.dir
-/Users/haophancs/Desktop/simple-graph-tool/build/CMakeFiles/edit_cache.dir
-/Users/haophancs/Desktop/simple-graph-tool/build/CMakeFiles/rebuild_cache.dir
-/Users/haophancs/Desktop/simple-graph-tool/build/CMakeFiles/simple_graph_tool_autogen.dir
