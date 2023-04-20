@@ -790,12 +790,15 @@ std::list<std::pair<std::string, int>> GraphUtils::getColoringResult(const Graph
     colors[nodes.front()->name()] = 0;
     for (int i = 1; i < nodes.size(); ++i) {
         std::vector<int> usedColors(nodes.size(), false);
-        for (int j = 0; j < nodes.size(); ++j) {
-            if (i != j && graph->hasEdge(nodes[i]->name(), nodes[j]->name())) {
-                if (colors[nodes[j]->name()] != -1) {
-                    usedColors[colors[nodes[j]->name()]] = true;
-                }
-            } 
+        for (auto& p: graph->edgeSet()) {
+            auto u = p.first.first;
+            auto v = p.first.second;
+            if (v->name() == nodes[i]->name()) {
+                std::swap(u, v);
+            }
+            if (u->name() == nodes[i]->name() && colors[v->name()] != -1) {
+                usedColors[colors[v->name()]] = true;
+            }
         }
         int v_color;
         for (v_color = 0; v_color < nodes.size(); ++ v_color) {
