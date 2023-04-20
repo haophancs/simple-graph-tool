@@ -37,7 +37,7 @@ void GraphGraphicsView::contextMenuEvent(QContextMenuEvent *event) {
             auto node_name = nodeItem->node()->name();
             emit nodeSelected(node_name);
             QMenu menu;
-            menu.addAction("&Set edge to (Select other node by mouse)");
+            menu.addAction("&Set edge");
             menu.addSeparator();
             menu.addAction("&Delete");
             menu.addAction("&Isolate");
