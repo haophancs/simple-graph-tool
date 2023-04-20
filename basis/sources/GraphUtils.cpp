@@ -777,41 +777,37 @@ std::list<std::pair<std::string, int>> GraphUtils::getColoringResult(const Graph
     if (graph->isDirected())
         return res_list;
 
-    auto nodes = graph->nodeList();
-    if (source.empty())
-        source = nodes.front()->name();
-    std::unordered_map<int, bool> available; // available colors
-    std::unordered_map<std::string, int> result; // result: map of pairs { nodeName : _color }
-
-    for (auto &node: nodes)
-        result[node->name()] = -1;
-    result[source] = 0;
-    for (auto u: nodes) {
-        if (u->name() != source) {
-            for (auto v: nodes) {
-                if (graph->hasEdge(u->name(), v->name())) {
-                    if (result[v->name()] != -1)
-                        available[result[v->name()]] = true;
+    auto nodeList = graph->nodeList();
+    auto nodes = std::vector<Node *>(nodeList.begin(), nodeList.end());
+    std::sort(nodes.begin(), nodes.end(), 
+        [](auto const &u, auto const &v) {
+            return u->undirDegree() > v->undirDegree(); 
+    });
+    std::unordered_map<std::string, int> colors;
+    for (auto &node: nodes) {
+        colors[node->name()] = -1;
+    }
+    colors[nodes.front()->name()] = 0;
+    for (int i = 1; i < nodes.size(); ++i) {
+        std::vector<int> usedColors(nodes.size(), false);
+        for (int j = 0; j < nodes.size(); ++j) {
+            if (i != j && graph->hasEdge(nodes[i]->name(), nodes[j]->name())) {
+                if (colors[nodes[j]->name()] != -1) {
+                    usedColors[colors[nodes[j]->name()]] = true;
                 }
-            }
-            int cr;
-            for (cr = 0; cr < graph->countNodes(); cr++) {
-                if (!available[cr])
-                    break;
-            }
-            result[u->name()] = cr;
-            for (auto &v: nodes) {
-                if (graph->hasEdge(v->name(), v->name())) {
-                    if (result[v->name()] != -1)
-                        available[result[v->name()]] = false;
-                }
+            } 
+        }
+        int v_color;
+        for (v_color = 0; v_color < nodes.size(); ++ v_color) {
+            if (!usedColors[v_color]) {
+                break;
             }
         }
+        colors[nodes[i]->name()] = v_color;
     }
-    for (auto &node: nodes) // using for loop because it requires ordering from node 0th to node 0th and result map is unordered
-        res_list.emplace_back(std::make_pair(
-                node->name(),
-                result[node->name()]));
+    for (auto &node: nodeList) {
+        res_list.push_back({node->name(), colors[node->name()]});
+    }
     return res_list;
 }
 

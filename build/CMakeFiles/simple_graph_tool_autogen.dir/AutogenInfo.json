@@ -1,0 +1,321 @@
+{
+	"BUILD_DIR" : "/Users/haophancs/Desktop/simple-graph-tool/build/simple_graph_tool_autogen",
+	"CMAKE_BINARY_DIR" : "/Users/haophancs/Desktop/simple-graph-tool/build",
+	"CMAKE_CURRENT_BINARY_DIR" : "/Users/haophancs/Desktop/simple-graph-tool/build",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/Users/haophancs/Desktop/simple-graph-tool",
+	"CMAKE_EXECUTABLE" : "/usr/local/Cellar/cmake/3.24.2/bin/cmake",
+	"CMAKE_LIST_FILES" : 
+	[
+		"/Users/haophancs/Desktop/simple-graph-tool/CMakeLists.txt",
+		"/Users/haophancs/Desktop/simple-graph-tool/build/CMakeFiles/3.24.2/CMakeSystem.cmake",
+		"/usr/local/Cellar/cmake/3.24.2/share/cmake/Modules/CMakeSystemSpecificInitialize.cmake",
+		"/usr/local/Cellar/cmake/3.24.2/share/cmake/Modules/Platform/Darwin-Initialize.cmake",
+		"/Users/haophancs/Desktop/simple-graph-tool/build/CMakeFiles/3.24.2/CMakeCXXCompiler.cmake",
+		"/usr/local/Cellar/cmake/3.24.2/share/cmake/Modules/CMakeSystemSpecificInformation.cmake",
+		"/usr/local/Cellar/cmake/3.24.2/share/cmake/Modules/CMakeGenericSystem.cmake",
+		"/usr/local/Cellar/cmake/3.24.2/share/cmake/Modules/CMakeInitializeConfigs.cmake",
+		"/usr/local/Cellar/cmake/3.24.2/share/cmake/Modules/Platform/Darwin.cmake",
+		"/usr/local/Cellar/cmake/3.24.2/share/cmake/Modules/Platform/UnixPaths.cmake",
+		"/usr/local/Cellar/cmake/3.24.2/share/cmake/Modules/CMakeCXXInformation.cmake",
+		"/usr/local/Cellar/cmake/3.24.2/share/cmake/Modules/CMakeLanguageInformation.cmake",
+		"/usr/local/Cellar/cmake/3.24.2/share/cmake/Modules/Compiler/AppleClang-CXX.cmake",
+		"/usr/local/Cellar/cmake/3.24.2/share/cmake/Modules/Compiler/Clang.cmake",
+		"/usr/local/Cellar/cmake/3.24.2/share/cmake/Modules/Compiler/CMakeCommonCompilerMacros.cmake",
+		"/usr/local/Cellar/cmake/3.24.2/share/cmake/Modules/Compiler/GNU.cmake",
+		"/usr/local/Cellar/cmake/3.24.2/share/cmake/Modules/Compiler/CMakeCommonCompilerMacros.cmake",
+		"/usr/local/Cellar/cmake/3.24.2/share/cmake/Modules/Platform/Apple-AppleClang-CXX.cmake",
+		"/usr/local/Cellar/cmake/3.24.2/share/cmake/Modules/Platform/Apple-Clang-CXX.cmake",
+		"/usr/local/Cellar/cmake/3.24.2/share/cmake/Modules/Platform/Apple-Clang.cmake",
+		"/usr/local/Cellar/cmake/3.24.2/share/cmake/Modules/CMakeCommonLanguageInclude.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Core/Qt5CoreConfigVersion.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Core/Qt5CoreConfig.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Core/Qt5CoreConfigExtras.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Core/Qt5CoreConfigExtrasMkspecDir.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Core/Qt5CoreMacros.cmake",
+		"/usr/local/Cellar/cmake/3.24.2/share/cmake/Modules/CMakeParseArguments.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Gui/Qt5GuiConfigVersion.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Gui/Qt5GuiConfig.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Gui/Qt5Gui_QCocoaIntegrationPlugin.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Gui/Qt5Gui_QGifPlugin.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Gui/Qt5Gui_QICNSPlugin.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Gui/Qt5Gui_QICOPlugin.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Gui/Qt5Gui_QJpegPlugin.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Gui/Qt5Gui_QMacHeifPlugin.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Gui/Qt5Gui_QMacJp2Plugin.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Gui/Qt5Gui_QMinimalIntegrationPlugin.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Gui/Qt5Gui_QOffscreenIntegrationPlugin.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Gui/Qt5Gui_QPdfPlugin.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Gui/Qt5Gui_QSvgIconPlugin.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Gui/Qt5Gui_QSvgPlugin.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Gui/Qt5Gui_QTgaPlugin.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Gui/Qt5Gui_QTiffPlugin.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Gui/Qt5Gui_QTuioTouchPlugin.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Gui/Qt5Gui_QVirtualKeyboardPlugin.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Gui/Qt5Gui_QWbmpPlugin.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Gui/Qt5Gui_QWebGLIntegrationPlugin.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Gui/Qt5Gui_QWebpPlugin.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Gui/Qt5Gui_QXdgDesktopPortalThemePlugin.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Gui/Qt5GuiConfigExtras.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Widgets/Qt5WidgetsConfigVersion.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Widgets/Qt5WidgetsConfig.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Widgets/Qt5Widgets_QMacStylePlugin.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Widgets/Qt5WidgetsConfigExtras.cmake",
+		"/usr/local/opt/qt@5/lib/cmake/Qt5Widgets/Qt5WidgetsMacros.cmake",
+		"/usr/local/Cellar/cmake/3.24.2/share/cmake/Modules/CMakeParseArguments.cmake"
+	],
+	"CMAKE_SOURCE_DIR" : "/Users/haophancs/Desktop/simple-graph-tool",
+	"DEP_FILE" : "",
+	"DEP_FILE_RULE_NAME" : "",
+	"HEADERS" : 
+	[
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/basis/headers/Edge.h",
+			"MU",
+			"M7UII32HXU/moc_Edge.cpp",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/basis/headers/Graph.h",
+			"MU",
+			"M7UII32HXU/moc_Graph.cpp",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/basis/headers/GraphUtils.h",
+			"MU",
+			"M7UII32HXU/moc_GraphUtils.cpp",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/basis/headers/Matrix.h",
+			"MU",
+			"M7UII32HXU/moc_Matrix.cpp",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/basis/headers/Node.h",
+			"MU",
+			"M7UII32HXU/moc_Node.cpp",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/graphics/headers/EdgeGraphicsItem.h",
+			"MU",
+			"X3OV6BEDEH/moc_EdgeGraphicsItem.cpp",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/graphics/headers/GraphGraphicsScene.h",
+			"MU",
+			"X3OV6BEDEH/moc_GraphGraphicsScene.cpp",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/graphics/headers/GraphGraphicsView.h",
+			"MU",
+			"X3OV6BEDEH/moc_GraphGraphicsView.cpp",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/graphics/headers/NodeGraphicsItem.h",
+			"MU",
+			"X3OV6BEDEH/moc_NodeGraphicsItem.cpp",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/mainwindow.h",
+			"MU",
+			"EWIEGA46WW/moc_mainwindow.cpp",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/utils/qdebugstream.h",
+			"MU",
+			"7HEHEGDA3T/moc_qdebugstream.cpp",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/utils/random.h",
+			"MU",
+			"7HEHEGDA3T/moc_random.cpp",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/widgets/headers/AdjacencyMatrixTable.h",
+			"MU",
+			"626V24SCXU/moc_AdjacencyMatrixTable.cpp",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/widgets/headers/ElementPropertiesTable.h",
+			"MU",
+			"626V24SCXU/moc_ElementPropertiesTable.cpp",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/widgets/headers/GraphOptionDialog.h",
+			"MU",
+			"626V24SCXU/moc_GraphOptionDialog.cpp",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/widgets/headers/GraphPropertiesTable.h",
+			"MU",
+			"626V24SCXU/moc_GraphPropertiesTable.cpp",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/widgets/headers/IncidenceMatrixTable.h",
+			"MU",
+			"626V24SCXU/moc_IncidenceMatrixTable.cpp",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/widgets/headers/MultiComboboxDialog.h",
+			"MU",
+			"626V24SCXU/moc_MultiComboboxDialog.cpp",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/widgets/headers/MultiLineInputDialog.h",
+			"MU",
+			"626V24SCXU/moc_MultiLineInputDialog.cpp",
+			null
+		]
+	],
+	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
+	"INCLUDE_DIR" : "/Users/haophancs/Desktop/simple-graph-tool/build/simple_graph_tool_autogen/include",
+	"MOC_COMPILATION_FILE" : "/Users/haophancs/Desktop/simple-graph-tool/build/simple_graph_tool_autogen/mocs_compilation.cpp",
+	"MOC_DEFINITIONS" : [ "QT_CORE_LIB", "QT_GUI_LIB", "QT_NO_DEBUG", "QT_WIDGETS_LIB" ],
+	"MOC_DEPEND_FILTERS" : 
+	[
+		[
+			"Q_PLUGIN_METADATA",
+			"[\n][ \t]*Q_PLUGIN_METADATA[ \t]*\\([^\\)]*FILE[ \t]*\"([^\"]+)\""
+		]
+	],
+	"MOC_INCLUDES" : 
+	[
+		"/Users/haophancs/Desktop/simple-graph-tool/build",
+		"/Users/haophancs/Desktop/simple-graph-tool",
+		"/Users/haophancs/Desktop/simple-graph-tool",
+		"/usr/local/opt/qt@5/lib/QtCore.framework",
+		"/usr/local/opt/qt@5/lib/QtCore.framework/Headers",
+		"/usr/local/opt/qt@5/mkspecs/macx-clang",
+		"/usr/local/opt/qt@5/lib/QtWidgets.framework",
+		"/usr/local/opt/qt@5/lib/QtWidgets.framework/Headers",
+		"/usr/local/opt/qt@5/lib/QtGui.framework",
+		"/usr/local/opt/qt@5/lib/QtGui.framework/Headers",
+		"/Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk/System/Library/Frameworks/OpenGL.framework/Headers",
+		"/Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk/usr/include/c++/v1",
+		"/Library/Developer/CommandLineTools/usr/lib/clang/14.0.3/include",
+		"/Library/Developer/CommandLineTools/SDKs/MacOSX13.3.sdk/usr/include",
+		"/Library/Developer/CommandLineTools/usr/include"
+	],
+	"MOC_MACRO_NAMES" : [ "Q_OBJECT", "Q_GADGET", "Q_NAMESPACE", "Q_NAMESPACE_EXPORT" ],
+	"MOC_OPTIONS" : [],
+	"MOC_PATH_PREFIX" : false,
+	"MOC_PREDEFS_CMD" : 
+	[
+		"/Library/Developer/CommandLineTools/usr/bin/c++",
+		"-dM",
+		"-E",
+		"-c",
+		"/usr/local/Cellar/cmake/3.24.2/share/cmake/Modules/CMakeCXXCompilerABI.cpp"
+	],
+	"MOC_PREDEFS_FILE" : "/Users/haophancs/Desktop/simple-graph-tool/build/simple_graph_tool_autogen/moc_predefs.h",
+	"MOC_RELAXED_MODE" : false,
+	"MOC_SKIP" : [],
+	"MULTI_CONFIG" : false,
+	"PARALLEL" : 6,
+	"PARSE_CACHE_FILE" : "/Users/haophancs/Desktop/simple-graph-tool/build/CMakeFiles/simple_graph_tool_autogen.dir/ParseCache.txt",
+	"QT_MOC_EXECUTABLE" : "/usr/local/opt/qt@5/bin/moc",
+	"QT_UIC_EXECUTABLE" : "/usr/local/opt/qt@5/bin/uic",
+	"QT_VERSION_MAJOR" : 5,
+	"QT_VERSION_MINOR" : 15,
+	"SETTINGS_FILE" : "/Users/haophancs/Desktop/simple-graph-tool/build/CMakeFiles/simple_graph_tool_autogen.dir/AutogenUsed.txt",
+	"SOURCES" : 
+	[
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/basis/sources/Graph.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/basis/sources/GraphUtils.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/basis/sources/Node.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/graphics/sources/EdgeGraphicsItem.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/graphics/sources/GraphGraphicsScene.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/graphics/sources/GraphGraphicsView.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/graphics/sources/NodeGraphicsItem.cpp",
+			"MU",
+			null
+		],
+		[ "/Users/haophancs/Desktop/simple-graph-tool/main.cpp", "MU", null ],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/mainwindow.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/widgets/sources/AdjacencyMatrixTable.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/widgets/sources/ElementPropertiesTable.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/widgets/sources/GraphOptionDialog.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/widgets/sources/GraphPropertiesTable.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/widgets/sources/IncidenceMatrixTable.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/widgets/sources/MultiComboboxDialog.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/haophancs/Desktop/simple-graph-tool/widgets/sources/MultiLineInputDialog.cpp",
+			"MU",
+			null
+		]
+	],
+	"UIC_OPTIONS" : [],
+	"UIC_SEARCH_PATHS" : [],
+	"UIC_SKIP" : [],
+	"UIC_UI_FILES" : [],
+	"VERBOSITY" : 0
+}
