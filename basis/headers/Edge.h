@@ -40,5 +40,32 @@ namespace GraphType {
         const NodePair &_nodePair{};
         const int &_weight{};
     };
+
+    typedef std::unordered_map<Node*, int> EdgeCircleSet; // Name for an unordered map with Node key and int values
+
+    // Structure definition for circle Edge
+    struct EdgeCircle{
+
+        EdgeCircle(Node* source, int &w) : _source(source), _weight(w) {}
+
+        explicit EdgeCircle(EdgeCircleSet::iterator &it) : _source(it->first), _weight(it->second) {}
+
+        explicit EdgeCircle(EdgeCircleSet::const_iterator &it) : _source(it->first), _weight(it->second) {}
+
+        Node *u() const { return _source; }
+
+        int weight() const { return _weight; }
+
+        QPointF euclidePos() const { return this->_euclidePos; }
+
+        void setEuclidePos(const QPointF &pos) { this->_euclidePos = pos; }
+
+    private:
+        QPointF _euclidePos;
+
+        Node *_source;
+        const int &_weight;
+    };
+
 }
 #endif

@@ -67,4 +67,60 @@ private:
     QPainterPath _path;
 };
 
+
+class EdgeGraphicsItemCircle : public QObject, public QGraphicsItem {
+    Q_OBJECT
+public:
+    enum {
+        Type = UserType + 6
+    };
+
+    static QColor defaultColor();
+
+    static QColor defaultOnSelectedColor();
+
+    EdgeGraphicsItemCircle(GraphGraphicsScene *scene, NodeGraphicsItem *sourceItem,GraphType::EdgeCircle *edge,
+                           QColor color = defaultColor(),
+                           QGraphicsItem *parent = nullptr);
+
+    int type() const override { return Type; }
+
+    QRectF boundingRect() const override;
+
+    std::string source() const;
+
+    int weight() const;
+
+    void setOnSelectedColor(QColor color);
+
+    QColor onSelectedColor() const { return this->_onSelectedColor; }
+
+
+    int radius() const { return this->_radius; }
+    void setCircle(GraphType::EdgeCircle *edge);
+
+public slots:
+    void updatePosition();
+
+protected:
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+
+    void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+
+
+private:
+    GraphGraphicsScene *_gscene;
+    NodeGraphicsItem *_sourceItem;
+
+    GraphType::EdgeCircle *_edgeCircle{};
+
+    QColor _color;
+    QColor _onSelectedColor;
+    int _radius;
+    int _fontSize = 25;
+
+    // Calculate arrow head points based on the circle position and arrow head size
+    QPolygonF calculateArrowHead(qreal arrowHeadSize);
+};
+
 #endif // EDGEGRAPHICSITEM_H

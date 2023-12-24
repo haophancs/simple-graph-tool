@@ -79,6 +79,14 @@ public:
     static std::list<std::list<std::string>> displayAllCycles(const Graph *graph);
 
     static std::list<std::list<std::string>> Gotlieb(const Graph *graph);
+
+    static std::unordered_map<std::pair<std::string, std::string>, std::string> getEdgeColoringResultUn(const GraphType::Graph* graph, std::string source = "");
+
+    static std::list<std::pair<std::pair<std::string, std::string>, std::string>> displayEdgeColoringUn(const GraphType::Graph* graph, std::string source = "");
+
+    static std::unordered_map<std::string, int> shortestPath(const Graph *graph, const std::string &startNode);
+
+    static std::list<std::string> shortestPathToTargetTopoSort(const Graph *graph, const std::string &startNode, const std::string &targetNode);
 };
 
 #endif

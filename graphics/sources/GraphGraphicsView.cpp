@@ -33,6 +33,7 @@ void GraphGraphicsView::contextMenuEvent(QContextMenuEvent *event) {
 
         auto *edgeItem = dynamic_cast<EdgeGraphicsItem *>(item);
         auto *nodeItem = dynamic_cast<NodeGraphicsItem *>(item);
+        auto *circleItem = dynamic_cast<EdgeGraphicsItemCircle *>(item);
         if (nodeItem) {
             auto node_name = nodeItem->node()->name();
             emit nodeSelected(node_name);
@@ -95,6 +96,19 @@ void GraphGraphicsView::contextMenuEvent(QContextMenuEvent *event) {
                    emit edgeSet(edgeItem->edge().u()->name(), edgeItem->edge().v()->name());
             }
         }
+        else if (circleItem) {
+            QMenu menu;
+            menu.addAction("&Delete");
+            menu.addAction("Adjust &weight");
+            emit edgeCircleSelected(circleItem->source());
+            QAction *act = menu.exec(event->globalPos());
+            if (act != nullptr) {
+                if (act->text() == "&Delete")
+                    emit edgeCircleRemoved(circleItem->source());
+                if (act->text() == "Adjust &weight")
+                    emit edgeCircleSet(circleItem->source());
+            }
+        }
     } else {
         if (!scene()->selectedItems().empty())
             scene()->selectedItems()[0]->setSelected(false);
@@ -115,6 +129,10 @@ void GraphGraphicsView::mousePressEvent(QMouseEvent *event) {
     for (auto si: scene()->selectedItems()) {
         auto ni = dynamic_cast<NodeGraphicsItem *>(si);
         if (ni) ni->setOnSelectedColor(NodeGraphicsItem::defaultOnSelectedColor());
+        auto ci = dynamic_cast<EdgeGraphicsItemCircle *>(si);
+        if(ci){
+            ci->setOnSelectedColor(EdgeGraphicsItemCircle::defaultOnSelectedColor());
+        }
         else {
             auto ai = dynamic_cast<EdgeGraphicsItem *>(si);
             if (ai) ai->setOnSelectedColor(EdgeGraphicsItem::defaultOnSelectedColor());
@@ -149,8 +167,11 @@ void GraphGraphicsView::mouseReleaseEvent(QMouseEvent *event) {
     if (!scene()->selectedItems().empty()) {
         auto fni = dynamic_cast<NodeGraphicsItem *>(scene()->selectedItems()[0]);
         auto fai = dynamic_cast<EdgeGraphicsItem *>(scene()->selectedItems()[0]);
+        auto fci = dynamic_cast<EdgeGraphicsItemCircle *>(scene()->selectedItems()[0]);
+        if(fci) emit edgeCircleSelected(fci->source());
         if (fai) emit edgeSelected(fai->edge().u()->name(), fai->edge().v()->name());
         else if (fni) emit nodeSelected(fni->node()->name());
+
     }
     if (items(event->pos()).empty())
             emit unSelected();

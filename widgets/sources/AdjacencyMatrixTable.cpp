@@ -128,10 +128,10 @@ void AdjacencyMatrixTable::reload() {
                                              QString::fromStdString(_adj->node(j)->name()));
             }
             this->item(i, j)->setTextAlignment(Qt::AlignCenter);
-            if (this->_graph->isUndirected() && j < i)
-                this->item(i, j)->setFlags(Qt::ItemIsEditable);
+            //if (this->_graph->isUndirected() && j < i)
+                //this->item(i, j)->setFlags(Qt::ItemIsEditable);
         }
-        this->item(i, i)->setFlags(Qt::ItemIsEditable);
+        //this->item(i, i)->setFlags(Qt::ItemIsEditable);
     }
     connect(this, SIGNAL(cellChanged(int, int)), this, SLOT(adjustCell(int, int)));
 }

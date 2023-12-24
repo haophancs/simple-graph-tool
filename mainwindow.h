@@ -59,6 +59,10 @@ private slots:
 
     void on_coloringBtn_clicked();
 
+    void on_shortestPathTopo_clicked();
+
+    void on_edgeColoringBtn_clicked();
+
     void on_cyclesBtn_clicked();
 
     void on_connectedComponentsBtn_clicked();
@@ -120,6 +124,8 @@ signals:
     void startDemoAlgorithm(std::list<std::string> listOfNum, GraphDemoFlag flag);
 
     void startDemoAlgorithm(std::list<std::list<std::string>> listOfList, GraphDemoFlag flag);
+
+    void startDemoEdgeUn(const std::list<std::pair<std::pair<std::string, std::string>, std::string>>& listOfPairToDemo, const std::map<std::string, QColor>& colorMap);
 
 protected:
     void closeEvent(QCloseEvent *event) override;

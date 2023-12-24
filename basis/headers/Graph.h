@@ -21,6 +21,7 @@ namespace GraphType {
     protected:
         EdgeSet _edgeSet;
         std::unordered_set<Node> _nodeSet;
+        EdgeCircleSet _edgeCircleSet; // Set of circle edges in the graph
         std::list<Node *> _cachedNodeList;
         const bool _directed;
         const bool _weighted;
@@ -78,6 +79,8 @@ namespace GraphType {
 
         const EdgeSet &edgeSet() const { return this->_edgeSet; }
 
+        const EdgeCircleSet& edgeCircleSet() const { return this->_edgeCircleSet; }
+
         std::list<Node *> nodeList() const { return this->_cachedNodeList; }
 
         inline int countNodes() const { return this->_nodeSet.size(); }
@@ -111,6 +114,34 @@ namespace GraphType {
         Edge edge(Node *u, Node *v) const;
 
         Edge edge(const std::string &uname, const std::string &vname) const;
+
+        EdgeCircle edgeCircle(const std::string& uname) const {
+            auto it = _edgeCircleSet.find({node(uname)});
+            return EdgeCircle(it);
+        }
+
+        bool setEdgeCircle(Node *u, int w);
+
+        bool setEdgeCircle(const std::string &uname, int w);
+
+        bool removeEdgeCircle(Node *u);
+
+        bool removeEdgeCircle(const std::string &uname);
+
+        inline bool hasEdgeCircle(Node *u) const { return _edgeCircleSet.find(u) != _edgeCircleSet.end();}
+
+        inline bool hasEdgeCircle(const std::string &uname) const {
+            return hasEdgeCircle(node(uname));
+        }
+
+        int weightCircle(Node *u) const;
+
+        int weightCircle(const std::string &uname) const;
+
+        void clearEdgesCircle() { this->_edgeCircleSet.clear(); }
+
+        bool delC(Node* node);
+        bool delC(const std::string &uname);
 
     private:
         bool hasDirectedEdge(Node *u, Node *v) const;

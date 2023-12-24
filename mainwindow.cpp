@@ -10,6 +10,7 @@
 #include <widgets/headers/GraphOptionDialog.h>
 #include "utils/qdebugstream.h"
 
+
 MainWindow::MainWindow(QWidget *parent) :
         QMainWindow(parent),
         _ui(new Ui::MainWindow) {
@@ -77,6 +78,8 @@ MainWindow::MainWindow(QWidget *parent) :
             SLOT(demoAlgorithm(std::list<std::string>, GraphDemoFlag)));
     connect(this, SIGNAL(startDemoAlgorithm(std::list<std::pair<std::string, std::string> >, GraphDemoFlag)), _scene,
             SLOT(demoAlgorithm(std::list<std::pair<std::string, std::string> >, GraphDemoFlag)));
+    connect(this, SIGNAL(startDemoEdgeUn(const std::list<std::pair<std::pair<std::string, std::string>, std::string>>&, const std::map<std::string, QColor>&)),
+            _scene, SLOT(demoEdgeColoringUn(const std::list<std::pair<std::pair<std::string, std::string>, std::string>>&, const std::map<std::string, QColor>&)));
 
     connect(_view, &GraphGraphicsView::nodeAdded, this, [this](QPointF pos, bool auto_naming) {
         if (!auto_naming) {
@@ -180,6 +183,7 @@ MainWindow::MainWindow(QWidget *parent) :
         QRegExp re("[a-zA-Z0-9]{1,30}");
         auto new_name = QInputDialog::getText(this, "Rename node", "Name: ", QLineEdit::Normal,
                                               QString::fromStdString(_graph->nextNodeName()), &ok);
+
         if (ok) {
             if (!re.exactMatch(new_name)) {
                 QMessageBox::critical(this, "Error",
@@ -195,6 +199,25 @@ MainWindow::MainWindow(QWidget *parent) :
             }
         }
     });
+    connect(_view, &GraphGraphicsView::edgeCircleRemoved, this, [this](const std::string& uname) {
+        if (this->_graph->removeEdgeCircle(uname)){
+            _graph->delC(uname);
+            emit graphChanged();
+        }
+    });
+    connect(_view, &GraphGraphicsView::edgeCircleSet, this, [this](const std::string& uname) {
+        bool ok{};
+        int defaultValue = _graph->hasEdgeCircle(uname) ? _graph->weightCircle(uname) : 1;
+        int w = QInputDialog::getInt(this, tr("Set weight for edge(")
+                                               + QString::fromStdString(_graph->node(uname)->name())
+                                               + tr(")"),
+                                     "0 <= weight < " + QString::number(INT_MAX),
+                                     defaultValue, 1, INT_MAX, 1, &ok);
+        if (ok && this->_graph->setEdgeCircle(uname, w))
+            emit graphChanged();
+    });
+
+
 
     _ui->adjMatLayout->addWidget(this->_adjMatrix, 0, Qt::AlignCenter);
     _ui->incMatLayout->addWidget(this->_incidenceMatrix, 0, Qt::AlignCenter);
@@ -720,3 +743,62 @@ void MainWindow::on_tabWidget_currentChanged(int index) {
     _elementPropertiesTable->onUnSelected();
 }
 
+void MainWindow::on_edgeColoringBtn_clicked() {
+
+    _ui->consoleText->clear();
+
+    QDebugStream qout(std::cout, _ui->consoleText);
+
+    auto result1 = GraphUtils::displayEdgeColoringUn(_graph);
+
+    // Create a color map
+    std::map<std::string, QColor> colorMap;
+
+    int colorIndex = 0;
+    for (const auto& edge : result1) {
+        const std::string& edgeId = edge.first.first + "_" + edge.first.second;
+        const QColor& color = EdgeGraphicsItem::colorTable().at(colorIndex % EdgeGraphicsItem::colorTable().size());
+        colorMap[edgeId] = color;
+        colorIndex++;
+    }
+
+    emit startDemoEdgeUn(result1, colorMap);
+}
+void MainWindow::on_shortestPathTopo_clicked()
+{
+    _ui->consoleText->clear();
+    QDebugStream qout(std::cout, _ui->consoleText);
+    bool ok{};
+    QList<QString> labels;
+    labels.append("From node: ");
+    labels.append("To node: ");
+    QList<QString> reply = MultiLineInputDialog::getStrings(this, "Find shortest path", labels, &ok);
+    if (ok) {
+        if (reply[0].trimmed().isNull() || reply[1].trimmed().isNull())
+            return;
+        auto startNode = _graph->node(reply[0].toStdString());
+        auto endNode = _graph->node(reply[1].toStdString());
+        if (!_graph->hasNode(startNode)) {
+            QMessageBox::critical(this, "Error", tr("No node named ") + reply[0]);
+            return;
+        }
+        if (!_graph->hasNode(endNode)) {
+            QMessageBox::critical(this, "Error", tr("No node named ") + reply[1]);
+            return;
+        }
+
+
+        if(!_graph->edgeSet().empty() && _graph->edgeCircleSet().empty()){
+            std::unordered_map<std::string, int> resultToEachNode = GraphUtils::shortestPath(_graph,startNode->name());
+
+            auto resultToTar = GraphUtils::shortestPathToTargetTopoSort(_graph, startNode->name(), endNode->name());
+
+
+            emit startDemoAlgorithm(resultToTar, GraphDemoFlag::EdgeAndNode);
+
+            auto resultToConsole = GraphUtils::Dijkstra(_graph, startNode->name(), endNode->name());
+        }
+
+    }
+
+}
