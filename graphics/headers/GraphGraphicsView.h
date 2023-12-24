@@ -67,6 +67,12 @@ signals:
     void edgeSet(std::string uname, std::string vname);
 
     void needRefresh();
+
+    void edgeCircleAddedFrom(std::string name);
+    void edgeCircleSelected(std::string uname);
+    void edgeCircleRemoved(std::string uname);
+    void edgeCircleAdded();
+    void edgeCircleSet(std::string uname);
 };
 
 #endif // GRAPHGRAPHICSVIEW_H

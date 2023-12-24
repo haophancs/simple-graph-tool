@@ -44,6 +44,8 @@ public slots:
 
     void demoAlgorithm(const std::list<std::list<std::string>> &listOfListToDemo, GraphDemoFlag flag);
 
+    void demoEdgeColoringUn(const std::list<std::pair<std::pair<std::string, std::string>, std::string>>& listOfPairToDemo, const std::map<std::string, QColor>& colorMap);
+
 signals:
 
     void graphChanged();
@@ -69,6 +71,10 @@ private:
     int _interval;
 
     void resetAfterDemoAlgo();
+
+    std::unordered_map<std::string, EdgeGraphicsItemCircle *> _edgeItemsCircle;
+
+    EdgeGraphicsItemCircle *edgeItemCircle(const std::string& uname);
 };
 
 #endif // GRAPHGRAPHICSSCENE_H

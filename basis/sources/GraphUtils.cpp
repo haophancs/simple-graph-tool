@@ -1037,3 +1037,183 @@ std::list<std::list<std::string>> GraphUtils::Gotlieb(const Graph *graph) {
     }
     return result;
 }
+
+
+// Color edges
+std::unordered_map<std::pair<std::string, std::string>, std::string> GraphUtils::getEdgeColoringResultUn(const GraphType::Graph* graph, std::string source) {
+    std::unordered_map<std::pair<std::string, std::string>, std::string> result;
+    std::unordered_map<std::string, std::unordered_set<std::string>> neighborColors;
+    std::unordered_map<std::string, int> nodeDegree;
+
+
+    // Helper function to check if an edge is a loop (self-loop)
+    auto isLoop = [](const std::string& u, const std::string& v) -> bool {
+        return u == v;
+    };
+
+    // Count the degree of each node for sorting the edges
+    for (const auto& node : graph->nodeList()) {
+       // nodeDegree[node->name()] = node->degree();
+        nodeDegree[node->name()] = node->undirDegree();
+    }
+
+    // Store edges without duplication and ignoring self-loops
+    std::unordered_set<std::string> processedEdges;
+
+    for (const auto& node : graph->nodeList()) {
+        const std::string& u = node->name();
+        for (const auto& neighbor : node->neighbors()) {
+            const std::string& v = neighbor->name();
+
+            if (!processedEdges.count(u + v) && !processedEdges.count(v + u) && !isLoop(u, v)) {
+                processedEdges.insert(u + v);
+                processedEdges.insert(v + u);
+                result[{u, v}] = ""; // Initialize the edge coloring as empty
+            }
+        }
+    }
+
+    // Sort edges by node degree (descending order) for better edge coloring efficiency
+    std::vector<std::pair<std::pair<std::string, std::string>, int>> sortedEdges;
+    for (const auto& edge : result) {
+        const std::string& u = edge.first.first;
+        const std::string& v = edge.first.second;
+        sortedEdges.push_back({ {u, v}, std::max(nodeDegree[u], nodeDegree[v]) });
+    }
+
+    std::sort(sortedEdges.begin(), sortedEdges.end(), [](const auto& a, const auto& b) {
+        return a.second > b.second;
+    });
+
+    // Backtracking function for edge coloring
+    std::function<bool(int)> colorEdges = [&](int idx) -> bool {
+        if (idx == sortedEdges.size()) {
+            return true; // All edges are colored
+        }
+
+        const std::string& u = sortedEdges[idx].first.first;
+        const std::string& v = sortedEdges[idx].first.second;
+
+        for (int color = 1; color <= static_cast<int>(sortedEdges.size()) + 1; color++) {
+
+            if (neighborColors[u].count(std::to_string(color)) == 0 && neighborColors[v].count(std::to_string(color)) == 0) {
+                result[{u, v}] = std::to_string(color);
+                result[{v, u}] = std::to_string(color);
+                neighborColors[u].insert(std::to_string(color));
+                neighborColors[v].insert(std::to_string(color));
+
+                if (colorEdges(idx + 1)) {
+                    return true; // Continue coloring the next edge
+                }
+
+                // Backtrack and try a different color for the current edge
+                result.erase({u, v});
+                result.erase({v, u});
+                neighborColors[u].erase(std::to_string(color));
+                neighborColors[v].erase(std::to_string(color));
+            }
+        }
+
+        return false; // All color options exhausted for the current edge
+    };
+
+    colorEdges(0); // Start coloring from the first edge
+
+    return result;
+}
+
+std::list<std::pair<std::pair<std::string, std::string>, std::string>> GraphUtils::displayEdgeColoringUn(const GraphType::Graph* graph, std::string source) {
+    auto result = getEdgeColoringResultUn(graph, std::move(source));
+    std::list<std::pair<std::pair<std::string, std::string>, std::string>> resultToSent;
+
+    std::cout << "Edge Coloring of the graph: " << std::endl;
+    for (const auto& it : result) {
+        const std::pair<std::string, std::string>& edge = it.first;
+        const std::string& color = it.second;
+        if (graph->hasEdge(edge.first, edge.second)   && edge.first != edge.second ) {
+            std::cout << "Edge (" << edge.first << ", " << edge.second << ") ---> Color " << color << std::endl;
+            resultToSent.emplace_back(edge, std::to_string(std::stoi(color) + 1));
+        }
+    }
+    return resultToSent;
+}
+
+// To each node ( shortest path using topo sort )
+std::unordered_map<std::string, int> GraphUtils::shortestPath(const Graph *graph, const std::string &startNode) {
+    std::list<std::string> topologicalOrder = getTopoSortResult(graph);
+    std::unordered_map<std::string, int> distance;
+
+    // Initialize distances to all nodes as infinity, except for the start node.
+    for (const auto &node : graph->nodeList()) {
+        distance[node->name()] = (node->name() == startNode) ? 0 : std::numeric_limits<int>::max();
+    }
+
+    // Iterate through the nodes in topological order and update distances.
+    for (const std::string &node : topologicalOrder) {
+        for (auto &adjNode : graph->node(node)->neighbors()) {
+
+            // Calculate the dist
+            if(graph->hasEdge(node, adjNode->name())){
+                int newDistance = distance[node] + graph->edge(node, adjNode->name()).weight();
+                if (newDistance < distance[adjNode->name()]) {
+                    distance[adjNode->name()] = newDistance;
+                }
+            }
+        }
+    }
+
+    for(auto &it : distance){
+        std::cout << it.first << " : " << it.second << " ";
+    }
+    std::cout << std::endl;
+
+    return distance;
+}
+
+std::list<std::string> GraphUtils::shortestPathToTargetTopoSort(const Graph *graph, const std::string &startNode, const std::string &targetNode) {
+    std::list<std::string> topologicalOrder = getTopoSortResult(graph);
+    std::unordered_map<std::string, int> distance;
+    std::unordered_map<std::string, std::string> previous; // To track the previous node in the shortest path.
+
+    // Initialize distances to all nodes as infinity, except for the start node.
+    for (const auto &node : graph->nodeList()) {
+        distance[node->name()] = (node->name() == startNode) ? 0 : std::numeric_limits<int>::max();
+    }
+
+    // Iterate through the nodes in topological order and update distances.
+    for (const std::string &node : topologicalOrder) {
+        for (auto &adjNode : graph->node(node)->neighbors()) {
+            if (graph->hasEdge(node, adjNode->name())) {
+                int newDistance = distance[node] + graph->edge(node, adjNode->name()).weight();
+                if (newDistance < distance[adjNode->name()]) {
+                    distance[adjNode->name()] = newDistance;
+                    previous[adjNode->name()] = node;
+                }
+            }
+        }
+    }
+
+    // Now, we can reconstruct the shortest path from the target node to the start node.
+    std::list<std::string> shortestPath;
+    std::string currentNode = targetNode;
+
+    while (currentNode != startNode) {
+        shortestPath.push_back(currentNode);
+        if (previous.find(currentNode) != previous.end()) {
+            currentNode = previous[currentNode];
+        } else {
+            // If there's no path from startNode to targetNode, return an empty vector.
+            return std::list<std::string>();
+        }
+    }
+
+    // Add the start node to the path.
+    shortestPath.push_back(startNode);
+
+    // Reverse the path to get it in the correct order (start to target).
+    std::reverse(shortestPath.begin(), shortestPath.end());
+
+    return shortestPath;
+}
+
+

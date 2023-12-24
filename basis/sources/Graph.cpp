@@ -36,12 +36,16 @@ Graph::Graph(const Graph &obj) :
     for (auto it = obj.edgeSet().begin(); it != obj.edgeSet().end(); ++it) {
         this->setEdge(Edge(it).u()->name(), Edge(it).v()->name(), Edge(it).weight());
     }
+    for (auto it = obj.edgeCircleSet().begin(); it != obj.edgeCircleSet().end(); ++it) {
+        this->setEdgeCircle(EdgeCircle(it).u()->name(), EdgeCircle(it).weight());
+    }
 }
 
 void Graph::clear() {
     this->_nodeSet.clear();
     this->_edgeSet.clear();
     this->_cachedNodeList.clear();
+    this->_edgeCircleSet.clear();
 }
 
 Graph Graph::readFromFile(const std::string &file) {
@@ -130,13 +134,22 @@ bool Graph::removeNode(const std::string &name) {
 bool Graph::isolateNode(Node *node) {
     if (!hasNode(node))
         return false;
-    std::list<Edge> cachedEdges;
+    std::list<Edge> cachedArcs;
     for (auto it = edgeSet().begin(); it != edgeSet().end(); ++it) {
         if (Edge(it).u() == node || Edge(it).v() == node)
-            cachedEdges.emplace_back(Edge(it));
+            cachedArcs.emplace_back(Edge(it));
     }
-    for (auto &edge: cachedEdges)
+    for (auto &edge: cachedArcs)
         removeEdge(edge.u(), edge.v());
+
+    std::list<EdgeCircle> cachedArcsC;
+    for (auto it = edgeCircleSet().begin(); it != edgeCircleSet().end(); ++it) {
+        if (EdgeCircle(it).u() == node)
+            cachedArcsC.emplace_back(EdgeCircle(it));
+    }
+    for (auto &edge: cachedArcsC)
+        removeEdgeCircle(edge.u());
+
     return true;
 }
 
@@ -147,11 +160,17 @@ bool Graph::isolateNode(const std::string &name) {
 bool Graph::setNodeName(Node *node, const std::string &new_name) {
     if (!hasNode(node) || hasNode(new_name) || node->name() == new_name)
         return false;
-    std::list<Edge> cachedEdges;
+    std::list<Edge> cachedArcs;
     for (auto it = edgeSet().begin(); it != edgeSet().end(); ++it) {
         auto edge = Edge(it);
         if (edge.u() == node || edge.v() == node)
-            cachedEdges.emplace_back(edge);
+            cachedArcs.emplace_back(edge);
+    }
+    std::list<EdgeCircle> cachedArcsC;
+    for (auto it = edgeCircleSet().begin(); it != edgeCircleSet().end(); ++it) {
+        auto edge = EdgeCircle(it);
+        if (edge.u() == node)
+            cachedArcsC.emplace_back(edge);
     }
     addNode(Node(new_name, node->euclidePos()));
     for (auto it = edgeSet().begin(); it != edgeSet().end(); ++it) {
@@ -162,6 +181,7 @@ bool Graph::setNodeName(Node *node, const std::string &new_name) {
             setEdge(edge.u()->name(), new_name, edge.weight());
     }
     removeNode(node);
+
     return true;
 }
 
@@ -185,9 +205,12 @@ bool Graph::setEdge(Node *u, Node *v, int w) {
     if (w == _invalidValue)
         return removeEdge(u, v);
 
-    if (u == v || !hasNode(u) || !hasNode(v)
+    if ( !hasNode(u) || !hasNode(v)
         || w < _weightRange.first || w > _weightRange.second)
         return false;
+    if(u == v){
+        setEdgeCircle(u,w);
+    }
 
     if (hasDirectedEdge(u, v))
         _edgeSet.at({u, v}) = w;
@@ -198,9 +221,15 @@ bool Graph::setEdge(Node *u, Node *v, int w) {
         if (_directed) {
             u->incNegDegree();
             v->incPosDegree();
+
+            u->addNeighbor(v);
+            v->addNeighbor(u);
         } else {
             u->incUndirDegree();
             v->incUndirDegree();
+
+            u->addNeighbor(v);
+            v->addNeighbor(u);
         }
     }
     return true;
@@ -215,22 +244,34 @@ bool Graph::setEdge(const std::string &uname, const std::string &vname) {
 }
 
 bool Graph::removeEdge(Node *u, Node *v) {
-    if (u == v || !hasNode(u) || !hasNode(v))
+    if (!hasNode(u) || !hasNode(v))
         return false;
+    if(u==v){
+        removeEdgeCircle(u);
+    }
     if (hasDirectedEdge(u, v)) {
         _edgeSet.erase({u, v});
         if (_directed) {
             u->decNegDegree();
             v->decPosDegree();
+
+            u->removeNeighbor(v);
+            v->removeNeighbor(u);
         } else {
             u->decUndirDegree();
             v->decUndirDegree();
+
+            u->removeNeighbor(v);
+            v->removeNeighbor(u);
         }
         return true;
     } else if (!_directed && hasDirectedEdge(v, u)) {
         _edgeSet.erase({v, u});
         u->decUndirDegree();
         v->decUndirDegree();
+
+        u->removeNeighbor(v);
+        v->removeNeighbor(u);
     }
     return false;
 }
@@ -246,6 +287,7 @@ Graph Graph::transpose() const {
         transposed_graph.addNode(node->name());
     for (auto it = edgeSet().begin(); it != edgeSet().end(); ++it)
         transposed_graph.setEdge(Edge(it).v()->name(), Edge(it).u()->name(), Edge(it).weight());
+
     return transposed_graph;
 }
 
@@ -292,3 +334,68 @@ namespace GraphType {
         return out;
     }
 }
+    int Graph::weightCircle(Node *u) const {
+        if (!hasEdgeCircle(u))
+            return INT_MAX;
+        return _edgeCircleSet.at({u});
+    }
+
+    int Graph::weightCircle(const std::string &uname) const {
+        return weightCircle(node(uname));
+    }
+
+    bool Graph::setEdgeCircle(Node *u, int w) {
+        if (hasEdgeCircle(u))
+            _edgeCircleSet.at(u) = w;
+        else {
+            _edgeCircleSet.insert({u, w});
+        }
+        return true;
+    }
+
+    bool Graph::setEdgeCircle(const std::string &uname, int w) {
+        return setEdgeCircle(node(uname), w);
+    }
+
+    bool Graph::delC(Node* node){
+        if (!hasNode(node))
+            return false;
+
+        std::list<EdgeCircle> cachedArcsC;
+        for (auto it = edgeCircleSet().begin(); it != edgeCircleSet().end(); ++it) {
+            if (EdgeCircle(it).u() == node)
+                cachedArcsC.emplace_back(EdgeCircle(it));
+        }
+        for (auto &edge: cachedArcsC)
+            removeEdgeCircle(edge.u());
+
+        std::list<Edge> cachedArcs;
+        for (auto it = edgeSet().begin(); it != edgeSet().end(); ++it) {
+            if (Edge(it).u() == node /*|| Edge(it).v() == node*/)
+                cachedArcs.emplace_back(Edge(it));
+        }
+        for (auto &edge: cachedArcs)
+            removeEdge(edge.u(), edge.u());
+
+
+        return true;
+    }
+    bool Graph::delC(const std::string &uname){
+        return delC(node(uname));
+    }
+
+
+
+    bool Graph::removeEdgeCircle(Node *u) {
+
+        if (hasEdgeCircle(u)) {
+            _edgeCircleSet.erase(u);
+
+            return true;
+        }
+        return false;
+    }
+
+    bool Graph::removeEdgeCircle(const std::string &uname) {
+        return removeEdgeCircle(node(uname));
+    }

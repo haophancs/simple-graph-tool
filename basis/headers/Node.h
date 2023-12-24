@@ -4,11 +4,13 @@
 #include <iostream>
 #include <utility>
 #include <QPointF>
+#include <unordered_set>
 
 namespace GraphType {
     class Node {
 
     private:
+        std::unordered_set<Node*> _neighbors; // Neighbor nodes
         int _degPos;
         int _degNeg;
         int _deg;
@@ -36,6 +38,18 @@ namespace GraphType {
         }
 
     public:
+        const std::unordered_set<Node*>& neighbors() const {
+            return _neighbors;
+        }
+
+        void addNeighbor(Node* neighbor) {
+            _neighbors.insert(neighbor);
+        }
+
+        void removeNeighbor(Node* neighbor) {
+            _neighbors.erase(neighbor);
+        }
+
 
         explicit Node(std::string name);
 

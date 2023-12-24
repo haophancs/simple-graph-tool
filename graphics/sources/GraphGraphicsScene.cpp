@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <memory>
 #include <utility>
+#include "basis/headers/GraphUtils.h"
 
 GraphGraphicsScene::GraphGraphicsScene() = default;
 
@@ -31,9 +32,16 @@ void GraphGraphicsScene::reload() {
                                                 _nodeItems[edge.v()->name()])
                           });
     }
+    for (auto it = graph()->edgeCircleSet().begin(); it != graph()->edgeCircleSet().end(); ++it) {
+        auto edge = GraphType::EdgeCircle(it);
+        _edgeItemsCircle.insert({edge.u()->name(), new EdgeGraphicsItemCircle(this,_nodeItems[edge.u()->name()],&edge)
+        });
+    }
     for (const auto &item: _edgeItems)
         this->addItem(item.second);
     for (const auto &item: _nodeItems)
+        this->addItem(item.second);
+    for (const auto &item: _edgeItemsCircle)
         this->addItem(item.second);
     this->update();
 }
@@ -240,14 +248,39 @@ NodeGraphicsItem *GraphGraphicsScene::nodeItem(const std::string &name) {
         return _nodeItems[name];
     return nullptr;
 }
+EdgeGraphicsItemCircle *GraphGraphicsScene::edgeItemCircle(const std::string& uname){
+    if (_edgeItemsCircle.find(uname) != _edgeItemsCircle.end())
+        return _edgeItemsCircle.find(uname)->second;
+    return nullptr;
+}
 
 void GraphGraphicsScene::clearAll() {
     this->clear();
     this->_nodeItems.clear();
     this->_edgeItems.clear();
+    this->_edgeItemsCircle.clear();
 }
 
 GraphGraphicsScene::~GraphGraphicsScene() {
     this->clearAll();
 }
 
+
+void GraphGraphicsScene::demoEdgeColoringUn(const std::list<std::pair<std::pair<std::string, std::string>, std::string>>& listOfPairToDemo, const std::map<std::string, QColor>& colorMap) {
+    resetAfterDemoAlgo();
+
+    QList<QColor> colorTable = NodeGraphicsItem::colorTable();
+
+    auto result = GraphUtils::getEdgeColoringResultUn(_graph);
+
+    for (const auto& it : result) {
+        const std::pair<std::string, std::string>& edge = it.first;
+        const std::string& color = it.second;
+
+        if (_graph->hasEdge(edge.first, edge.second)) {
+
+            this->edgeItem(edge.first,edge.second)->setOnSelectedColor(colorTable[stoi(color)]);
+            this->edgeItem(edge.first,edge.second)->setSelected(true);
+        }
+    }
+}
